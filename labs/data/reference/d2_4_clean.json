@@ -1,25 +1,25 @@
 {
  "rows_in": 746,
- "near_duplicates_removed": 82,
+ "near_duplicates_removed": 67,
  "leaks_removed": 18,
  "leaks_planted_in_traces": 23,
- "template_collisions_kept": 29,
+ "template_collisions_kept": 31,
  "personal_data_found": {
-  "phone": 247,
+  "phone": 248,
   "national_id": 71,
   "email": 56,
-  "name": 191
+  "name": 192
  },
  "personal_data_left": 0,
- "rows_out": 646,
+ "rows_out": 661,
  "by_source": {
-  "trace": 285,
-  "correction": 90,
-  "teacher": 271
+  "trace": 295,
+  "correction": 92,
+  "teacher": 274
  },
  "by_lang": {
-  "ar": 323,
-  "en": 323
+  "ar": 336,
+  "en": 325
  },
- "escalations": 96
+ "escalations": 108
 }

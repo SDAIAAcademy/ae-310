@@ -64,10 +64,10 @@ Every lab is a notebook in `labs/`. Open it in Google Colab from the course page
 | 1.2 | Day 1 · Session 2 | Freeze the baseline | [`D1_2_prompt_baseline.ipynb`](labs/D1_2_prompt_baseline.ipynb) |
 | 1.3 | Day 1 · Session 3 | Three licences | [`D1_3_licences.ipynb`](labs/D1_3_licences.ipynb) |
 | 1.4 | Day 1 · Session 4 | Cost of two options | [`D1_4_cost_placement.ipynb`](labs/D1_4_cost_placement.ipynb) |
-| 2.1 | Day 2 · Session 1 | Traces to examples |  |
-| 2.2 | Day 2 · Session 2 | Teacher and verifier |  |
-| 2.3 | Day 2 · Session 3 | Three formatting faults |  |
-| 2.4 | Day 2 · Session 4 | Clean the set |  |
+| 2.1 | Day 2 · Session 1 | Traces to examples | [`D2_1_traces_corrections.ipynb`](labs/D2_1_traces_corrections.ipynb) |
+| 2.2 | Day 2 · Session 2 | Teacher and verifier | [`D2_2_teacher_filter.ipynb`](labs/D2_2_teacher_filter.ipynb) |
+| 2.3 | Day 2 · Session 3 | Three formatting faults | [`D2_3_chat_templates.ipynb`](labs/D2_3_chat_templates.ipynb) |
+| 2.4 | Day 2 · Session 4 | Clean the set | [`D2_4_dedup_pii.ipynb`](labs/D2_4_dedup_pii.ipynb) |
 | 3.1 | Day 3 · Session 1 | Train an adapter, read the curves |  |
 | 3.2 | Day 3 · Session 2 | The same adapter on a 4-bit base |  |
 | 3.3 | Day 3 · Session 3 | Read a sweep, add a run |  |

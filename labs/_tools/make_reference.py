@@ -157,7 +157,7 @@ def bucket(text: str) -> str:
     return numbers[0] if numbers else "no number"
 
 
-def deduplicate(rows: list[dict], threshold: float = 0.8) -> tuple[list[dict], int]:
+def deduplicate(rows: list[dict], threshold: float = 0.9) -> tuple[list[dict], int]:
     kept, by_bucket, removed = [], {}, 0
     for row in rows:
         text = row["messages"][0]["content"]
@@ -253,6 +253,13 @@ def day2(b: dict) -> None:
     Q.write_jsonl(REF / "examples_teacher.jsonl", kept300)
     d22 = {"generated": 300, "teacher_wrong": wrong300, "rejected": dict(reasons300), "kept": len(kept300), "yield": round(len(kept300) / 300, 3),
            "wrong_but_kept": escaped300, "right_but_rejected": 300 - len(kept300) - (wrong300 - escaped300)}
+    # the registry desk audits 30 kept examples by hand (here: against the generator's answers)
+    pool_gold = {r["id"]: r["gold"] for r in pool}
+    audit_rng = random.Random(P.SEED + 22)
+    audit = [{"id": e["id"], "desk_says": "right" if C.same_call(e["messages"][1]["tool_calls"][0]["function"], pool_gold[e["id"]]) else "wrong"}
+             for e in audit_rng.sample(kept300, 30)]
+    Q.write_jsonl(REF / "audit_30.jsonl", audit)
+    d22["audit_wrong_of_30"] = sum(a["desk_says"] == "wrong" for a in audit)
     Q.write_json(REF / "d2_2_teacher.json", d22)
 
     # Lab 2.4: deduplicate, decontaminate, mask
@@ -268,7 +275,7 @@ def day2(b: dict) -> None:
     for row in deduped:
         text = row["messages"][0]["content"]
         s, bk = shingles(text), bucket(text)
-        hit = any(containment(s, other) >= 0.8 for other in test_by_bucket.get(bk, []))
+        hit = any(containment(s, other) >= 0.9 for other in test_by_bucket.get(bk, []))
         if hit and bk != "no number":
             leaks.append(row["id"])
             continue

@@ -8,5 +8,6 @@
  "kept": 293,
  "yield": 0.977,
  "wrong_but_kept": 8,
- "right_but_rejected": 0
+ "right_but_rejected": 0,
+ "audit_wrong_of_30": 0
 }

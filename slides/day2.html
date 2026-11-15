@@ -1,158 +1,543 @@
 <section class="slide title" id="title" data-auto="title">
-  <aside class="notes">REPLACE: welcome; introduce yourself; one question to the room that calibrates the pace; the rhythm of the day</aside>
+  <aside class="notes"><p>Open with yesterday's result: the frozen baseline scored 67 in 100 and the larger model 94 (stand-in run; use your room's numbers). Today builds the set that is supposed to close that gap. Say the proportion now and again at the end: in a real adaptation project most of the engineer's hours are today's work, not tomorrow's.</p></aside>
 </section>
 
 <section class="slide" id="agenda" data-auto="agenda"></section>
 
-<!-- Session 1 -->
-
-<section class="slide section" id="s1" data-auto="section" data-session="1"></section>
-
-<section class="slide" id="s1-idea" data-lo="LO2">
-  <div class="kicker">REPLACE: the question this slide answers</div>
-  <h2>REPLACE: one idea, stated as a sentence</h2>
-  <div class="cols cols-2">
-    <ul class="bullets">
-      <li>REPLACE: at most six bullets, each a complete thought</li>
-      <li>REPLACE: bold the key phrase; numbers come from the lab run, not from memory</li>
-    </ul>
-    <div class="card c-teal"><h4>In the case study</h4><p class="small mb0">REPLACE: tie the idea to the case study and its data</p></div>
+<section class="slide" id="review-day1" data-lo="LO1">
+  <div class="kicker">Review of Day 1</div>
+  <h2>Which failures does today's data have to fix?</h2>
+  <div class="quiz" data-type="single" data-lo="LO1">
+    <p class="lead">With the frozen instructions, Qayd still takes a partner company's registration number in some requests. The code table and the schema are in the prompt. Which examples must today's tuning set contain?</p>
+    <div class="opts">
+      <div class="opt" data-why="Adds knowledge the prompt already holds: the failure is a decision, not a missing fact">More rows of the activity code table</div>
+      <div class="opt" data-ok>Requests with two registration numbers, labelled with the applicant's own</div>
+      <div class="opt" data-why="Repeats what the model already does right, which teaches the format again and the decision never">More requests that Qayd already answers correctly</div>
+      <div class="opt" data-why="Fixes the form of a call whose form is already valid">Examples of well-formed JSON</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> A behaviour failure is fixed by examples of the right decision in the situation where the model decides wrongly. Data for tuning is chosen by failure class.</div>
   </div>
-  <div class="callout warn mt"><b>What goes wrong.</b> REPLACE: the failure participants will hit, and how to recognise it</div>
-  <aside class="notes">REPLACE: what to say, the demo to run, the question to ask the room, the common failure and its fix</aside>
+  <aside class="notes"><p>Answer: B. This sets the lens for the day: every source of examples is judged by whether it contains the behaviour the model lacks. Accepted traces mostly do not; corrections and teacher labels do.</p></aside>
 </section>
 
-<section class="slide" id="s1-steps" data-lo="LO2">
-  <div class="kicker">Step by step</div>
-  <h2>REPLACE: a process, shown one step per key press</h2>
+<section class="slide" id="three-sources" data-label="Three sources" data-lo="LO2">
+  <div class="kicker">The day in one picture</div>
+  <h2>Three sources become one clean tuning set</h2>
   <div class="flow">
-    <div class="step c-teal"><b>1 · REPLACE: name</b>REPLACE: what happens first</div>
-    <div class="arrow frag" data-frag="b">→</div><div class="step c-cyan frag" data-frag="b"><b>2 · REPLACE: name</b>REPLACE: the next piece</div>
-    <div class="arrow frag" data-frag="c">→</div><div class="step c-coral frag" data-frag="c"><b>3 · REPLACE: name</b>REPLACE: the result</div>
+    <div class="step c-teal"><b>Traces</b>500 pilot requests, 342 accepted</div>
+    <div class="arrow">→</div>
+    <div class="step c-cyan"><b>Corrections</b>123 by the registry desk</div>
+    <div class="arrow">→</div>
+    <div class="step c-purple"><b>Teacher</b>300 labels by a larger model</div>
+    <div class="arrow">→</div>
+    <div class="step c-coral"><b>Clean</b>template, duplicates, leaks, personal data</div>
+    <div class="arrow">→</div>
+    <div class="step c-navy"><b>661 examples</b>with a card and an overlap report</div>
   </div>
-  <div class="callout tip mt frag"><b>Takeaway.</b> REPLACE: the one sentence to remember</div>
-  <aside class="notes">Press once per step and say what each step adds before the next one appears. REPLACE: the example to walk through</aside>
+  <p class="small mt">Each lab starts from a supplied file, so the four can be done in any order and nobody waits for a neighbour.</p>
+  <aside class="notes"><p>Outcome 2 names every step on this slide. The evidence it asks for is the dataset with its card and an overlap report against the test set: Lab 2.4 writes the report, Lab 4.4 the card. Numbers are from the course's solution run with the stand-in models.</p></aside>
+</section>
+
+<!-- ======================= SESSION 1 ======================= -->
+<section class="slide section" id="s1" data-auto="section" data-session="1"></section>
+
+<section class="slide" id="trace-anatomy" data-label="A trace" data-lo="LO2">
+  <div class="kicker">The raw material</div>
+  <h2>A trace is a request, the model's answer and what a person did next</h2>
+  <div class="trace s">
+    <div class="ev user"><b>request</b>نريد التجديد لمدة سنة واحدة. سجلنا التجاري 4067281583.</div>
+    <div class="ev call"><b>Qayd</b><code>{"name": "renew_membership", "arguments": {"cr_number": "4067281583", "years": 2}}</code></div>
+    <div class="ev guard"><b>registry desk</b>status: corrected</div>
+    <div class="ev result"><b>correction</b><code>{"name": "renew_membership", "arguments": {"cr_number": "4067281583", "years": 1}}</code></div>
+  </div>
+  <p class="small mt">The request asks for one year (سنة واحدة). Qayd wrote two. The desk's correction is the label.</p>
+  <aside class="notes"><p>AE-303 treats traces as the raw material of evaluation; here the same traces are the raw material of training. Ask: which of the four lines would you train on? The request and the correction. Qayd's own wrong answer is never a training target, but it tells you which behaviour to look for in other traces.</p></aside>
+</section>
+
+<section class="slide" id="three-statuses" data-label="Statuses" data-lo="LO2">
+  <div class="kicker">What label does a trace carry?</div>
+  <h2>Accepted, corrected, abandoned: three statuses, three kinds of label</h2>
+  <table class="t small">
+    <tr><th>Status</th><th class="num">Traces</th><th>The label</th><th>What it can teach</th></tr>
+    <tr><td>Accepted</td><td class="num">342</td><td>Qayd's own output</td><td>The format, again. Nothing about its failures</td></tr>
+    <tr><td>Corrected</td><td class="num">123</td><td>The desk's call</td><td>The behaviour Qayd lacks</td></tr>
+    <tr><td>Abandoned</td><td class="num">35</td><td>None</td><td>Nothing, until someone labels it</td></tr>
+  </table>
+  <div class="callout note mt small"><b>Abandoned traces are not random.</b> The desk gave up on the hardest requests. Leaving them out makes the tuning set easier than production.</div>
+  <aside class="notes"><p>Counts from Lab 2.1 on the supplied 500 traces. Selection bias is the quiet problem of trace-based data: what gets labelled depends on what people bothered to fix. The dataset card says so in its limits.</p></aside>
+</section>
+
+<section class="slide" id="accepted-is-not-correct" data-label="Accepted" data-lo="LO2">
+  <div class="kicker">The first trap</div>
+  <h2>"Accepted" means nobody objected, not that the call was right</h2>
+  <div class="cols cols-2 mid">
+    <div class="stat center"><div class="big">8 of 342</div><div class="lbl">accepted traces carry a wrong call (the generator's answer key)</div></div>
+    <ul class="bullets small">
+      <li>A rule check finds <b>2</b> of them: the number in the call is not in the request</li>
+      <li>The other 6 pass every check: valid, plausible, wrong</li>
+      <li>In your own project there is no answer key: only an audit of a sample tells you the rate</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>The eight are planted. Three quarters of the examples from traces are accepted ones, so their error rate matters more than the corrections'. Label noise of two or three percent rarely stops a model from learning; it does put a ceiling on what the test can show, and it teaches the specific wrong decisions that were accepted.</p></aside>
+</section>
+
+<section class="slide" id="corrections-have-errors" data-label="Corrections" data-lo="LO2">
+  <div class="kicker">The second trap</div>
+  <h2>A correction is typed by a person at a busy desk</h2>
+  <table class="t small">
+    <tr><th>What the desk typed</th><th>What the registry says</th></tr>
+    <tr><td><code>"cr_number": "403158269"</code></td><td>not 10 Western digits</td></tr>
+    <tr><td><code>"city": "الطائف"</code></td><td>a value outside the list: the interface takes "Taif"</td></tr>
+    <tr><td><code>"cr_number": "٤٠٥٠٥٢٢٦٨٧"</code></td><td>not 10 Western digits</td></tr>
+  </table>
+  <div class="callout tip mt small"><b>Validate every label against the tool interface.</b> 12 of the 123 corrections are rejected. A label the tool would refuse is not a label.</div>
+  <aside class="notes"><p>The desk knew what it meant in every one of the twelve. Do not repair them silently: a repair is your guess entering the training set without a source. Send them back, or drop them and count them. The lab asserts that the count is twelve.</p></aside>
+</section>
+
+<section class="slide" id="validate-labels" data-label="Validate" data-lo="LO2">
+  <div class="kicker">Lab 2.1 · task 3</div>
+  <h2>The tool's own schema is the first reviewer of every label</h2>
+  <pre class="code" data-file="Lab 2.1"><code class="language-python">for trace in traces:
+    call = labels[trace["id"]]          # Qayd's output, or the desk's call
+    if call is None:
+        continue                        # abandoned: no label
+    errors = C.schema_errors(call)      # what the registry would refuse
+    if errors:
+        rejected.append((trace, call, errors))
+    else:
+        kept.append((trace, call))</code></pre>
+  <aside class="notes"><p>C.schema_errors checks the tool name, the required arguments, their types, the lists of allowed values and the shape of a registration number. It is the same function the grader uses, which is the point: training labels and evaluation share one definition of a valid call.</p></aside>
+</section>
+
+<section class="slide" id="chat-format-example" data-label="Chat format" data-lo="LO2">
+  <div class="kicker">Lab 2.1 · task 4</div>
+  <h2>A tuning example is a short conversation with a tool call</h2>
+  <pre class="code s" data-file="examples_traces.jsonl"><code class="language-json">{"id": "R-0412", "source": "correction", "lang": "ar",
+ "messages": [
+  {"role": "user", "content": "نريد التجديد لمدة سنة واحدة. سجلنا التجاري 4067281583."},
+  {"role": "assistant", "content": "",
+   "tool_calls": [{"type": "function", "function": {
+       "name": "renew_membership",
+       "arguments": {"cr_number": "4067281583", "years": 1}}}]}]}</code></pre>
+  <p class="small mt">Messages and <code>tool_calls</code>, not a rendered string: the model's template does the rendering (session 3). <code>source</code> stays with every row.</p>
+  <aside class="notes"><p>This is the structure chat templates in Transformers take and the structure a server receives. Keeping the source on every row costs nothing now and pays three times: the card's counts, the corrections-only adapter of Lab 3.4, and the question "which source taught it that?" on Day 4.</p><p>Sources: Transformers documentation, chat templates.</p></aside>
+</section>
+
+<section class="slide" id="counts-are-the-card" data-label="Counts" data-lo="LO2">
+  <div class="kicker">Lab 2.1 · task 5</div>
+  <h2>What you dropped is the first paragraph of the dataset card</h2>
+  <div class="bars">
+    <div class="row"><span>Kept from accepted traces</span><div class="bar c-teal" style="--w:68%"></div><span class="val">342</span></div>
+    <div class="row"><span>Kept from corrections</span><div class="bar c-cyan" style="--w:22%"></div><span class="val">111</span></div>
+    <div class="row"><span>Abandoned, no label</span><div class="bar c-coral" style="--w:7%"></div><span class="val">35</span></div>
+    <div class="row"><span>Corrections rejected</span><div class="bar c-purple" style="--w:2.4%"></div><span class="val">12</span></div>
+  </div>
+  <p class="small mt">500 traces, 453 examples. Three quarters of them are what Qayd already does.</p>
+  <aside class="notes"><p>The last sentence is the motivation for session 2. If 342 of 453 examples repeat current behaviour, the set is weak exactly where the model is weak. The corrections are precious and few; the teacher adds volume where it is needed.</p></aside>
+</section>
+
+<section class="slide" id="check-traces" data-lo="LO2">
+  <div class="kicker">Checkpoint</div>
+  <h2>Which rows enter the tuning set?</h2>
+  <div class="quiz" data-type="single" data-lo="LO2">
+    <p class="lead">A corrected trace has the desk's call <code>{"name": "update_record", "arguments": {"cr_number": "4031582699", "field": "city", "value": "الدمام"}}</code>. The interface lists cities in English. What do you do with it?</p>
+    <div class="opts">
+      <div class="opt" data-why="Trusts a person's label over the tool it must call: the model would learn a value the registry refuses">Keep it: a human correction is always right</div>
+      <div class="opt" data-why="Puts your own guess into the set under the desk's name, with no record of the change">Change the value to "Dammam" and keep it as a correction</div>
+      <div class="opt" data-ok>Drop it and count it, or send it back to the desk</div>
+      <div class="opt" data-why="Uses the model's wrong answer as a training target">Replace it with Qayd's original output</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> The registry would reject the call, so it is not a usable label. Whatever you do with it must be visible in the counts.</div>
+  </div>
+  <aside class="notes"><p>Answer: C. B is tempting and sometimes right in practice, as a separate, named source ("repaired by the engineer") with its own review. What is not acceptable is a silent repair.</p></aside>
 </section>
 
 <section class="slide lab" id="lab-2-1" data-auto="lab" data-lab="2.1">
-  <aside class="notes">REPLACE: what to watch for while participants work, the typical problems, and the fallback for anyone who did not finish an earlier lab</aside>
+  <aside class="notes"><p>The lab asserts its counts against the supplied reference, so a wrong join shows at once. Typical problem: parsing the output of corrected traces (the label is the desk's call, not Qayd's output). The stretch finds two of the eight accepted-and-wrong traces with one rule. Supplied state: data/traces_500.jsonl and data/corrections.jsonl; nothing from Day 1 is needed.</p></aside>
 </section>
 
-<!-- Session 2 -->
-
+<!-- ======================= SESSION 2 ======================= -->
 <section class="slide section" id="s2" data-auto="section" data-session="2"></section>
 
-<section class="slide" id="s2-idea" data-lo="LO2">
-  <div class="kicker">REPLACE: the question this slide answers</div>
-  <h2>REPLACE: one idea, stated as a sentence</h2>
+<section class="slide" id="why-a-teacher" data-label="Why a teacher" data-lo="LO2">
+  <div class="kicker">Labels for what the desk never saw</div>
+  <h2>A larger model can label requests nobody corrected</h2>
   <div class="cols cols-2">
     <ul class="bullets">
-      <li>REPLACE: at most six bullets, each a complete thought</li>
-      <li>REPLACE: bold the key phrase; numbers come from the lab run, not from memory</li>
+      <li>The pilot left <b>900 requests</b> with no label at all</li>
+      <li>On Day 1 the larger model was right on <b>94 in 100</b> with the frozen instructions</li>
+      <li>Its labels are cheap, fast and in volume, where staff time is none of the three</li>
     </ul>
-    <div class="card c-teal"><h4>In the case study</h4><p class="small mb0">REPLACE: tie the idea to the case study and its data</p></div>
+    <div class="card c-coral"><h4>The price</h4><p class="small mb0">It is wrong on about 6 in 100, and whatever enters the set is what the student learns. A teacher needs a <b>verifier</b>.</p></div>
   </div>
-  <div class="callout warn mt"><b>What goes wrong.</b> REPLACE: the failure participants will hit, and how to recognise it</div>
-  <aside class="notes">REPLACE: what to say, the demo to run, the question to ask the room, the common failure and its fix</aside>
+  <aside class="notes"><p>This is data distillation: the student learns from the teacher's outputs. Session 3.4 returns to it as a method; today it is a data source like the other two, with its own error profile. The stand-in teacher's error rate was written into the script; a real teacher's must be measured.</p></aside>
 </section>
 
-<section class="slide" id="s2-steps" data-lo="LO2">
-  <div class="kicker">Step by step</div>
-  <h2>REPLACE: a process, shown one step per key press</h2>
-  <div class="flow">
-    <div class="step c-teal"><b>1 · REPLACE: name</b>REPLACE: what happens first</div>
-    <div class="arrow frag" data-frag="b">→</div><div class="step c-cyan frag" data-frag="b"><b>2 · REPLACE: name</b>REPLACE: the next piece</div>
-    <div class="arrow frag" data-frag="c">→</div><div class="step c-coral frag" data-frag="c"><b>3 · REPLACE: name</b>REPLACE: the result</div>
+<section class="slide" id="teacher-same-format" data-label="Same format" data-lo="LO2">
+  <div class="kicker">Two conditions before you call the teacher</div>
+  <h2>Same output format as the student, and only data that may leave</h2>
+  <div class="cols cols-2">
+    <div class="card c-teal"><h4>Format</h4><p class="small mb0">The teacher gets the frozen instructions and examples. Its label must be the exact text the student has to produce, or the student learns someone else's format.</p></div>
+    <div class="card c-coral"><h4>Placement</h4><p class="small mb0">The pool in the lab is synthetic. Real members' requests are Restricted: a hosted teacher may not see them. Run the teacher on your own servers, or label masked and synthetic requests only.</p></div>
   </div>
-  <div class="callout tip mt frag"><b>Takeaway.</b> REPLACE: the one sentence to remember</div>
-  <aside class="notes">Press once per step and say what each step adds before the next one appears. REPLACE: the example to walk through</aside>
+  <div class="callout warn mt small"><b>The teacher's terms count too.</b> Its licence and its provider's conditions on training another model with its outputs belong in yesterday's licence table.</div>
+  <aside class="notes"><p>The placement card is the responsible-use point of the session and it is easy to skip in a lab where everything is synthetic. Say it plainly: the requirement that made the chamber choose a small model also forbids sending the real traces to a hosted teacher.</p></aside>
+</section>
+
+<section class="slide" id="verifier-two-layers" data-label="Verifier" data-lo="LO2">
+  <div class="kicker">What stands between the teacher and the set</div>
+  <h2>A verifier has two layers: the schema, then rules against the request</h2>
+  <div class="flow">
+    <div class="step c-purple"><b>Teacher output</b>300</div>
+    <div class="arrow">→</div>
+    <div class="step c-teal"><b>Schema</b>would the registry accept it? 6 rejected</div>
+    <div class="arrow">→</div>
+    <div class="step c-cyan"><b>Rules</b>does it agree with the request? 1 rejected</div>
+    <div class="arrow">→</div>
+    <div class="step c-navy"><b>Kept</b>293</div>
+  </div>
+  <div class="callout tip mt"><b>A schema knows the interface, not the request.</b> <code>"cr_number": "4000000000"</code> is a valid argument and an invention. Only a rule that reads the request can tell.</div>
+  <aside class="notes"><p>Counts from Lab 2.2 with the stand-in teacher. Verifiers can also be models (a second model judging the first); AE-303 covers calibrating such a grader. Code checks come first because they are free, deterministic and explainable.</p></aside>
+</section>
+
+<section class="slide" id="rule-check-code" data-label="Rule checks" data-lo="LO2">
+  <div class="kicker">Lab 2.2 · task 3</div>
+  <h2>A rule check compares the call with the text it claims to answer</h2>
+  <pre class="code s" data-file="Lab 2.2"><code class="language-python">numbers = CR.findall(C.western_digits(text))   # numbers the request contains
+args = call["arguments"]
+if "cr_number" in args and args["cr_number"] not in numbers:
+    errors.append("the registration number is not in the request")
+if call["name"] == "escalate_to_staff" and args.get("reason") == "missing_cr" and numbers:
+    errors.append("escalated as missing although the request gives a number")
+if call["name"] == "create_membership" and args.get("company_name", "") not in text:
+    errors.append("the company name is not in the request")</code></pre>
+  <aside class="notes"><p>Each rule encodes one sentence a registry officer would say. Write rules for what must be true of every right answer, and test each rule for false alarms: a rule that rejects right answers silently removes a kind of example. The stretch shows one such rule.</p></aside>
+</section>
+
+<section class="slide" id="verifier-blind-spot" data-label="Blind spot" data-lo="LO2">
+  <div class="kicker">What passes</div>
+  <h2>Valid, consistent with the request, and wrong</h2>
+  <table class="t small">
+    <tr><th>The teacher's error</th><th>Schema</th><th>Rules</th></tr>
+    <tr><td>Takes the partner's registration number</td><td>passes</td><td>passes: the number is in the request</td></tr>
+    <tr><td>Renews where a certificate was asked for</td><td>passes</td><td>passes</td></tr>
+    <tr><td>Writes two years for "one year"</td><td>passes</td><td>passes</td></tr>
+    <tr><td>Invents a registration number</td><td>passes</td><td><b>caught</b></td></tr>
+    <tr><td>Answers in prose</td><td><b>caught</b></td><td></td></tr>
+  </table>
+  <aside class="notes"><p>The top three rows are decisions. To catch them a verifier would have to make the decision itself, which is the task. This is the honest limit of filtering: it removes malformed and inconsistent labels, not wrong judgements. Those are found by people, on a sample.</p></aside>
+</section>
+
+<section class="slide" id="yield-is-not-quality" data-label="Yield" data-lo="LO2">
+  <div class="kicker">Lab 2.2 · tasks 4 and 5</div>
+  <h2>Yield says how much passed, not whether it is right</h2>
+  <div class="cols cols-3 mid">
+    <div class="stat center"><div class="big">97.7%</div><div class="lbl">yield: 293 of 300 kept</div></div>
+    <div class="stat center"><div class="big">8</div><div class="lbl">wrong labels among the 293 kept (answer key): the verifier caught 7 of 15</div></div>
+    <div class="stat center"><div class="big">0 of 30</div><div class="lbl">found by the desk's audit, which allows up to 11%</div></div>
+  </div>
+  <div class="callout note mt small"><b>For the card:</b> "audit of 30 kept examples, 0 errors, 95% upper bound 11%", and the kinds of error the verifier cannot see.</div>
+  <aside class="notes"><p>The audit is the lesson. Zero in thirty feels like proof and is not: the Wilson upper bound is 11.4%. The true rate here is 2.7%, known only because the data is synthetic. To bound an error rate below 3% with zero errors found you need an audit of about 125 examples. Ask the room how many their team audits.</p></aside>
+</section>
+
+<section class="slide" id="check-verifier" data-lo="LO2">
+  <div class="kicker">Checkpoint</div>
+  <h2>What did the verifier prove?</h2>
+  <div class="quiz" data-type="single" data-lo="LO2">
+    <p class="lead">A teacher labelled 1,000 requests. Schema and rule checks kept 960. Nobody has read any of them. What can you state about the 960?</p>
+    <div class="opts">
+      <div class="opt" data-why="Reads yield as accuracy: passing the checks says the labels are well-formed and consistent, not right">They are 96% accurate</div>
+      <div class="opt" data-why="Assumes the checks see every error, although a valid, consistent call can be the wrong decision">They contain no errors, because the bad ones were rejected</div>
+      <div class="opt" data-why="Discards labels that are mostly right for lack of a measurement that an audit can supply">They cannot be used until every one is read by staff</div>
+      <div class="opt" data-ok>They are valid and consistent with their requests; their error rate is unknown until a sample is audited</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> A verifier removes what it can detect. The rate of what it cannot detect is measured by people, on a sample, with an interval.</div>
+  </div>
+  <aside class="notes"><p>Answer: D. If the room picks A, ask what the 4% that failed tells you about the 96% that passed. Nothing.</p></aside>
 </section>
 
 <section class="slide lab" id="lab-2-2" data-auto="lab" data-lab="2.2">
-  <aside class="notes">REPLACE: what to watch for while participants work, the typical problems, and the fallback for anyone who did not finish an earlier lab</aside>
+  <aside class="notes"><p>With a key, the 300 teacher calls are within a free daily quota only on an account with credits; otherwise the stand-in answers and the lab asserts the supplied counts. Typical problem in task 3: comparing the number before converting Arabic-Indic digits, which rejects right answers. The pool is supplied; nothing from Lab 2.1 is needed.</p></aside>
 </section>
 
-<!-- Session 3 -->
-
+<!-- ======================= SESSION 3 ======================= -->
 <section class="slide section" id="s3" data-auto="section" data-session="3"></section>
 
-<section class="slide" id="s3-idea" data-lo="LO2">
-  <div class="kicker">REPLACE: the question this slide answers</div>
-  <h2>REPLACE: one idea, stated as a sentence</h2>
-  <div class="cols cols-2">
-    <ul class="bullets">
-      <li>REPLACE: at most six bullets, each a complete thought</li>
-      <li>REPLACE: bold the key phrase; numbers come from the lab run, not from memory</li>
-    </ul>
-    <div class="card c-teal"><h4>In the case study</h4><p class="small mb0">REPLACE: tie the idea to the case study and its data</p></div>
-  </div>
-  <div class="callout warn mt"><b>What goes wrong.</b> REPLACE: the failure participants will hit, and how to recognise it</div>
-  <aside class="notes">REPLACE: what to say, the demo to run, the question to ask the room, the common failure and its fix</aside>
+<section class="slide" id="model-sees-one-string" data-label="One string" data-lo="LO2">
+  <div class="kicker">What the model actually reads</div>
+  <h2>The model never sees your messages: it sees one string</h2>
+  <pre class="code s" data-file="rendered by the chat template of the course model"><code class="language-text">&lt;|im_start|&gt;user
+نأمل إرسال شهادة العضوية للسجل التجاري 4029184372.&lt;|im_end|&gt;
+&lt;|im_start|&gt;assistant
+&lt;tool_call&gt;
+{"name": "issue_certificate", "arguments": {"cr_number": "4029184372", "kind": "membership"}}
+&lt;/tool_call&gt;&lt;|im_end|&gt;</code></pre>
+  <p class="small mt">Role markers, an end-of-turn token, a wrapper for the call. Every one of these is a convention of <b>this</b> model, written in its template.</p>
+  <aside class="notes"><p>Printed in Lab 2.3, task 1. The template is a small Jinja program stored with the tokeniser. Transformers applies it with apply_chat_template; a server applies the same file. If participants did the pre-work they have seen the template of a real model and can say where its tool calls go.</p><p>Sources: Transformers documentation, chat templates.</p></aside>
 </section>
 
-<section class="slide" id="s3-steps" data-lo="LO2">
-  <div class="kicker">Step by step</div>
-  <h2>REPLACE: a process, shown one step per key press</h2>
-  <div class="flow">
-    <div class="step c-teal"><b>1 · REPLACE: name</b>REPLACE: what happens first</div>
-    <div class="arrow frag" data-frag="b">→</div><div class="step c-cyan frag" data-frag="b"><b>2 · REPLACE: name</b>REPLACE: the next piece</div>
-    <div class="arrow frag" data-frag="c">→</div><div class="step c-coral frag" data-frag="c"><b>3 · REPLACE: name</b>REPLACE: the result</div>
+<section class="slide" id="template-is-part-of-model" data-label="Part of the model" data-lo="LO2">
+  <div class="kicker">The durable idea</div>
+  <h2>The chat template is part of the model</h2>
+  <div class="cols cols-2">
+    <ul class="bullets">
+      <li>The base model was trained on strings in exactly this shape</li>
+      <li>Your adapter will be served strings in exactly this shape</li>
+      <li>So train on strings in exactly this shape: <b>use the template, do not rewrite it</b></li>
+    </ul>
+    <div class="card c-coral"><h4>What goes wrong</h4><p class="small mb0">A hand-written renderer trains "fine": the loss falls, because the model learns whatever text it is given. The fault shows in production, as a format nobody sends.</p></div>
   </div>
-  <div class="callout tip mt frag"><b>Takeaway.</b> REPLACE: the one sentence to remember</div>
-  <aside class="notes">Press once per step and say what each step adds before the next one appears. REPLACE: the example to walk through</aside>
+  <aside class="notes"><p>A falling loss is evidence that training ran, never that the text was right. This is why the lab compares strings character by character before any training step.</p></aside>
+</section>
+
+<section class="slide" id="generation-prompt" data-label="Prompt and full" data-lo="LO2">
+  <div class="kicker">Two renderings of one example</div>
+  <h2>The server sends the prompt; training adds the answer</h2>
+  <div class="cols cols-2">
+    <div class="card c-teal"><h4>Prompt</h4><p class="small mb0"><code>add_generation_prompt=True</code>: the request, then the marker that opens the assistant's turn. The model writes what follows.</p></div>
+    <div class="card c-purple"><h4>Full</h4><p class="small mb0">The whole conversation, the assistant's turn and its end-of-turn token included. The full text must <b>start with</b> the prompt, character for character.</p></div>
+  </div>
+  <div class="callout tip mt"><b>That prefix property is what makes the label mask possible:</b> everything up to the end of the prompt is context, everything after it is the target.</div>
+  <aside class="notes"><p>The lab asserts full.startswith(prompt). When that assertion fails with a real model, the usual cause is a template that inserts something different with and without the generation prompt, for instance a reasoning block. Then the mask must be built from the template's own output, not from string lengths.</p></aside>
+</section>
+
+<section class="slide" id="tool-call-formats-differ" data-label="Formats differ" data-lo="LO2">
+  <div class="kicker">Tool-call formats</div>
+  <h2>Two model families, two ways to write the same call</h2>
+  <div class="cols cols-2">
+    <div>
+      <h4>Qwen3: JSON in tags</h4>
+      <pre class="code s"><code class="language-text">&lt;tool_call&gt;
+{"name": "get_weather", "arguments": {"city": "Paris"}}
+&lt;/tool_call&gt;</code></pre>
+    </div>
+    <div>
+      <h4>LFM3: an XML form in tags</h4>
+      <pre class="code s"><code class="language-text">&lt;tool_call&gt;
+&lt;function=get_weather&gt;
+&lt;parameter=city&gt;
+Paris
+&lt;/parameter&gt;
+&lt;/function&gt;
+&lt;/tool_call&gt;</code></pre>
+    </div>
+  </div>
+  <p class="small mt">Change the base model and the tuning set must be rendered again. Store messages, never rendered strings.</p>
+  <aside class="notes"><p>Both forms are from the models' own cards, read on 15 November 2026. The same tags, different content: a parser written for one silently fails on the other. This is why yesterday's examples were stored as messages with tool_calls.</p><p>Sources: Qwen3-0.6B model card; LFM3-1.7B model card.</p></aside>
+</section>
+
+<section class="slide" id="three-faults" data-label="Three faults" data-lo="LO2">
+  <div class="kicker">Lab 2.3</div>
+  <h2>Three faults that train "fine" and fail in service</h2>
+  <div class="cols cols-3 gap-s">
+    <div class="card c-coral"><h4>1 · The turn never ends</h4><p class="small mb0">No end-of-turn token after the answer. The adapter never learns to stop and writes to the token limit on every request.</p></div>
+    <div class="card c-purple"><h4>2 · A foreign call format</h4><p class="small mb0"><code>str(call)</code>: single quotes, no tags. The model is taught the Python-dictionary failure of Lab 1.1.</p></div>
+    <div class="card c-amber"><h4>3 · Loss on everything</h4><p class="small mb0">Labels equal to the input. A third of the signal goes into predicting members' requests instead of the answer.</p></div>
+  </div>
+  <aside class="notes"><p>All three are in the colleague's renderer in the lab, and all three are common in real projects. Fault 1 also raises cost: a model that does not stop bills the maximum output on every request. Fault 3 on the lab's example: 82 tokens, 56 of them in the answer; unmasked, 32% of the loss is spent on the request.</p></aside>
+</section>
+
+<section class="slide" id="label-mask" data-label="Label mask" data-lo="LO2">
+  <div class="kicker">Fault 3, fixed</div>
+  <h2>The loss is taken on the assistant's turn only</h2>
+  <pre class="code" data-file="Lab 2.3 · task 4"><code class="language-python">prompt_ids = tok(prompt, add_special_tokens=False)["input_ids"]
+full_ids   = tok(full,   add_special_tokens=False)["input_ids"]
+labels = [-100] * len(prompt_ids) + full_ids[len(prompt_ids):]
+#         ignored by the loss       the tool call and the end of turn</code></pre>
+  <div class="callout note mt small"><b>Why it matters beyond efficiency.</b> A model trained to predict requests is trained to reproduce what members wrote. Masking the prompt is also a data-protection measure.</div>
+  <aside class="notes"><p>-100 is the index PyTorch's cross-entropy ignores. Libraries offer this as an option (training on completions only); know whether yours does it, and check one example by decoding the supervised tokens, as the lab does. add_special_tokens=False because the template already wrote every special token: a tokeniser that adds its own start token would double it.</p></aside>
+</section>
+
+<section class="slide" id="round-trip-check" data-label="Round trip" data-lo="LO2">
+  <div class="kicker">The check people skip</div>
+  <h2>Encode, decode, compare: does the text survive the tokeniser?</h2>
+  <div class="chat">
+    <div class="msg user"><span class="who">written</span>الرد على owner289@member.example أو الاتصال على 0509022407.</div>
+    <div class="msg ai bad"><span class="who">decoded</span>الرد على owner289&lt;|unk|&gt;member.example أو الاتصال على 0509022407.</div>
+  </div>
+  <p class="small mt">The course tokeniser has no token for the @ sign. Masking removes the address before the tokeniser sees it (Lab 2.4), and the lab's fixed renderer round-trips 50 of 50 masked examples.</p>
+  <aside class="notes"><p>A real finding from building this course: the first version of the lab rendered unmasked examples and some of them failed this check. With a real model's tokeniser the usual culprits are normalised characters, stripped spaces before special tokens and unknown symbols in a small vocabulary. Run the check on every example before the first training step.</p></aside>
+</section>
+
+<section class="slide" id="check-template" data-lo="LO2">
+  <div class="kicker">Checkpoint</div>
+  <h2>It answers, and then it keeps writing</h2>
+  <div class="quiz" data-type="single" data-lo="LO2">
+    <p class="lead">A freshly tuned adapter produces the correct tool call and then continues with more calls and stray text until the token limit. The base model never did this. Where do you look first?</p>
+    <div class="opts">
+      <div class="opt" data-ok>The rendered training text: is there an end-of-turn token after the assistant's answer?</div>
+      <div class="opt" data-why="Treats a formatting fault as an optimisation problem: a lower rate would learn the same wrong text more slowly">The learning rate: it was too high</div>
+      <div class="opt" data-why="Hides the symptom at serving time and pays for the extra tokens on every request">The server: raise the stop-token limit</div>
+      <div class="opt" data-why="Blames quantity for a fault that every example shares">The tuning set: it needs more examples</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> A model stops because it was shown stopping. If the training text never ends the turn, no setting teaches it to.</div>
+  </div>
+  <aside class="notes"><p>Answer: A. Demonstration if time allows: print the last ten tokens of one rendered training example. If the end-of-turn token is not among them, the diagnosis is done.</p></aside>
 </section>
 
 <section class="slide lab" id="lab-2-3" data-auto="lab" data-lab="2.3">
-  <aside class="notes">REPLACE: what to watch for while participants work, the typical problems, and the fallback for anyone who did not finish an earlier lab</aside>
+  <aside class="notes"><p>No model is loaded and nothing is trained: the lab uses the tokeniser of the course model, which ships in the repository with a chat template. The stretch fetches the tokeniser files of the hub model (a few megabytes, no weights); where the network blocks the Hub it says so and goes on. Supplied state: data/tuning/train.jsonl.</p></aside>
 </section>
 
-<!-- Session 4 -->
-
+<!-- ======================= SESSION 4 ======================= -->
 <section class="slide section" id="s4" data-auto="section" data-session="4"></section>
 
-<section class="slide" id="s4-idea" data-lo="LO2">
-  <div class="kicker">REPLACE: the question this slide answers</div>
-  <h2>REPLACE: one idea, stated as a sentence</h2>
-  <div class="cols cols-2">
-    <ul class="bullets">
-      <li>REPLACE: at most six bullets, each a complete thought</li>
-      <li>REPLACE: bold the key phrase; numbers come from the lab run, not from memory</li>
-    </ul>
-    <div class="card c-teal"><h4>In the case study</h4><p class="small mb0">REPLACE: tie the idea to the case study and its data</p></div>
+<section class="slide" id="three-silent-problems" data-label="Silent problems" data-lo="LO2">
+  <div class="kicker">What a loss curve will never show</div>
+  <h2>Duplicates inflate, leaks flatter, personal data does not belong in weights</h2>
+  <div class="cols cols-3 gap-s">
+    <div class="card c-teal"><h4>Near-duplicates</h4><p class="small mb0">The same request, sent twice with "Hello" in front. The set looks larger than it is, and one member's wording is over-weighted.</p></div>
+    <div class="card c-coral"><h4>Test-set overlap</h4><p class="small mb0">A test request in the tuning set. Every score on Day 4 would be too high, by an unknown amount.</p></div>
+    <div class="card c-purple"><h4>Personal data</h4><p class="small mb0">Names, mobile numbers, identity numbers in free text. Not needed to choose a tool, and a model can reproduce what it was trained on.</p></div>
   </div>
-  <div class="callout warn mt"><b>What goes wrong.</b> REPLACE: the failure participants will hit, and how to recognise it</div>
-  <aside class="notes">REPLACE: what to say, the demo to run, the question to ask the room, the common failure and its fix</aside>
+  <aside class="notes"><p>None of the three raises an error or bends a curve. They are found only by looking for them, which is why outcome 2 lists each by name and asks for a report.</p></aside>
 </section>
 
-<section class="slide" id="s4-steps" data-lo="LO2">
-  <div class="kicker">Step by step</div>
-  <h2>REPLACE: a process, shown one step per key press</h2>
-  <div class="flow">
-    <div class="step c-teal"><b>1 · REPLACE: name</b>REPLACE: what happens first</div>
-    <div class="arrow frag" data-frag="b">→</div><div class="step c-cyan frag" data-frag="b"><b>2 · REPLACE: name</b>REPLACE: the next piece</div>
-    <div class="arrow frag" data-frag="c">→</div><div class="step c-coral frag" data-frag="c"><b>3 · REPLACE: name</b>REPLACE: the result</div>
+<section class="slide" id="near-duplicate-rule" data-label="Near-duplicates" data-lo="LO2">
+  <div class="kicker">A rule you can state in one sentence</div>
+  <h2>Near-duplicate: one text's three-word runs are contained in the other's</h2>
+  <div class="chat">
+    <div class="msg user"><span class="who">kept</span>Kindly extend the membership of CR 4013583134 by 1 year.</div>
+    <div class="msg user"><span class="who">removed</span>Kindly extend the membership of CR 4013583134 by 1 year. Regards.</div>
   </div>
-  <div class="callout tip mt frag"><b>Takeaway.</b> REPLACE: the one sentence to remember</div>
-  <aside class="notes">Press once per step and say what each step adds before the next one appears. REPLACE: the example to walk through</aside>
+  <ul class="bullets small mt">
+    <li>Normalise: lower case, Western digits, no punctuation</li>
+    <li>Compare runs of three words; <b>containment</b> = shared runs divided by the smaller set</li>
+    <li>Near-duplicate at 0.9 or more, compared only within the same registration number</li>
+  </ul>
+  <aside class="notes"><p>Containment rather than plain overlap, because a re-sent request is the original plus a greeting: the smaller text is wholly inside the larger. The lab removes 67 near-duplicates from 746 rows. Embedding similarity is the heavier alternative; start with a rule you can explain to the data protection officer.</p></aside>
+</section>
+
+<section class="slide" id="threshold-tradeoff" data-label="Threshold" data-lo="LO2">
+  <div class="kicker">A threshold is a decision, and it has a cost</div>
+  <h2>At 0.8 the rule merged two different requests</h2>
+  <div class="chat">
+    <div class="msg user"><span class="who">kept at 0.8</span>نرجو إرسال قائمة بجميع الأعضاء العاملين في الاستشارات.</div>
+    <div class="msg ai bad"><span class="who">removed at 0.8</span>نرجو إرسال قائمة بجميع الأعضاء العاملين في الأجهزة الطبية.</div>
+  </div>
+  <p class="small mt">Two short requests that differ only in the activity they ask about: five of the six word runs of the shorter one are shared. At 0.8 they count as one; at 0.9 both stay. The lower threshold removed 82 rows, the higher one 67.</p>
+  <div class="callout tip mt small"><b>Read what a threshold removes</b> before you accept it. Print ten removed pairs; if one is not a duplicate, the threshold is wrong for your data.</div>
+  <aside class="notes"><p>This happened while the course was being built: the first threshold was 0.8 and the first removed pair printed was this one. Short texts are the weak point of any shingle rule, because one changed word is a large share of a short text. The report states the rule and the threshold so that a reader can disagree.</p></aside>
+</section>
+
+<section class="slide" id="leak-or-collision" data-label="Leak or collision" data-lo="LO2">
+  <div class="kicker">Decontamination</div>
+  <h2>A leak is removed; a template collision is kept and counted</h2>
+  <table class="t small">
+    <tr><th></th><th>Leak</th><th>Template collision</th></tr>
+    <tr><td>What it is</td><td>A near-copy of a test request about the same registration number</td><td>A short request with no number that many members write alike</td></tr>
+    <tr><td>Example</td><td>"We are Al-Salam Supplies Est. from Dammam … CR 4001995900"</td><td>"We need a membership certificate as soon as possible."</td></tr>
+    <tr><td>In the lab</td><td class="num">18 removed</td><td class="num">31 kept</td></tr>
+    <tr><td>Why</td><td>A test case inside the training data</td><td>Removing it would delete a kind of request from training</td></tr>
+  </table>
+  <aside class="notes"><p>The split by company was applied to the test set and not to the pilot traces: members of test-set companies wrote again during the pilot. 23 near-copies were planted in the 500 traces; 18 reach this step with a registration number and are removed, the others have no number or were dropped earlier. The distinction between leak and collision is a judgement: state it in the report and let the reader decide whether 31 collisions worry them.</p></aside>
+</section>
+
+<section class="slide" id="personal-data-scan" data-label="Personal data" data-lo="LO2">
+  <div class="kicker">Lab 2.4 · tasks 3 and 4</div>
+  <h2>Patterns find numbers and addresses; names need a list</h2>
+  <div class="cols cols-2">
+    <div class="bars">
+      <div class="row"><span>Mobile numbers</span><div class="bar c-teal" style="--w:100%"></div><span class="val">248</span></div>
+      <div class="row"><span>Names (from the registry)</span><div class="bar c-cyan" style="--w:77%"></div><span class="val">192</span></div>
+      <div class="row"><span>Identity numbers</span><div class="bar c-coral" style="--w:29%"></div><span class="val">71</span></div>
+      <div class="row"><span>E-mail addresses</span><div class="bar c-purple" style="--w:23%"></div><span class="val">56</span></div>
+    </div>
+    <ul class="bullets small">
+      <li>Found in 661 rows, then masked: <code>[PHONE]</code>, <code>[NAME]</code>, <code>[ID]</code>, <code>[EMAIL]</code></li>
+      <li>A second scan after masking finds 0</li>
+      <li>A registration number identifies a company, not a person, and stays</li>
+    </ul>
+  </div>
+  <div class="callout warn mt small"><b>"0 found" is a claim about the scan.</b> A name that is not on the registry's list passes. The card says which kinds and which list.</div>
+  <aside class="notes"><p>The Personal Data Protection Law defines personal data by what can identify a person and lists names, identification numbers and contact numbers among its examples. The synthetic requests are shaped that way on purpose. All values are generated; none belongs to a person.</p><p>Sources: Personal Data Protection Law.</p></aside>
+</section>
+
+<section class="slide" id="mask-both-sides" data-label="Mask both sides" data-lo="LO2">
+  <div class="kicker">One function, two places</div>
+  <h2>Mask in training and in service, with the same function</h2>
+  <div class="flow">
+    <div class="step c-navy"><b>Request</b>"… Contact: Fares Al-Sudairy, mobile 0525658054, ID 1168502369."</div>
+    <div class="arrow">→</div>
+    <div class="step c-teal"><b>Mask</b>the same code in the data pipeline and in front of the server</div>
+    <div class="arrow">→</div>
+    <div class="step c-coral"><b>Model</b>"… Contact: [NAME], mobile [PHONE], ID [ID]."</div>
+  </div>
+  <div class="callout tip mt"><b>The model sees in service what it saw in training.</b> Mask only the tuning set and production sends it digits it never met.</div>
+  <aside class="notes"><p>The course's tuning.render applies the mask to every request, in training, in evaluation and in the server of Lab 4.3. The example person and numbers are synthetic. Masking before the model also means the logs of the model server hold no personal data, which Anoud will ask about.</p></aside>
+</section>
+
+<section class="slide" id="cleaning-changes-mix" data-label="The mix" data-lo="LO2">
+  <div class="kicker">The stretch of Lab 2.4</div>
+  <h2>Cleaning changed the mix: escalations fell from 19% to 16%</h2>
+  <div class="cols cols-2 mid">
+    <div class="bars">
+      <div class="row"><span>Escalations before</span><div class="bar c-coral" style="--w:19%"></div><span class="val">145 of 746</span></div>
+      <div class="row"><span>Escalations after</span><div class="bar c-teal" style="--w:16%"></div><span class="val">108 of 661</span></div>
+    </div>
+    <ul class="bullets small">
+      <li>Requests with no number are short and alike, so deduplication removes more of them</li>
+      <li>Escalation is the behaviour Qayd lacks most</li>
+      <li>Whether it still learns to escalate is measured on Day 4, on that slice</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>Every cleaning step is also a sampling step. This is why the dataset card reports the set by source, by language and by kind of call after cleaning, and why Day 4 evaluates by slice.</p></aside>
+</section>
+
+<section class="slide" id="overlap-report" data-label="The report" data-lo="LO2">
+  <div class="kicker">Evidence for outcome 2</div>
+  <h2>The overlap report says what was removed, by which rule</h2>
+  <table class="t small">
+    <tr><th>Step</th><th class="num">Rows</th></tr>
+    <tr><td>Raw examples (traces, corrections, teacher)</td><td class="num">746</td></tr>
+    <tr><td>Near-duplicates removed</td><td class="num">67</td></tr>
+    <tr><td>Leaks from the test set removed</td><td class="num">18</td></tr>
+    <tr><td>Template collisions kept</td><td class="num">31</td></tr>
+    <tr class="hl"><td>Tuning set: 295 traces, 92 corrections, 274 teacher; 336 Arabic, 325 English</td><td class="num">661</td></tr>
+  </table>
+  <p class="small mt">Rule: containment of three-word runs at 0.9 or more, within the same registration number.</p>
+  <aside class="notes"><p>This table is artifacts/2.4/overlap_report.json. The supplied data/tuning/train.jsonl is exactly these 661 rows, and the lab asserts that a participant's cleaned set equals it. Tomorrow every lab trains on that file.</p></aside>
+</section>
+
+<section class="slide" id="check-overlap" data-lo="LO2">
+  <div class="kicker">Checkpoint</div>
+  <h2>Leak or not?</h2>
+  <div class="quiz" data-type="single" data-lo="LO2">
+    <p class="lead">Your overlap check flags a tuning row: "We want to renew for two years. Thank you." The same sentence is in the test set. Neither names a company or a number. What goes in the report?</p>
+    <div class="opts">
+      <div class="opt" data-why="Treats any shared text as a leak and would delete every short, common request from training">A leak: remove it, and remove every row like it</div>
+      <div class="opt" data-ok>A template collision: keep it, and report how many there are</div>
+      <div class="opt" data-why="Hides a fact that a reader of the report needs to judge the test">Nothing: generic sentences need no mention</div>
+      <div class="opt" data-why="Changes the test set after the fact, which breaks every comparison already made on it">Remove the sentence from the test set instead</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> The row carries no member's content and is how members really write. It stays, and the count goes in the report so that the reader can judge the test.</div>
+  </div>
+  <aside class="notes"><p>Answer: B. A cautious team may also report the test score with and without the collided test requests; that is a good capstone habit.</p></aside>
 </section>
 
 <section class="slide lab" id="lab-2-4" data-auto="lab" data-lab="2.4">
-  <aside class="notes">REPLACE: what to watch for while participants work, the typical problems, and the fallback for anyone who did not finish an earlier lab</aside>
+  <aside class="notes"><p>The helper functions (words, shingles, containment, bucket) are written; participants write the three loops. The lab asserts each count and finally that the cleaned set equals the supplied data/tuning/train.jsonl. Typical problem: comparing across buckets, which is slow and flags different companies' requests. Supplied state: data/reference/examples_raw.jsonl, so Labs 2.1 and 2.2 are not needed.</p></aside>
 </section>
 
-<section class="slide" id="wrap-up">
-  <div class="kicker">Day 2 · wrap-up</div>
+<!-- ======================= CLOSE ======================= -->
+<section class="slide" id="wrap-up" data-label="Day 2 in three lines">
+  <div class="kicker">Day 2</div>
   <h2>Three things to keep</h2>
   <div class="cols cols-3">
-    <div class="card c-teal"><h4>Remember</h4><p class="small mb0">REPLACE: one idea participants keep</p></div>
-    <div class="card c-coral"><h4>Remember</h4><p class="small mb0">REPLACE: one idea participants keep</p></div>
-    <div class="card c-purple"><h4>Remember</h4><p class="small mb0">REPLACE: one idea participants keep</p></div>
+    <div class="card c-teal"><h4>Every label has a source and a check</h4><p class="small mb0">Accepted, corrected, taught by a larger model. Validate each against the tool, and count what you drop.</p></div>
+    <div class="card c-coral"><h4>Train on the server's string</h4><p class="small mb0">The model's own template, an end of turn, a masked prompt. Compare characters before you compare losses.</p></div>
+    <div class="card c-purple"><h4>Clean, and say how</h4><p class="small mb0">Duplicates, leaks and personal data, each with a rule a reader can dispute, and the mix after cleaning.</p></div>
   </div>
+  <aside class="notes"><p>Data quality carries 25 of the capstone's 100 points, more than training. Ask each table which of today's four checks their current project does not have.</p></aside>
 </section>
 
 <section class="slide dark" id="next" data-label="Next">
-  <div class="kicker">Next</div>
-  <h2>Day 3: Train adapters and distil</h2>
-  <p class="lead">REPLACE: what participants prepare before then; unfinished labs can be finished at home</p>
-  <aside class="notes">REPLACE: accounts, installs or reading participants need before the next unit</aside>
+  <div class="kicker">Tomorrow</div>
+  <h1>Day 3 · Train adapters and distil</h1>
+  <p class="lead">The 661 examples meet a model: a low-rank adapter, a 4-bit base, a sweep and a distilled behaviour.</p>
+  <ul class="bullets">
+    <li>Guided self-study: open a GPU runtime in Colab once and run the setup check, or decide to train the course model on your laptop</li>
+    <li>Recall from AE-301 what a low-rank adapter adds to a layer: tomorrow starts there</li>
+  </ul>
+  <aside class="notes"><p>Tomorrow has two tiers. On a notebook GPU the labs train a small open-weight model; on a processor they train the course's own small model with the same code. Both are supported ways to take the day. Ask who will use which, so that tables can mix.</p></aside>
 </section>

@@ -289,7 +289,8 @@
                 "minutes": 4
               }
             ],
-            "stretch": "Find accepted traces whose call disagrees with the request text"
+            "stretch": "Find accepted traces whose call disagrees with the request text",
+            "href": "D2_1_traces_corrections.ipynb"
           },
           "summary": "Pilot traces and staff corrections are labels with errors: keep what can be trusted"
         },
@@ -330,7 +331,8 @@
                 "minutes": 4
               }
             ],
-            "stretch": "Add a third rule and measure whether it rejects a right answer"
+            "stretch": "Add a third rule and measure whether it rejects a right answer",
+            "href": "D2_2_teacher_filter.ipynb"
           },
           "summary": "A larger model labels what staff never saw, and a verifier decides what enters the set"
         },
@@ -371,7 +373,8 @@
                 "minutes": 3
               }
             ],
-            "stretch": "Render the same example with a second model's template and list the differences"
+            "stretch": "Render the same example with a second model's template and list the differences",
+            "href": "D2_3_chat_templates.ipynb"
           },
           "summary": "The chat template is part of the model: train on the exact text the server will send"
         },
@@ -412,7 +415,8 @@
                 "minutes": 3
               }
             ],
-            "stretch": "Count escalation examples before and after cleaning: what did cleaning change?"
+            "stretch": "Count escalation examples before and after cleaning: what did cleaning change?",
+            "href": "D2_4_dedup_pii.ipynb"
           },
           "summary": "Duplicates inflate, leaks flatter and personal data does not belong in weights"
         }

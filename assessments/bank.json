@@ -391,6 +391,366 @@
       "level": "analyse",
       "pool": "practice",
       "weight": 1
+    },
+    {
+      "id": "q-data-01",
+      "type": "single",
+      "prompt": "A tuning set is built only from traces that staff accepted without change. What is the model most likely to learn from it?",
+      "options": [
+        "To repeat what it already does",
+        "To fix the failures staff corrected most often",
+        "To handle the hardest requests, which staff reviewed with most care",
+        "Nothing, because accepted traces carry no label"
+      ],
+      "correct": [
+        0
+      ],
+      "explanation": "An accepted trace is labelled by the model's own output, so the set repeats current behaviour.",
+      "misconceptions": [
+        "",
+        "Expects corrections to be present in a set that left them out",
+        "Assumes acceptance means careful review; the hardest requests are the ones staff abandoned or corrected",
+        "Forgets that the accepted output is itself the label"
+      ],
+      "lo": [
+        "LO2"
+      ],
+      "day": "day2",
+      "session": 1,
+      "slide": "three-statuses",
+      "level": "analyse",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-data-02",
+      "type": "single",
+      "prompt": "A staff correction gives a registration number of nine digits; the tool requires ten. The intended number can be guessed from the request. What is the sound handling?",
+      "options": [
+        "Use the model's original answer as the label instead",
+        "Add the missing digit and keep the row as a staff correction",
+        "Keep the row as typed, because staff labels outrank the schema",
+        "Drop the row and report it in the counts"
+      ],
+      "correct": [
+        3
+      ],
+      "explanation": "The tool would refuse the call, so it is not a usable label; dropping it visibly keeps every label traceable to its source.",
+      "misconceptions": [
+        "Uses the answer that staff rejected as a training target",
+        "Enters the engineer's guess under the desk's name, with no record of the change",
+        "Trains the model to produce a call the tool refuses",
+        ""
+      ],
+      "lo": [
+        "LO2"
+      ],
+      "day": "day2",
+      "session": 1,
+      "slide": "corrections-have-errors",
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-data-03",
+      "type": "single",
+      "prompt": "A verifier keeps 97% of a teacher model's labels. A colleague writes \"label accuracy: 97%\" in the dataset card. What is wrong with the sentence?",
+      "options": [
+        "A card should not contain numbers that can change",
+        "Nothing: the verifier measured it",
+        "Yield counts what passed the checks, not what is right",
+        "The figure should be 3%, the share rejected"
+      ],
+      "correct": [
+        2
+      ],
+      "explanation": "Passing schema and rule checks shows a label is well-formed and consistent with its request; whether it is right needs an audit.",
+      "misconceptions": [
+        "Removes the evidence a reader needs instead of correcting it",
+        "Treats passing a check as being correct",
+        "",
+        "Reports the rejected share as if it were the error rate of what was kept"
+      ],
+      "lo": [
+        "LO2"
+      ],
+      "day": "day2",
+      "session": 2,
+      "slide": "yield-is-not-quality",
+      "level": "evaluate",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-data-04",
+      "type": "single",
+      "prompt": "A request names two registration numbers: the applicant's and a partner's. The teacher's call uses the partner's. Which check catches the error?",
+      "options": [
+        "A rule that the number in the call must appear in the request",
+        "An audit by a person who reads the request",
+        "A check that the call parses as JSON",
+        "The schema check, because the number is invalid"
+      ],
+      "correct": [
+        1
+      ],
+      "explanation": "The call is valid and its number is in the request; only someone who makes the decision again can see that it is the wrong number.",
+      "misconceptions": [
+        "Overlooks that the partner's number does appear in the request",
+        "",
+        "Checks the form of a call whose form is fine",
+        "Assumes a wrong number is a malformed one: it has ten digits and passes"
+      ],
+      "lo": [
+        "LO2"
+      ],
+      "day": "day2",
+      "session": 2,
+      "slide": "verifier-blind-spot",
+      "level": "analyse",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-data-05",
+      "type": "single",
+      "prompt": "Staff audit 30 kept teacher labels and find no error. Which statement belongs in the dataset card?",
+      "options": [
+        "No error in an audit of 30, which allows a true rate of up to about 11%",
+        "The audit was too small to report",
+        "The kept labels contain no errors",
+        "The error rate of the kept labels is below 1%"
+      ],
+      "correct": [
+        0
+      ],
+      "explanation": "Zero in 30 bounds the rate; it does not show it is zero. The 95% upper bound is about 11%.",
+      "misconceptions": [
+        "",
+        "Hides a measurement that, with its bound, is useful to the reader",
+        "Reads \"none found\" as \"none exist\"",
+        "States a precision that a sample of 30 cannot give"
+      ],
+      "lo": [
+        "LO2"
+      ],
+      "day": "day2",
+      "session": 2,
+      "slide": "yield-is-not-quality",
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-data-06",
+      "type": "single",
+      "prompt": "After tuning, a model writes the correct tool call and then continues generating until the token limit. The training loss fell normally. What is the most likely cause?",
+      "options": [
+        "The learning rate was too low",
+        "The adapter rank was too small to learn stopping",
+        "The tuning set held too few examples",
+        "The training text had no end-of-turn token after the answer"
+      ],
+      "correct": [
+        3
+      ],
+      "explanation": "A model stops because it was shown stopping; if the rendered text never closes the turn, no setting teaches it to.",
+      "misconceptions": [
+        "Looks for an optimisation fault although the loss behaved normally",
+        "Treats a missing token in the data as a capacity limit",
+        "Blames quantity for a fault every example shares",
+        ""
+      ],
+      "lo": [
+        "LO2"
+      ],
+      "day": "day2",
+      "session": 3,
+      "slide": "three-faults",
+      "level": "analyse",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-data-07",
+      "type": "single",
+      "prompt": "In a tuning example the user's request is 26 tokens and the assistant's answer 56. With a correct label mask, on how many tokens is the loss taken?",
+      "options": [
+        "30",
+        "26",
+        "56",
+        "82"
+      ],
+      "correct": [
+        2
+      ],
+      "explanation": "The prompt is masked with the ignore index; the loss is taken on the assistant's turn only.",
+      "misconceptions": [
+        "Subtracts the two counts instead of masking one of them",
+        "Supervises the request and ignores the answer: the mask reversed",
+        "",
+        "Takes the loss on the whole conversation, which trains the model to predict requests"
+      ],
+      "lo": [
+        "LO2"
+      ],
+      "day": "day2",
+      "session": 3,
+      "slide": "label-mask",
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-data-08",
+      "type": "single",
+      "prompt": "A team renders its tuning set with a hand-written format and serves the adapter behind a server that applies the base model's chat template. What should they expect?",
+      "options": [
+        "No effect, because the words are the same",
+        "Lower quality in service than in their own evaluation",
+        "Slower training only",
+        "An error when the adapter loads"
+      ],
+      "correct": [
+        1
+      ],
+      "explanation": "The adapter learnt one string format and is sent another; their own evaluation used the hand-written format and hides the gap.",
+      "misconceptions": [
+        "Ignores that role markers and special tokens are part of what the model reads",
+        "",
+        "Expects a cost in speed where the cost is in what was learnt",
+        "Expects a loud failure: a format mismatch raises no error"
+      ],
+      "lo": [
+        "LO2"
+      ],
+      "day": "day2",
+      "session": 3,
+      "slide": "template-is-part-of-model",
+      "level": "evaluate",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-data-09",
+      "type": "single",
+      "prompt": "A tuning row nearly copies a test request and names the same company registration number. How is it handled?",
+      "options": [
+        "Removed from the tuning set and counted as a leak",
+        "Kept, and the test request is deleted instead",
+        "Kept, because the label may differ",
+        "Kept, because near-copies are not exact copies"
+      ],
+      "correct": [
+        0
+      ],
+      "explanation": "It is a test case inside the training data: every later score would be too high by an unknown amount.",
+      "misconceptions": [
+        "",
+        "Changes the test set after results exist, which breaks earlier comparisons",
+        "Looks at the label although the leak is in the request the model is examined on",
+        "Applies an exact-match standard that a greeting defeats"
+      ],
+      "lo": [
+        "LO2"
+      ],
+      "day": "day2",
+      "session": 4,
+      "slide": "leak-or-collision",
+      "level": "analyse",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-data-10",
+      "type": "single",
+      "prompt": "A near-duplicate rule at a lower threshold removes 82 rows; at a higher one, 67. What should decide between them?",
+      "options": [
+        "The threshold used in a published paper",
+        "The lower threshold, because a smaller set trains faster",
+        "The higher threshold, because more data is always better",
+        "Reading a sample of the pairs each one removes"
+      ],
+      "correct": [
+        3
+      ],
+      "explanation": "A threshold is right when what it removes are duplicates; only reading the removed pairs shows whether different requests were merged.",
+      "misconceptions": [
+        "Borrows a number tuned on other data, with other text lengths",
+        "Chooses by training time, not by whether the removed rows were duplicates",
+        "Keeps rows without asking whether they are repeats",
+        ""
+      ],
+      "lo": [
+        "LO2"
+      ],
+      "day": "day2",
+      "session": 4,
+      "slide": "threshold-tradeoff",
+      "level": "evaluate",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-data-11",
+      "type": "single",
+      "prompt": "After masking, a scan for phone numbers, identity numbers, e-mail addresses and names from the member registry finds nothing. Which claim can the dataset card make?",
+      "options": [
+        "The set may be published",
+        "The set contains no personal data",
+        "The scan found none of four kinds, with names taken from one list",
+        "Personal data was removed in line with the law, so no further review is needed"
+      ],
+      "correct": [
+        2
+      ],
+      "explanation": "A scan reports on what it looks for: a name outside the list, or a kind it does not know, passes.",
+      "misconceptions": [
+        "Draws a release decision from a scan that covers four kinds",
+        "Turns \"none found by this scan\" into \"none exists\"",
+        "",
+        "Turns one technical step into a legal conclusion"
+      ],
+      "lo": [
+        "LO2"
+      ],
+      "day": "day2",
+      "session": 4,
+      "slide": "personal-data-scan",
+      "level": "evaluate",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-data-12",
+      "type": "single",
+      "prompt": "Personal data is masked in the tuning set with placeholders such as [PHONE]. In service, requests reach the model unmasked. What is the main consequence?",
+      "options": [
+        "None: the model ignores digits",
+        "The model meets inputs unlike its training data, and its logs hold personal data",
+        "Training must be repeated with a larger rank",
+        "The adapter no longer loads on the base model"
+      ],
+      "correct": [
+        1
+      ],
+      "explanation": "The same masking function must run in front of the model in service, so that training and service inputs match.",
+      "misconceptions": [
+        "Assumes a tuned model is indifferent to tokens it never saw in that position",
+        "",
+        "Answers a data mismatch with a capacity setting",
+        "Expects a loading error from a difference in input text"
+      ],
+      "lo": [
+        "LO2"
+      ],
+      "day": "day2",
+      "session": 4,
+      "slide": "mask-both-sides",
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
     }
   ]
 }
