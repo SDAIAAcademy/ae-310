@@ -76,7 +76,7 @@ def corpus(rng: random.Random) -> list[tuple[str, str | dict]]:
 
 
 def build_tokenizer(texts: list[str]):
-    from tokenizers import Tokenizer, decoders, models, pre_tokenizers, trainers
+    from tokenizers import AddedToken, Tokenizer, decoders, models, pre_tokenizers, trainers
     from transformers import PreTrainedTokenizerFast
 
     specials = ["<|pad|>", "<|im_start|>", "<|im_end|>", "<tool_call>", "</tool_call>", "<|unk|>"]
@@ -86,6 +86,7 @@ def build_tokenizer(texts: list[str]):
     tk.decoder = decoders.Metaspace(prepend_scheme="never")
     trainer = trainers.BpeTrainer(vocab_size=2400, special_tokens=specials, min_frequency=2)
     tk.train_from_iterator(texts, trainer)
+    tk.add_tokens([AddedToken("user", single_word=True), AddedToken("assistant", single_word=True)])
     tok = PreTrainedTokenizerFast(tokenizer_object=tk, pad_token="<|pad|>", eos_token="<|im_end|>", unk_token="<|unk|>")
     tok.chat_template = CHAT_TEMPLATE
     return tok
@@ -118,7 +119,7 @@ def main() -> None:
     rng = random.Random(SEED)
     torch.manual_seed(SEED)
     pairs = corpus(rng)
-    plain = [U.SYSTEM_TINY, "system\nuser\nassistant\n"]
+    plain = []
     for text, answer in pairs:
         plain.append(U.masked(text) + "\n" + (answer if isinstance(answer, str) else C.render_call(answer)))
     # every word the labs will show the model must be in the vocabulary: add the real data's texts
@@ -141,7 +142,7 @@ def main() -> None:
     model = LlamaForCausalLM(config)
     print("vocabulary:", len(tok), " parameters:", sum(p.numel() for p in model.parameters()))
 
-    steps, batch, lr = (int(sys.argv[1]) if len(sys.argv) > 1 else 4000), 32, 2e-3
+    steps, batch, lr = (int(sys.argv[1]) if len(sys.argv) > 1 else 3500), 24, 2e-3
     opt = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=0.01)
     started = time.perf_counter()
     model.train()

@@ -1,158 +1,505 @@
 <section class="slide title" id="title" data-auto="title">
-  <aside class="notes">REPLACE: welcome; introduce yourself; one question to the room that calibrates the pace; the rhythm of the day</aside>
+  <aside class="notes"><p>Welcome. Ask the room one calibrating question: who has fine-tuned a language model, and who can say what it was compared with? Most hands drop at the second half. That gap is this course. Rhythm: four sessions a day, each about 25 minutes of concepts and a 25-minute lab. The entry check (supervised, no AI assistance, on adaptation choices, data faults and memory arithmetic) is taken before session 1.</p></aside>
 </section>
 
 <section class="slide" id="agenda" data-auto="agenda"></section>
 
-<!-- Session 1 -->
-
-<section class="slide section" id="s1" data-auto="section" data-session="1"></section>
-
-<section class="slide" id="s1-idea" data-lo="LO1">
-  <div class="kicker">REPLACE: the question this slide answers</div>
-  <h2>REPLACE: one idea, stated as a sentence</h2>
-  <div class="cols cols-2">
-    <ul class="bullets">
-      <li>REPLACE: at most six bullets, each a complete thought</li>
-      <li>REPLACE: bold the key phrase; numbers come from the lab run, not from memory</li>
-    </ul>
-    <div class="card c-teal"><h4>In the case study</h4><p class="small mb0">REPLACE: tie the idea to the case study and its data</p></div>
+<section class="slide" id="five-days" data-label="The course" data-lo="LO1 LO2 LO3 LO4 LO5 LO6">
+  <div class="kicker">The course in one line per day</div>
+  <h2>Decide, build the data, train, prove it, then defend the decision</h2>
+  <div class="ladder" style="--n:5">
+    <div class="rung c-teal on"><b>Day 1</b>Decide whether to adapt<small>failures, baseline, licence, cost</small></div>
+    <div class="rung c-cyan off"><b>Day 2</b>Data for tuning<small>traces, teacher, templates, cleaning</small></div>
+    <div class="rung c-coral off"><b>Day 3</b>Train adapters and distil<small>16-bit, 4-bit, settings, a behaviour</small></div>
+    <div class="rung c-purple off"><b>Day 4</b>Evaluate and serve<small>paired tests, regressions, load</small></div>
+    <div class="rung c-amber off"><b>Day 5</b>Capstone<small>your own adapted model, defended</small></div>
   </div>
-  <div class="callout warn mt"><b>What goes wrong.</b> REPLACE: the failure participants will hit, and how to recognise it</div>
-  <aside class="notes">REPLACE: what to say, the demo to run, the question to ask the room, the common failure and its fix</aside>
+  <aside class="notes"><p>Point out the order: a full day passes before any weight changes, and a full day follows training. Most failed fine-tuning projects skipped Day 1 or Day 4. The capstone repeats the whole path on a task each participant chooses in Lab 4.4.</p></aside>
 </section>
 
-<section class="slide" id="s1-steps" data-lo="LO1">
-  <div class="kicker">Step by step</div>
-  <h2>REPLACE: a process, shown one step per key press</h2>
-  <div class="flow">
-    <div class="step c-teal"><b>1 · REPLACE: name</b>REPLACE: what happens first</div>
-    <div class="arrow frag" data-frag="b">→</div><div class="step c-cyan frag" data-frag="b"><b>2 · REPLACE: name</b>REPLACE: the next piece</div>
-    <div class="arrow frag" data-frag="c">→</div><div class="step c-coral frag" data-frag="c"><b>3 · REPLACE: name</b>REPLACE: the result</div>
+<section class="slide" id="case-al-bayraq" data-label="The case" data-lo="LO1">
+  <div class="kicker">The case study · fictional, synthetic data</div>
+  <h2>Al-Bayraq Chamber of Commerce and its assistant, Qayd</h2>
+  <div class="cols cols-2">
+    <ul class="bullets">
+      <li>Members write in <b>Arabic and English</b>: new memberships, renewals, record changes, certificates</li>
+      <li><b>Qayd</b> turns each request into one call to the registry</li>
+      <li>Requests carry personal data and are classified <b>Restricted</b>: they stay on the chamber's own servers</li>
+      <li>So Qayd runs on a <b>small open-weight model</b>, and prompted alone it fails too often</li>
+    </ul>
+    <div class="card c-teal"><h4>The people you work for</h4><p class="small mb0"><b>Maysoon Al-Dabbagh</b> signs the decision. <b>Khuzama Al-Rumaizan</b>'s registry desk corrects Qayd. <b>Jarrah Al-Suhaim</b> owns the one accelerator. <b>Anoud Al-Fuhaid</b> protects the data, <b>Zakariya Al-Mousa</b> reads the licences. You are <b>Dhay Al-Shuwaier</b>, the engineer.</p></div>
   </div>
-  <div class="callout tip mt frag"><b>Takeaway.</b> REPLACE: the one sentence to remember</div>
-  <aside class="notes">Press once per step and say what each step adds before the next one appears. REPLACE: the example to walk through</aside>
+  <aside class="notes"><p>Everything is synthetic: 520 invented companies, invented owners, phone numbers and identity numbers generated with a fixed seed. Say it once and plainly. The placement requirement comes from the chamber's own classification: the national Data Classification Policy defines the levels, and SDAIA's Generative AI Guideline for Government tells entities to keep information classified Restricted or higher out of prompts sent to public tools.</p><p>Sources: Data Classification Policy; Generative AI Guideline for Government (both SDAIA).</p></aside>
+</section>
+
+<section class="slide" id="setup-check" data-label="Setup">
+  <div class="kicker">Before session 1</div>
+  <h2>Setup check: one notebook proves your environment</h2>
+  <div class="cols cols-2">
+    <ul class="bullets">
+      <li>Open <code>labs/00_setup_check.ipynb</code>, in Colab or locally with <code>uv</code></li>
+      <li>It imports every library, reads one data file and loads the course model</li>
+      <li>With a key, it asks each hosted model one question</li>
+      <li>Without a key, a <b>scripted stand-in</b> answers, and every lab says so on its first line</li>
+    </ul>
+    <div class="card c-coral flat"><h4>Two kinds of model in this course</h4><p class="small mb0">Days 1 and 2 <b>call</b> free hosted models. Days 3 and 4 <b>train</b>: the course's own small model on any processor, or an open-weight model on a notebook GPU.</p></div>
+  </div>
+  <aside class="notes"><p>Run it on the projector. Typical problems: no key in the Colab Secrets panel (the stand-in takes over, which is fine for today); a long folder path on Windows (set UV_PROJECT_ENVIRONMENT to a short folder, as the labs README says). The stand-in is a script, not a model: its numbers let every cell run and say nothing about a real model. The numbers on today's slides come from it, because the course was built without a working key; replace them with your room's.</p></aside>
+</section>
+
+<!-- ======================= SESSION 1 ======================= -->
+<section class="slide section" id="s1" data-auto="section" data-session="1"></section>
+
+<section class="slide" id="four-levers" data-label="Four levers" data-lo="LO1">
+  <div class="kicker">Four ways to change what a model does</div>
+  <h2>Each lever changes a different part of the system</h2>
+  <div class="cols cols-4 gap-s">
+    <div class="card c-teal"><h4>Prompt</h4><p class="small mb0">Changes the <b>instructions</b>. Minutes to try, read again on every request.</p></div>
+    <div class="card c-cyan"><h4>Retrieve</h4><p class="small mb0">Changes what the model <b>is shown</b>: a table, a document, a record.</p></div>
+    <div class="card c-coral"><h4>Tune</h4><p class="small mb0">Changes the <b>weights</b>, from your examples. Days of work, then no extra tokens.</p></div>
+    <div class="card c-purple"><h4>Distil</h4><p class="small mb0">Tuning whose examples come from a <b>larger model</b>.</p></div>
+  </div>
+  <div class="callout tip mt"><b>Order of cost.</b> Try them left to right. Each one you skip is a cheaper fix you never tested.</div>
+  <aside class="notes"><p>The durable idea of the day: adapt only after a stronger prompt fails. Ask who has seen a team fine-tune a model to fix something a schema hint would have fixed. Distillation is a kind of tuning; it gets its own card because where the examples come from changes the licence question (session 3) and the errors you inherit (Day 3).</p></aside>
+</section>
+
+<section class="slide" id="behaviour-not-knowledge" data-label="Behaviour" data-lo="LO1">
+  <div class="kicker">What tuning is good at</div>
+  <h2>Tuning changes behaviour more than knowledge</h2>
+  <div class="cols cols-2">
+    <div class="card c-teal"><h4>Tuning teaches well</h4><ul class="bullets small tight"><li>a format, exactly and every time</li><li>which tool to choose</li><li>when to stop and hand over to a person</li><li>a register, a language, a house style</li></ul></div>
+    <div class="card c-coral"><h4>Tuning teaches badly</h4><ul class="bullets small tight"><li>facts that change: a code table, a fee, a deadline</li><li>facts seen once in the training set</li><li>anything you must be able to correct tomorrow</li></ul></div>
+  </div>
+  <p class="small mt">A fact in the weights cannot be edited, cited or dated. A fact in the context can.</p>
+  <aside class="notes"><p>Use the chamber's activity codes: twelve codes, revised every year. A tuned model can memorise twelve rows, and in January it will still answer with last year's. The course's own small model does memorise them, and Day 4 names that as a limit. Rule of thumb for the room: if the fix is "the model should know X", think retrieval; if it is "the model should do Y", think tuning.</p></aside>
+</section>
+
+<section class="slide" id="narrow-tasks" data-label="Narrow tasks" data-lo="LO1">
+  <div class="kicker">Where a small model belongs</div>
+  <h2>Small models suit narrow tasks, not multi-step work</h2>
+  <table class="t small">
+    <tr><th>A small tuned model fits</th><th>It does not fit</th></tr>
+    <tr><td>One request in, one structured answer out</td><td>A plan of several steps that depend on each other</td></tr>
+    <tr><td>A fixed set of tools and fields</td><td>Tools it has never seen</td></tr>
+    <tr><td>Thousands of similar requests</td><td>Rare requests that each need judgement</td></tr>
+    <tr><td>An answer a program can check</td><td>An answer only an expert can check</td></tr>
+  </table>
+  <div class="callout note mt small"><b>Qayd is on the left.</b> One request, one of five tools, fields a schema can verify. The rare and the odd go to the registry desk through <code>escalate_to_staff</code>.</div>
+  <aside class="notes"><p>The LFM3-1.7B model card says the same of its own model in its own words: designed for tool calling and fine-tuning, not recommended for complex multi-step reasoning. A small model that escalates well is worth more than one that tries everything.</p><p>Sources: LFM3-1.7B model card.</p></aside>
+</section>
+
+<section class="slide" id="request-to-call" data-label="The task" data-lo="LO1">
+  <div class="kicker">The task, once</div>
+  <h2>One request in, exactly one tool call out</h2>
+  <div class="trace s">
+    <div class="ev user"><b>member</b>We moved our head office to Abha. Please update the record of CR 4064749760. Our partner company holds CR 4071506418; do not change their record.</div>
+    <div class="ev call"><b>tool call</b><code>{"name": "update_record", "arguments": {"cr_number": "4064749760", "field": "city", "value": "Abha"}}</code></div>
+    <div class="ev guard"><b>graded by code</b>the same tool and the same arguments as the correct call, or it is wrong</div>
+  </div>
+  <p class="small mt">Five tools: <code>create_membership</code>, <code>renew_membership</code>, <code>update_record</code>, <code>issue_certificate</code>, <code>escalate_to_staff</code>.</p>
+  <aside class="notes"><p>Read the request aloud and ask what could go wrong. Collect answers: the partner's number, Arabic-Indic digits, a code fence around the JSON, renewing instead of updating, no number at all. Every one of those is planted in the data. Exact match is strict on purpose: the registry service will not accept a nearly right call.</p></aside>
+</section>
+
+<section class="slide" id="three-failure-classes" data-label="Three classes" data-lo="LO1">
+  <div class="kicker">Sorting failures</div>
+  <h2>Three classes, because three different levers fix them</h2>
+  <table class="t small">
+    <tr><th>Class</th><th>What you see</th><th>Example in Qayd's answers</th></tr>
+    <tr><td><b>Knowledge</b></td><td>Right call, wrong fact the model was never given</td><td><code>"activity_code": "4711"</code> for information technology</td></tr>
+    <tr><td><b>Format</b></td><td>No call that parses, or one the interface rejects</td><td>a sentence, a code fence, a Python dictionary, digits left as ٤٠…</td></tr>
+    <tr><td><b>Behaviour</b></td><td>A valid call that is the wrong decision</td><td>renews with an invented number where it should escalate</td></tr>
+  </table>
+  <aside class="notes"><p>AE-303 teaches how to discover a failure taxonomy from traces by open coding. Here the three classes are given, because the question is narrower: which lever does each failure need? If participants have their own finer taxonomy from AE-303, each of its codes still lands in one of these three.</p></aside>
+</section>
+
+<section class="slide" id="larger-model-instrument" data-label="The instrument" data-lo="LO1">
+  <div class="kicker">Why run a larger model you will not deploy</div>
+  <h2>The larger model is an instrument: it shows what capability can fix</h2>
+  <div class="cols cols-2">
+    <div>
+      <div class="bars">
+        <div class="row"><span>Small model, right</span><div class="bar c-coral" style="--w:27%"></div><span class="val">27</span></div>
+        <div class="row"><span>Larger model, right</span><div class="bar c-teal" style="--w:63%"></div><span class="val">63</span></div>
+        <div class="row"><span>Larger model, knowledge failures</span><div class="bar c-purple" style="--w:23%"></div><span class="val">23</span></div>
+      </div>
+      <p class="caption">Lab 1.1, 100 requests, instructions version 0. Stand-in run.</p>
+    </div>
+    <ul class="bullets small">
+      <li>Where the larger model <b>also fails</b>, capability is not the problem: give the model the fact</li>
+      <li>Where it <b>succeeds</b>, the behaviour exists and can be taught to the small model</li>
+      <li>Where both fail on behaviour, look at the task before the model</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>The larger model cannot be deployed for the chamber: it runs on someone else's servers. It is used on synthetic requests only, as a measuring instrument and later as a teacher. The 23 knowledge failures of the larger model are the proof that no amount of tuning the small one will produce the code table.</p></aside>
+</section>
+
+<section class="slide" id="class-to-lever" data-label="Decision table" data-lo="LO1">
+  <div class="kicker">The evidence for outcome 1</div>
+  <h2>The decision table assigns each class to a lever, with counts</h2>
+  <table class="t">
+    <tr><th>Class</th><th class="num">Small</th><th class="num">Larger</th><th>Approach</th></tr>
+    <tr><td>Knowledge</td><td class="num">10</td><td class="num">23</td><td>Retrieval: put the code table in the context</td></tr>
+    <tr><td>Format</td><td class="num">37</td><td class="num">9</td><td>Prompting first; tuning for what remains</td></tr>
+    <tr><td>Behaviour</td><td class="num">26</td><td class="num">5</td><td>Tuning, or distillation from the larger model</td></tr>
+  </table>
+  <div class="callout warn mt small"><b>Read the knowledge row twice.</b> The rule sorts format first, so the small model's knowledge failures hide behind its format failures. Fix the format and they appear.</div>
+  <aside class="notes"><p>Numbers are from the stand-in run of Lab 1.1. A table like this, with the room's own counts, is what the capstone rubric's first criterion (adaptation decision, 15 points) asks for. A decision table without counts is an opinion.</p></aside>
+</section>
+
+<section class="slide" id="check-failure-class" data-lo="LO1">
+  <div class="kicker">Checkpoint</div>
+  <h2>Which lever?</h2>
+  <div class="quiz" data-type="single" data-lo="LO1">
+    <p class="lead">Qayd writes valid calls, but for "building materials" it answers with activity code <code>G-46</code>. The larger model, with the same instructions, makes the same mistake. What do you try first?</p>
+    <div class="opts">
+      <div class="opt" data-why="Treats a missing fact as a missing skill: no example set makes the model know a table that changes every year">Tune the small model on examples that contain the codes</div>
+      <div class="opt" data-why="Assumes capability is the problem, although the larger model fails in the same way">Replace the small model with a larger one</div>
+      <div class="opt" data-ok>Put the chamber's code table in the context</div>
+      <div class="opt" data-why="Fixes the form of an answer whose form is already valid: the schema cannot supply the right code">Add a stricter output schema</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> Both models fail, so capability is not the cause. The table is a fact the models were never given, and it changes: it belongs in the context.</div>
+  </div>
+  <aside class="notes"><p>Answer: C. If the room chooses A, ask what happens when the table is revised next year. If it chooses D, show that the schema's list of allowed codes rejects G-46 but cannot tell the model which code is right.</p></aside>
 </section>
 
 <section class="slide lab" id="lab-1-1" data-auto="lab" data-lab="1.1">
-  <aside class="notes">REPLACE: what to watch for while participants work, the typical problems, and the fallback for anyone who did not finish an earlier lab</aside>
+  <aside class="notes"><p>Assistants are off for this lab: the entry's policy keeps the first failure analysis unaided. Walk the room during task 2 and make people say a word for each failure before they write the rule. Typical problem in task 3: testing the interface before the knowledge patch, which sends every invented code to format. The sorting order is in the task text. Nobody needs an earlier lab: this is the first.</p></aside>
 </section>
 
-<!-- Session 2 -->
-
+<!-- ======================= SESSION 2 ======================= -->
 <section class="slide section" id="s2" data-auto="section" data-session="2"></section>
 
-<section class="slide" id="s2-idea" data-lo="LO1">
-  <div class="kicker">REPLACE: the question this slide answers</div>
-  <h2>REPLACE: one idea, stated as a sentence</h2>
+<section class="slide" id="weak-baseline-flatters" data-label="Baseline" data-lo="LO1">
+  <div class="kicker">The most common false result in fine-tuning</div>
+  <h2>A weak prompt flatters tuning</h2>
   <div class="cols cols-2">
     <ul class="bullets">
-      <li>REPLACE: at most six bullets, each a complete thought</li>
-      <li>REPLACE: bold the key phrase; numbers come from the lab run, not from memory</li>
+      <li>"Our tuned model went from 27 to 85" compares a week of work with <b>one careless sentence</b></li>
+      <li>Half of that gain may be available in an afternoon, with no training at all</li>
+      <li>The honest comparison is against the <b>best prompt you could write</b></li>
     </ul>
-    <div class="card c-teal"><h4>In the case study</h4><p class="small mb0">REPLACE: tie the idea to the case study and its data</p></div>
+    <div class="card c-coral"><h4>What the baseline is for</h4><p class="small mb0">It is the number the adapter must beat on Day 4. If the adapter cannot beat a good prompt on the same model, the project ends here, cheaply.</p></div>
   </div>
-  <div class="callout warn mt"><b>What goes wrong.</b> REPLACE: the failure participants will hit, and how to recognise it</div>
-  <aside class="notes">REPLACE: what to say, the demo to run, the question to ask the room, the common failure and its fix</aside>
+  <aside class="notes"><p>This is the first durable idea in the entry: adapt only after a stronger prompt fails. Ask: who decides that the prompt is "the best you could write"? Nobody can prove it. What you can do is show the steps you took, one change at a time, with scores. That record is what a reviewer accepts.</p></aside>
 </section>
 
-<section class="slide" id="s2-steps" data-lo="LO1">
-  <div class="kicker">Step by step</div>
-  <h2>REPLACE: a process, shown one step per key press</h2>
+<section class="slide" id="one-change-at-a-time" data-label="One change" data-lo="LO1">
+  <div class="kicker">Method</div>
+  <h2>One change at a time, each scored on the same 100 requests</h2>
   <div class="flow">
-    <div class="step c-teal"><b>1 · REPLACE: name</b>REPLACE: what happens first</div>
-    <div class="arrow frag" data-frag="b">→</div><div class="step c-cyan frag" data-frag="b"><b>2 · REPLACE: name</b>REPLACE: the next piece</div>
-    <div class="arrow frag" data-frag="c">→</div><div class="step c-coral frag" data-frag="c"><b>3 · REPLACE: name</b>REPLACE: the result</div>
+    <div class="step c-navy"><b>v0</b>one sentence</div>
+    <div class="arrow">→</div>
+    <div class="step c-teal"><b>v1</b>schema hints</div>
+    <div class="arrow">→</div>
+    <div class="step c-cyan"><b>v2</b>the code table</div>
+    <div class="arrow">→</div>
+    <div class="step c-coral"><b>v3</b>the rules</div>
+    <div class="arrow">→</div>
+    <div class="step c-purple"><b>v4</b>four examples</div>
   </div>
-  <div class="callout tip mt frag"><b>Takeaway.</b> REPLACE: the one sentence to remember</div>
-  <aside class="notes">Press once per step and say what each step adds before the next one appears. REPLACE: the example to walk through</aside>
+  <div class="callout tip mt"><b>Each change targets a class.</b> Schema hints: format. The table: knowledge. Rules and examples: behaviour, as far as words can reach it.</div>
+  <aside class="notes"><p>Prompts as versioned code is AE-203, day 1; nothing new there. What is new is the purpose: the versions are an argument. Each step shows which class of failure words alone can remove.</p></aside>
+</section>
+
+<section class="slide" id="schema-hint" data-label="Schema hints" data-lo="LO1">
+  <div class="kicker">Version 1</div>
+  <h2>A schema hint tells the model what a call looks like</h2>
+  <div class="prompt" data-tool="prompts.SCHEMA_HINT">
+    <span class="seg c-teal">Answer with exactly one tool call and nothing else, in this form: &lt;tool_call&gt; {"name": "&lt;tool&gt;", "arguments": {...}} &lt;/tool_call&gt;</span>
+    <span class="seg c-cyan">Tools: create_membership(company_name, cr_number, city, activity_code) … escalate_to_staff(reason)</span>
+    <span class="seg c-coral">cr_number is 10 Western digits (convert Arabic-Indic digits). company_name is copied as written. city is the English name.</span>
+  </div>
+  <div class="legend"><span class="c-teal">The wrapper</span><span class="c-cyan">The interface</span><span class="c-coral">How to write each field</span></div>
+  <aside class="notes"><p>Each sentence answers a failure seen in Lab 1.1: prose and code fences (the wrapper), wrong key names (the interface), digits and translated names (the field rules). A server can also force the form with constrained decoding; that removes parse errors, not wrong decisions, and it must then be used in training and serving alike.</p></aside>
+</section>
+
+<section class="slide" id="examples-from-validation" data-label="Examples" data-lo="LO1">
+  <div class="kicker">Version 4</div>
+  <h2>Examples come from validation requests, never from the test set</h2>
+  <div class="cols cols-3 gap-s">
+    <div class="card c-teal"><h4>Validation set</h4><p class="small mb0">120 requests. The source of the four examples, and of every choice on Day 3.</p></div>
+    <div class="card c-cyan"><h4>The 100 requests</h4><p class="small mb0">Analysis and the baseline score. An example taken from here is an answer shown in advance.</p></div>
+    <div class="card c-coral"><h4>Test set</h4><p class="small mb0">400 requests from companies no other set contains. Opened on Day 4, once.</p></div>
+  </div>
+  <div class="callout warn mt"><b>No personal data in an example.</b> An example is sent with every request, for as long as the prompt lives.</div>
+  <aside class="notes"><p>The split is by company: no company of the test set appears in the traces, the pool or the validation set. Day 2 shows what happens when that is violated (23 planted leaks). The four examples were chosen to cover a new membership, an Arabic certificate request, a missing number and an out-of-scope question, and none carries a contact line.</p></aside>
+</section>
+
+<section class="slide" id="prompt-scores" data-label="Scores" data-lo="LO1">
+  <div class="kicker">Lab 1.2 · stand-in run</div>
+  <h2>Words alone took the small model from 27 to 67 in 100</h2>
+  <div class="bars">
+    <div class="row"><span>v0 · one sentence</span><div class="bar c-navy" style="--w:27%"></div><span class="val">27</span></div>
+    <div class="row"><span>v1 · schema hints</span><div class="bar c-teal" style="--w:35%"></div><span class="val">35</span></div>
+    <div class="row"><span>v2 · code table</span><div class="bar c-cyan" style="--w:50%"></div><span class="val">50</span></div>
+    <div class="row"><span>v3 · rules</span><div class="bar c-coral" style="--w:52%"></div><span class="val">52</span></div>
+    <div class="row"><span>v4 · four examples</span><div class="bar c-purple" style="--w:67%"></div><span class="val">67</span></div>
+    <div class="row"><span>Larger model, v4</span><div class="bar c-amber" style="--w:94%"></div><span class="val">94</span></div>
+  </div>
+  <aside class="notes"><p>These six numbers are from the scripted stand-in, whose behaviour was written to react to what a prompt contains. Treat them as a worked example of the method, and write your room's numbers beside them. The shape to expect from real models: large early gains from the schema and the table, small gains from rules, and a gap to the larger model that words do not close.</p></aside>
+</section>
+
+<section class="slide" id="interval-on-100" data-label="Interval" data-lo="LO1">
+  <div class="kicker">How sure is 67 out of 100</div>
+  <h2>A score on 100 requests carries an interval of about ±10 points</h2>
+  <div class="cols cols-2 mid">
+    <div class="stat center"><div class="big">57 to 75</div><div class="lbl">95% Wilson interval for 67 right out of 100</div></div>
+    <ul class="bullets small">
+      <li>v2 scored 50 and v3 scored 52: two requests apart, well inside the noise</li>
+      <li>The interval answers "what would another hundred requests give?"</li>
+      <li>It does not compare two versions: the versions ran on the <b>same</b> requests, and Day 4 uses that pairing</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>Participants know a paired test from the prerequisites. Here the point is smaller: never write a score without its n and its interval. In the lab they write the Wilson formula themselves; the check value is 50 of 100 giving 0.404 to 0.596.</p></aside>
+</section>
+
+<section class="slide" id="frozen-baseline" data-label="Frozen" data-lo="LO1">
+  <div class="kicker">What "frozen" means</div>
+  <h2>A baseline is three things that never change again</h2>
+  <div class="cols cols-3 gap-s">
+    <div class="card c-teal"><h4>The instructions</h4><p class="small mb0">Identified by a hash of their text and examples. One edited sentence is a new baseline.</p></div>
+    <div class="card c-cyan"><h4>The set</h4><p class="small mb0">The same file of requests, by name and by content.</p></div>
+    <div class="card c-coral"><h4>The score</h4><p class="small mb0">Right answers, n, and the interval. Recorded with the model's name and the day.</p></div>
+  </div>
+  <pre class="code s mt" data-file="artifacts/1.2/baseline.json"><code class="language-json">{"prompt_sha256": "bdf86a63…", "n": 100, "correct": 67,
+ "accuracy": 0.67, "interval": [0.573, 0.754],
+ "set": "data/requests_100.jsonl"}</code></pre>
+  <aside class="notes"><p>The file is small and it ends arguments. On Day 4, when someone asks "better than what?", this is the answer. In the capstone the baseline file is committed before any training log, and the timestamps show it.</p></aside>
+</section>
+
+<section class="slide" id="what-remains" data-label="What remains" data-lo="LO1">
+  <div class="kicker">The case for tuning, stated honestly</div>
+  <h2>What the best prompt leaves behind is behaviour</h2>
+  <div class="cols cols-2">
+    <ul class="bullets">
+      <li>The schema is there, the table is there, the rules are written</li>
+      <li>The model still takes the partner's number, still renews where it should escalate</li>
+      <li>The larger model, same words: <b>94</b>. Room above the baseline: <b>27 requests in 100</b></li>
+    </ul>
+    <div class="callout tip"><b>Now tuning has a target.</b> Not "make it better": remove the behaviour failures that 33 requests in 100 still show, and reach towards 94.</div>
+  </div>
+  <aside class="notes"><p>If the residue had been small, the right decision would be to stop: ship the prompt. Say this explicitly. A course on adaptation must be willing to conclude "do not adapt". The capstone rubric gives full marks for a well-argued decision not to tune, if the baseline evidence supports it.</p></aside>
+</section>
+
+<section class="slide" id="check-baseline" data-lo="LO1">
+  <div class="kicker">Checkpoint</div>
+  <h2>Better than what?</h2>
+  <div class="quiz" data-type="single" data-lo="LO1">
+    <p class="lead">A colleague reports: "Our adapter scores 84 on the 100 requests; the prompted model scored 27." The 27 is version 0. What does the report show?</p>
+    <div class="opts">
+      <div class="opt" data-ok>Less than it claims: the adapter must be compared with the frozen baseline, 67</div>
+      <div class="opt" data-why="Takes the largest available difference as the effect of tuning, although 40 of those points came from words">That tuning gained 57 points</div>
+      <div class="opt" data-why="Rejects a valid measurement for the wrong reason: 100 requests give a wide interval, but the comparison is what is wrong">Nothing, because 100 requests are too few to measure anything</div>
+      <div class="opt" data-why="Confuses the instrument with the product: the larger model is not a deployable option for the chamber">That the adapter should be compared with the larger model only</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> The baseline is the best prompt on the same model. Against 67 the gain is 17 points, still to be tested as a paired difference on the test set.</div>
+  </div>
+  <aside class="notes"><p>Answer: A. Note that even 84 against 67 on the 100 requests is not the final word: those requests were used to write the prompt. The test set of 400 is opened on Day 4.</p></aside>
 </section>
 
 <section class="slide lab" id="lab-1-2" data-auto="lab" data-lab="1.2">
-  <aside class="notes">REPLACE: what to watch for while participants work, the typical problems, and the fallback for anyone who did not finish an earlier lab</aside>
+  <aside class="notes"><p>AI assistants may explain a library call or an error from here on; they do not write the pipeline. Watch for people who change two things at once in task 3: the function must return version 2 without the rules. With a real key, 100 requests times five versions is 500 calls on the small model: more than a fresh free key allows in a day. Share a cache per table, or run in quick order and let the cache fill. The lab starts from the supplied requests and prompt parts, not from Lab 1.1.</p></aside>
 </section>
 
-<!-- Session 3 -->
-
+<!-- ======================= SESSION 3 ======================= -->
 <section class="slide section" id="s3" data-auto="section" data-session="3"></section>
 
-<section class="slide" id="s3-idea" data-lo="LO6">
-  <div class="kicker">REPLACE: the question this slide answers</div>
-  <h2>REPLACE: one idea, stated as a sentence</h2>
+<section class="slide" id="open-weights-not-one-licence" data-label="Licences" data-lo="LO6">
+  <div class="kicker">Before any training</div>
+  <h2>"Open weights" means you can download it, not what you may do with it</h2>
   <div class="cols cols-2">
     <ul class="bullets">
-      <li>REPLACE: at most six bullets, each a complete thought</li>
-      <li>REPLACE: bold the key phrase; numbers come from the lab run, not from memory</li>
+      <li>Every model on the Hub has a licence file. The <b>tag</b> on the card is a label someone typed</li>
+      <li>Licences differ on purpose, on revenue, on field of use and on what you pass on</li>
+      <li>The check costs an hour <b>before</b> training and a project <b>after</b> deployment</li>
     </ul>
-    <div class="card c-teal"><h4>In the case study</h4><p class="small mb0">REPLACE: tie the idea to the case study and its data</p></div>
+    <div class="card c-purple"><h4>Who decides</h4><p class="small mb0">You find the clause and the fact it depends on. <b>Zakariya Al-Mousa</b>, the chamber's counsel, decides. "Ask counsel" is a valid entry in your table.</p></div>
   </div>
-  <div class="callout warn mt"><b>What goes wrong.</b> REPLACE: the failure participants will hit, and how to recognise it</div>
-  <aside class="notes">REPLACE: what to say, the demo to run, the question to ask the room, the common failure and its fix</aside>
+  <aside class="notes"><p>The entry lists "licences before training" among the durable ideas, and model families and their licences among the things to refresh every run. The three sheets in the lab were read on the date written inside each; re-read the licence texts before the cohort. This session is not legal advice and says so: it trains engineers to bring counsel the right question.</p></aside>
 </section>
 
-<section class="slide" id="s3-steps" data-lo="LO6">
-  <div class="kicker">Step by step</div>
-  <h2>REPLACE: a process, shown one step per key press</h2>
-  <div class="flow">
-    <div class="step c-teal"><b>1 · REPLACE: name</b>REPLACE: what happens first</div>
-    <div class="arrow frag" data-frag="b">→</div><div class="step c-cyan frag" data-frag="b"><b>2 · REPLACE: name</b>REPLACE: the next piece</div>
-    <div class="arrow frag" data-frag="c">→</div><div class="step c-coral frag" data-frag="c"><b>3 · REPLACE: name</b>REPLACE: the result</div>
+<section class="slide" id="three-permissions" data-label="Three permissions" data-lo="LO6">
+  <div class="kicker">Read a licence with three questions</div>
+  <h2>Adapt, deploy and distribute are three separate permissions</h2>
+  <div class="cols cols-3 gap-s">
+    <div class="card c-teal"><h4>Adapt</h4><p class="small mb0">Fine-tune it. The result is a <b>derivative work</b> in most licences.</p></div>
+    <div class="card c-cyan"><h4>Deploy</h4><p class="small mb0">Run it in a service. Here licences ask <b>for what purpose</b> and <b>by whom</b>.</p></div>
+    <div class="card c-coral"><h4>Distribute</h4><p class="small mb0">Give the weights or the adapter to someone else. Conditions travel with it.</p></div>
   </div>
-  <div class="callout tip mt frag"><b>Takeaway.</b> REPLACE: the one sentence to remember</div>
-  <aside class="notes">Press once per step and say what each step adds before the next one appears. REPLACE: the example to walk through</aside>
+  <div class="callout note mt small"><b>The chamber's plan needs all three:</b> tune on its requests, run inside a service members pay fees for, give the adapter to two sister chambers.</div>
+  <aside class="notes"><p>Most restrictive licences allow adapting for research and restrict the other two. Teams discover this after training, when the adapter exists and cannot be used. Whether an adapter alone is a derivative work is a question licences answer differently: one more reason to read the text.</p></aside>
+</section>
+
+<section class="slide" id="three-licence-families" data-label="Three families" data-lo="LO6">
+  <div class="kicker">Lab 1.3 · read on 15 November 2026</div>
+  <h2>Three candidate models, three kinds of licence</h2>
+  <table class="t small">
+    <tr><th>Model</th><th>Licence</th><th>The clause that decides</th></tr>
+    <tr><td>Qwen3-0.6B</td><td>Apache License 2.0</td><td>Grants derivative works and redistribution; no clause on purpose or revenue</td></tr>
+    <tr><td>LFM3-1.7B</td><td>LFM Open License v1.0</td><td>Commercial use is licensed only below USD 10 million of annual revenue</td></tr>
+    <tr><td>Command R7B Arabic</td><td>CC BY-NC 4.0, gated</td><td>Every right is for non-commercial purposes; more conditions may sit behind the gate</td></tr>
+  </table>
+  <p class="small mt">Names are examples, not endorsements. The slot matters: a permissive licence, one that depends on who you are, one that depends on what for.</p>
+  <aside class="notes"><p>Facts checked on the date shown: the Qwen3-0.6B card's licence field and Apache 2.0 text; the LFM Open License file in the LFM3-1.7B repository, sections 1 and 5; the licence tag and gated status of the Command R7B Arabic repository, whose card the course authors could not read without accepting its conditions, so the sheet says so. Model families and licences are the most perishable facts in this course.</p><p>Sources: Qwen3-0.6B model card; LFM Open License v1.0; Command R7B Arabic model page; Apache License 2.0; CC BY-NC 4.0 legal code.</p></aside>
+</section>
+
+<section class="slide" id="conditions-need-facts" data-label="Facts" data-lo="LO6">
+  <div class="kicker">A licence table without facts is an opinion</div>
+  <h2>Two conditions turn on facts about the chamber</h2>
+  <div class="cols cols-2">
+    <div class="card c-coral"><h4>The revenue threshold</h4><p class="small mb0">The chamber's annual revenue is SAR 62 million, which is USD 16.5 million: <b>above</b> the threshold. Its use is licensed only if it is not "commercial use".</p></div>
+    <div class="card c-purple"><h4>The purpose</h4><p class="small mb0">The chamber is a non-profit body, and its service charges fees. Is that "primarily intended for commercial advantage or monetary compensation"? The text does not say.</p></div>
+  </div>
+  <div class="callout tip mt"><b>Write the question down now.</b> "Ask" in the table, with the clause and the fact, is a result. Finding out after deployment is not.</div>
+  <aside class="notes"><p>The chamber's revenue and legal form are fictional facts of the case, in data/chamber_facts.json. The conversion uses SAR 3.75 to the dollar. Make the room argue both sides of the fee question for two minutes; they will not agree, and that is the point: the engineer's job is to surface the question with its clause.</p></aside>
+</section>
+
+<section class="slide" id="tag-is-not-text" data-label="Tag and text" data-lo="LO6">
+  <div class="kicker">Three habits</div>
+  <h2>Read the text, record the day, look for a second document</h2>
+  <ul class="bullets">
+    <li><b>The text, not the tag.</b> Open the licence file in the repository; a card can say "other" and hide everything</li>
+    <li><b>The day you read it.</b> A later release of the same family can carry different terms</li>
+    <li><b>A second document.</b> An acceptable-use policy, or conditions on a gated page, bind you as well</li>
+    <li><b>The teacher too.</b> On Day 3 a larger model writes your training labels: its terms on using outputs to train another model belong in the same table</li>
+  </ul>
+  <aside class="notes"><p>The fourth bullet is the one teams forget. Check whether the terms say anything about training another model on the outputs. The course's teacher is an open-weight model reached through a hosted API: both the model's licence and the API provider's terms apply. Have the room name the two documents they would check.</p></aside>
+</section>
+
+<section class="slide" id="licence-line" data-label="The memo line" data-lo="LO6">
+  <div class="kicker">What Maysoon reads</div>
+  <h2>The decision memo carries one licence line</h2>
+  <div class="chat">
+    <div class="msg ai bad"><span class="who">Weak</span>All three models are open source, so licensing is not a concern.</div>
+    <div class="msg ai good"><span class="who">Usable</span>Take Qwen3-0.6B forward: Apache License 2.0, sections 2 and 4, allows adapting, deploying and passing on the adapter with the licence text and a notice of changes. LFM3-1.7B needs counsel's answer on section 5: the chamber is above the revenue threshold.</div>
+  </div>
+  <aside class="notes"><p>The usable line names the model, the licence, the sections and the open question. It can be checked by someone who was not in the room. Outcome 6 asks participants to weigh licence terms in the ship decision; this line is that weight, written on Day 1 so that Day 3 trains the right model.</p></aside>
+</section>
+
+<section class="slide" id="check-licence" data-lo="LO6">
+  <div class="kicker">Checkpoint</div>
+  <h2>May we deploy it?</h2>
+  <div class="quiz" data-type="single" data-lo="LO6">
+    <p class="lead">A model's licence allows commercial use only to organisations with annual revenue under USD 10 million. The chamber's revenue is above that, and its registration service charges fees. What goes in the "deploy" column?</p>
+    <div class="opts">
+      <div class="opt" data-why="Reads the download as the permission: the weights are public, the right to use them commercially is conditional">Yes: the weights are open, so use is free</div>
+      <div class="opt" data-why="Assumes a non-profit body can never make commercial use, which the licence's own definition does not say">Yes: a chamber is a non-profit body, so the limit cannot apply</div>
+      <div class="opt" data-why="Moves the problem instead of answering it: tuning makes a derivative work under the same licence">Yes, once the model is fine-tuned, because the adapter is ours</div>
+      <div class="opt" data-ok>Ask: counsel must decide whether a fee-charging service is commercial use</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> The clause depends on a fact (above the threshold) and on a judgement (is the use commercial?). The engineer records both; counsel answers.</div>
+  </div>
+  <aside class="notes"><p>Answer: D. "No" is also defensible as the cautious entry, and the lab accepts it. The three "yes" answers are the three ways teams talk themselves past a licence.</p></aside>
 </section>
 
 <section class="slide lab" id="lab-1-3" data-auto="lab" data-lab="1.3">
-  <aside class="notes">REPLACE: what to watch for while participants work, the typical problems, and the fallback for anyone who did not finish an earlier lab</aside>
+  <aside class="notes"><p>The sheets are reading aids written by the course; the addresses lead to the texts. Ask each table to open one licence file and find the section the sheet cites. The gated model's sheet says its page was not read: let the room decide what to write, and accept "ask" or "no". The lab needs nothing from Labs 1.1 and 1.2.</p></aside>
 </section>
 
-<!-- Session 4 -->
-
+<!-- ======================= SESSION 4 ======================= -->
 <section class="slide section" id="s4" data-auto="section" data-session="4"></section>
 
-<section class="slide" id="s4-idea" data-lo="LO6">
-  <div class="kicker">REPLACE: the question this slide answers</div>
-  <h2>REPLACE: one idea, stated as a sentence</h2>
+<section class="slide" id="two-cost-shapes" data-label="Cost shapes" data-lo="LO6">
+  <div class="kicker">Two ways to pay for a model</div>
+  <h2>A hosted model costs per token; an owned accelerator costs per month</h2>
   <div class="cols cols-2">
-    <ul class="bullets">
-      <li>REPLACE: at most six bullets, each a complete thought</li>
-      <li>REPLACE: bold the key phrase; numbers come from the lab run, not from memory</li>
-    </ul>
-    <div class="card c-teal"><h4>In the case study</h4><p class="small mb0">REPLACE: tie the idea to the case study and its data</p></div>
+    <div class="card c-teal"><h4>Hosted</h4><ul class="bullets small tight"><li>a price per million input and output tokens</li><li>cost grows with volume, starts at zero</li><li>the request leaves your servers</li></ul></div>
+    <div class="card c-coral"><h4>Owned</h4><ul class="bullets small tight"><li>purchase over its useful life, power, an engineer's hours</li><li>the same cost at one request or a million</li><li>the request stays where you put the machine</li></ul></div>
   </div>
-  <div class="callout warn mt"><b>What goes wrong.</b> REPLACE: the failure participants will hit, and how to recognise it</div>
-  <aside class="notes">REPLACE: what to say, the demo to run, the question to ask the room, the common failure and its fix</aside>
+  <div class="callout tip mt small"><b>Cost per thousand requests</b> is the unit that makes them comparable, and for the owned machine it depends entirely on volume.</div>
+  <aside class="notes"><p>AE-205 covers sizing and cost of a service in general. The addition here is the token: a prompted model pays for its instructions on every request, a tuned model does not. Keep the room to the two options the entry names: a large hosted model, and a tuned small model on the chamber's own accelerator.</p></aside>
 </section>
 
-<section class="slide" id="s4-steps" data-lo="LO6">
-  <div class="kicker">Step by step</div>
-  <h2>REPLACE: a process, shown one step per key press</h2>
-  <div class="flow">
-    <div class="step c-teal"><b>1 · REPLACE: name</b>REPLACE: what happens first</div>
-    <div class="arrow frag" data-frag="b">→</div><div class="step c-cyan frag" data-frag="b"><b>2 · REPLACE: name</b>REPLACE: the next piece</div>
-    <div class="arrow frag" data-frag="c">→</div><div class="step c-coral frag" data-frag="c"><b>3 · REPLACE: name</b>REPLACE: the result</div>
+<section class="slide" id="tokens-per-request" data-label="Tokens" data-lo="LO6">
+  <div class="kicker">Lab 1.4 · measured on the 100 requests</div>
+  <h2>A prompted request is mostly instructions</h2>
+  <div class="cols cols-3 mid">
+    <div class="stat center"><div class="big">623</div><div class="lbl">input tokens, prompted: instructions, table, rules, examples and the request</div></div>
+    <div class="stat center"><div class="big">30</div><div class="lbl">input tokens, tuned: the request alone</div></div>
+    <div class="stat center"><div class="big">33</div><div class="lbl">output tokens: one tool call</div></div>
   </div>
-  <div class="callout tip mt frag"><b>Takeaway.</b> REPLACE: the one sentence to remember</div>
-  <aside class="notes">Press once per step and say what each step adds before the next one appears. REPLACE: the example to walk through</aside>
+  <p class="small mt center">Counts are the lab's rough estimate (four characters of English, two and a half of Arabic to a token). A provider's own count replaces them.</p>
+  <aside class="notes"><p>The instructions are about 21 times the request. A tuned model moved the format and the behaviour into its weights, so only the request travels. One caveat to say aloud: the code table is knowledge and should stay in the context even for a tuned model, which adds tokens back. The hub tier's instructions keep it for that reason.</p></aside>
+</section>
+
+<section class="slide" id="cost-two-options" data-label="Two options" data-lo="LO6">
+  <div class="kicker">Lab 1.4 · prices read on 15 November 2026</div>
+  <h2>At the chamber's volume the hosted model is far cheaper</h2>
+  <table class="t">
+    <tr><th>Option</th><th class="num">SAR per 1,000 requests</th><th>Where a request is processed</th></tr>
+    <tr><td>Large hosted model</td><td class="num">0.52</td><td>The provider's servers</td></tr>
+    <tr class="hl"><td>Tuned small model, own accelerator</td><td class="num">141.38</td><td>The chamber's own servers</td></tr>
+  </table>
+  <div class="callout warn mt small"><b>Do not soften this.</b> SAR 5,655 a month for the machine, 40,000 requests a month. Break-even is about 11 million requests a month: 274 times the chamber's volume.</div>
+  <aside class="notes"><p>The hosted price is the published price of the larger reference model on the date shown (USD 0.20 and 0.40 per million tokens). The owned figures are fictional planning assumptions of the case, in data/onprem.json: purchase SAR 95,000 and SAR 45,000 for server and installation over four years, 0.45 kW, twelve engineer hours a month. Replace all of them with real quotes in a real project. The finding is unflattering to the small model, and it stays on the slide.</p><p>Sources: OpenRouter published prices, read 15 November 2026.</p></aside>
+</section>
+
+<section class="slide" id="placement-decides" data-label="Placement" data-lo="LO6">
+  <div class="kicker">What actually decides</div>
+  <h2>Cost argues for the hosted model; placement rules it out</h2>
+  <div class="cols cols-2">
+    <ul class="bullets">
+      <li>A request names an owner, a mobile number, sometimes an identity number: <b>personal data</b></li>
+      <li>The chamber classifies registration requests as <b>Restricted</b></li>
+      <li>Its requirement: they are processed on its <b>own servers</b></li>
+    </ul>
+    <div class="card c-teal"><h4>The honest sentence for the memo</h4><p class="small mb0">"The chamber pays a premium of about SAR 141 per thousand requests to keep members' data on its own servers. This is the premium, and this is why it is worth paying."</p></div>
+  </div>
+  <aside class="notes"><p>The Personal Data Protection Law's definition of personal data lists names, identification numbers and contact numbers among its examples. The Data Classification Policy defines the levels a public entity assigns, and the Generative AI Guideline for Government asks entities to keep information classified Restricted or higher out of prompts. The chamber is fictional and its requirement is the case study's; in a real project Anoud Al-Fuhaid, the data protection officer, states it, not the engineer.</p><p>Sources: Personal Data Protection Law; Data Classification Policy; Generative AI Guideline for Government.</p></aside>
+</section>
+
+<section class="slide" id="tuning-is-one-off" data-label="One-off" data-lo="LO6">
+  <div class="kicker">Three costs, three shapes</div>
+  <h2>Tuning is paid once; serving is paid every month</h2>
+  <table class="t small">
+    <tr><th>Cost</th><th>Shape</th><th>In the case</th></tr>
+    <tr><td>Tuning</td><td>Once per version of the adapter</td><td>SAR 13,260: 60 engineer hours and 10 GPU hours</td></tr>
+    <tr><td>Serving</td><td>Every month, whatever the volume</td><td>SAR 5,655</td></tr>
+    <tr><td>Per request</td><td>Serving divided by volume</td><td>SAR 0.14 at 40,000 requests a month</td></tr>
+  </table>
+  <div class="callout note mt small"><b>Tuning is paid back in quality, not money.</b> A prompted and a tuned small model cost the same to serve on the same machine. And the engineer costs more than the GPU.</div>
+  <aside class="notes"><p>Almost all of the one-off cost is the engineer's time building the data (Day 2), not the GPU hours. That is the realistic proportion, and it is why the rubric gives data quality 25 points and training 15. Every retraining pays the one-off cost again, in part: plan for it when the request mix changes.</p></aside>
+</section>
+
+<section class="slide" id="check-cost" data-lo="LO6">
+  <div class="kicker">Checkpoint</div>
+  <h2>The volume doubles</h2>
+  <div class="quiz" data-type="single" data-lo="LO6">
+    <p class="lead">The chamber's requests double to 80,000 a month. The accelerator still has spare capacity. What happens to the cost per thousand requests?</p>
+    <div class="opts">
+      <div class="opt" data-why="Applies the shape of a per-token price to a machine whose cost is fixed">Both options stay the same</div>
+      <div class="opt" data-ok>Hosted stays the same; the owned accelerator's halves</div>
+      <div class="opt" data-why="Assumes a volume discount that a published per-token price does not contain">Hosted halves; the owned accelerator's stays the same</div>
+      <div class="opt" data-why="Treats a fixed monthly cost as if it grew with use">Both double</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> A per-token price does not depend on volume. A fixed monthly cost divided by twice the requests is half the cost per request.</div>
+  </div>
+  <aside class="notes"><p>Answer: B. Follow-up for the room: at what volume does the accelerator run out of capacity, and what happens to the cost then? It steps up by one more machine. Lab 4.3 measures the capacity that today's lab assumes.</p></aside>
 </section>
 
 <section class="slide lab" id="lab-1-4" data-auto="lab" data-lab="1.4">
-  <aside class="notes">REPLACE: what to watch for while participants work, the typical problems, and the fallback for anyone who did not finish an earlier lab</aside>
+  <aside class="notes"><p>Pure arithmetic on supplied figures; no model is called. Watch task 3: people forget to spread the purchase over months, or count 720 hours where the task says 730. The reading cell after task 4 is the point of the lab: do not let anyone leave believing the small model is the cheap option. Nothing from an earlier lab is needed.</p></aside>
 </section>
 
-<section class="slide" id="wrap-up">
-  <div class="kicker">Day 1 · wrap-up</div>
+<!-- ======================= CLOSE ======================= -->
+<section class="slide" id="wrap-up" data-label="Day 1 in three lines">
+  <div class="kicker">Day 1</div>
   <h2>Three things to keep</h2>
   <div class="cols cols-3">
-    <div class="card c-teal"><h4>Remember</h4><p class="small mb0">REPLACE: one idea participants keep</p></div>
-    <div class="card c-coral"><h4>Remember</h4><p class="small mb0">REPLACE: one idea participants keep</p></div>
-    <div class="card c-purple"><h4>Remember</h4><p class="small mb0">REPLACE: one idea participants keep</p></div>
+    <div class="card c-teal"><h4>Sort before you train</h4><p class="small mb0">Knowledge goes to the context, format to the prompt first, behaviour to tuning or distillation. With counts.</p></div>
+    <div class="card c-coral"><h4>Freeze a strong baseline</h4><p class="small mb0">The adapter is compared with the best prompt on the same model, never with the first one.</p></div>
+    <div class="card c-purple"><h4>Licence and cost come first</h4><p class="small mb0">Read the text before training. State what the option costs and why it is chosen anyway.</p></div>
   </div>
+  <aside class="notes"><p>Ask each table for the one number from today they would put in a memo. Collect them. Then say what today produced: a decision table, a frozen baseline, a licence line and a cost table. Four of the six sections of Lab 4.4's memo already exist.</p></aside>
 </section>
 
 <section class="slide dark" id="next" data-label="Next">
-  <div class="kicker">Next</div>
-  <h2>Day 2: Data for tuning</h2>
-  <p class="lead">REPLACE: what participants prepare before then; unfinished labs can be finished at home</p>
-  <aside class="notes">REPLACE: accounts, installs or reading participants need before the next unit</aside>
+  <div class="kicker">Tomorrow</div>
+  <h1>Day 2 · Data for tuning</h1>
+  <p class="lead">500 pilot traces, the registry desk's corrections and a larger model's labels become one clean tuning set.</p>
+  <ul class="bullets">
+    <li>Guided self-study before tomorrow: read your model's chat template on its model card, and find where a tool call goes</li>
+    <li>Keep today's four files in <code>labs/artifacts/</code>; tomorrow's labs start from supplied files either way</li>
+  </ul>
+  <aside class="notes"><p>The pre-work is short on purpose: participants who have looked at one real chat template get through Lab 2.3 twice as fast. Remind the room that every lab tomorrow starts from supplied data, so nobody is behind.</p></aside>
 </section>

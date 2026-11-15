@@ -85,8 +85,9 @@ def day1() -> None:
         table[role] = {"correct": classes[None], "knowledge": classes["knowledge"], "format": classes["format"], "behaviour": classes["behaviour"]}
     Q.write_json(REF / "d1_1_decision_table.json", {
         "counts": table,
-        "approach": {"knowledge": "retrieval or context: put the code table in the prompt", "format": "prompting first: schema hints and examples; tuning for what remains",
-                     "behaviour": "tuning, or distillation from the larger model, which gets it right"}})
+        "approach": {"knowledge": ["retrieval", "Both models fail it: the code table must be given, in context or by retrieval."],
+                     "format": ["prompting", "The larger model rarely fails it: schema hints and examples first, tuning for what remains."],
+                     "behaviour": ["distillation", "The larger model gets it right: teach the small model, by tuning on corrections or on the larger model's calls."]}})
 
     shots = examples()
     versions = [("v0", prompts.V0, None), ("v1", prompts.build(schema=True), None), ("v2", prompts.build(schema=True, table=True), None),

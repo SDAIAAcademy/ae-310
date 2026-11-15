@@ -5,7 +5,7 @@
 
 AI Engineering Track · SDAIA Academy · AE-310 · Level 300
 
-REPLACE: one line under the title: what participants can do after the course
+Decide when a small model is worth adapting, then tune, distil, evaluate and serve it with numbers you can defend
 
 Participants decide when adapting a model is worth it and then do it well. For a fictional chamber of commerce whose bilingual registration requests must stay on its own servers, a prompted small open-weight model fails at field extraction and tool calls. They sort the failures, set a stronger prompted baseline, build a tuning set from traces, staff corrections and filtered teacher outputs, train low-rank adapters, distil a larger model's tool-call behaviour, evaluate against the base and a larger prompted model, and serve the result quantised with several adapters. AE-301 introduces adapters on an encoder; post-training at scale is AE-406.
 
@@ -34,12 +34,24 @@ Participants decide when adapting a model is worth it and then do it well. For a
 | Day 2 | Data for tuning | Tuning data from traces and corrections; Teacher generation and verifier filtering; Chat templates and tool-call formats; Deduplication, decontamination and personal data | [`slides/day2.html`](slides/day2.html) |
 | Day 3 | Train adapters and distil | Low-rank adapters; Quantised adapters and memory; Settings that matter; Distilling a behaviour | [`slides/day3.html`](slides/day3.html) |
 | Day 4 | Evaluate and serve | Paired evaluation against the base; Regressions and safety after tuning; One base, several adapters; Cards and the decision memo | [`slides/day4.html`](slides/day4.html) |
-| Capstone | Capstone project presentations |  | [`slides/capstone.html`](slides/capstone.html) |
+| Capstone | Capstone: an adapted small model and its defence |  | [`slides/capstone.html`](slides/capstone.html) |
 <!-- /academy:units -->
 
 ## Case study
 
-**REPLACE: the name of the fictional organisation every lab works on.** REPLACE: two sentences on the case study and its synthetic data
+**Al-Bayraq Chamber of Commerce.** Al-Bayraq Chamber of Commerce is a fictional regional chamber whose members send registration requests in Arabic and English: new memberships, renewals, record changes and certificates. The requests must stay on the chamber's own servers, and Qayd, its assistant on a small open-weight model, fails at field extraction and registry tool calls when it is only prompted. Participants sort the failures, freeze a prompted baseline, build a tuning set from 500 pilot traces, staff corrections and filtered teacher outputs, train low-rank adapters on 16-bit and 4-bit bases, distil a larger model's tool-call behaviour, evaluate with paired statistics by language, check for regressions, and serve two adapters on one quantised base under load. All data is synthetic and generated with a fixed seed.
+
+The people of the case: Maysoon Al-Dabbagh (director of member services, who signs the decision), Khuzama Al-Rumaizan (registry desk supervisor, whose team corrects the assistant), Jarrah Al-Suhaim (infrastructure engineer, who owns the one accelerator), Anoud Al-Fuhaid (data protection officer), Zakariya Al-Mousa (legal counsel) and Dhay Al-Shuwaier (machine learning engineer, the participant's role). None of them exists.
+
+## How the course is organised
+
+Each teaching day has four sessions of about 50 minutes: 20 to 25 minutes of concepts, a checkpoint, then a 25-minute lab. Every lab starts from supplied files, adapters or run logs, so no lab depends on an earlier one, and every lab has a complete solution.
+
+Days 1 and 2 call two free hosted open-weight models, a small one and a larger one. Days 3 and 4 train and serve: on any processor with the course's own small model (about one million parameters, shipped in the repository), or on a free notebook GPU with a small open-weight model from the Hub, which is downloaded into the notebook runtime and never onto a laptop. `labs/README.md` says what each lab needs and what the course authors could and could not run.
+
+**AI policy.** Assistants are off in the supervised entry and exit checks and in Lab 1.1, the first failure analysis. In the other labs an assistant may explain a library call or an error; it does not write the data pipeline. In the capstone assistants are allowed in full, and the work is defended live.
+
+**Responsible use.** The registration requests are synthetic but shaped like Restricted data: Lab 2.4 scans the tuning set for personal data and masks it, Lab 1.3 checks the licence terms of each candidate model, and Day 4 reports Arabic and English slices and refusal behaviour after tuning, so that a regression is visible before release.
 
 <!-- academy:labs -->
 ## Labs
@@ -48,29 +60,31 @@ Every lab is a notebook in `labs/`. Open it in Google Colab from the course page
 
 | | Session | Lab | File |
 |---|---|---|---|
-| 1.1 | Day 1 · Session 1 | Run the small and the reference model on 100 requests and sort failures into knowledge, format and behaviour | [`D1_1_run_small_reference.ipynb`](labs/D1_1_run_small_reference.ipynb) |
-| 1.2 | Day 1 · Session 2 | Improve the prompt with schema hints and examples and freeze the score as the baseline | [`D1_2_improve_prompt_schema.ipynb`](labs/D1_2_improve_prompt_schema.ipynb) |
-| 1.3 | Day 1 · Session 3 | Compare licence and acceptable-use terms of three small models and record which may be adapted and deployed | [`D1_3_compare_licence_acceptable.ipynb`](labs/D1_3_compare_licence_acceptable.ipynb) |
-| 1.4 | Day 1 · Session 4 | Estimate tuning, serving and per-request cost for a large hosted model versus a tuned small model on-premises | [`D1_4_estimate_tuning_serving.ipynb`](labs/D1_4_estimate_tuning_serving.ipynb) |
-| 2.1 | Day 2 · Session 1 | Turn 500 synthetic traces and staff corrections into chat-format examples | [`D2_1_turn_500_synthetic.ipynb`](labs/D2_1_turn_500_synthetic.ipynb) |
-| 2.2 | Day 2 · Session 2 | Generate 300 examples with a larger model and filter them with schema and rule checks | [`D2_2_generate_300_examples.ipynb`](labs/D2_2_generate_300_examples.ipynb) |
-| 2.3 | Day 2 · Session 3 | Render examples with the model's template and fix three formatting faults that would harm training | [`D2_3_render_examples_model.ipynb`](labs/D2_3_render_examples_model.ipynb) |
-| 2.4 | Day 2 · Session 4 | Remove near-duplicates and test-set overlap and scan the set for personal data | [`D2_4_remove_near_duplicates.ipynb`](labs/D2_4_remove_near_duplicates.ipynb) |
-| 3.1 | Day 3 · Session 1 | Train an adapter on the supplied set in a free notebook GPU and read the loss curves | [`D3_1_train_adapter_supplied.ipynb`](labs/D3_1_train_adapter_supplied.ipynb) |
-| 3.2 | Day 3 · Session 2 | Train the same adapter on a 4-bit base and compare memory, time and score with a supplied 16-bit run | [`D3_2_train_same_adapter.ipynb`](labs/D3_2_train_same_adapter.ipynb) |
-| 3.3 | Day 3 · Session 3 | Read a supplied sweep of rank and learning rate, run one more setting and choose on the validation set | [`D3_3_read_supplied_sweep.ipynb`](labs/D3_3_read_supplied_sweep.ipynb) |
-| 3.4 | Day 3 · Session 4 | Run a short distillation of the larger model's filtered tool calls into the student and compare it with a supplied corrections-only adapter | [`D3_4_run_short_distillation.ipynb`](labs/D3_4_run_short_distillation.ipynb) |
-| 4.1 | Day 4 · Session 1 | Compare tuned, base and larger prompted models on Arabic and English slices with a paired bootstrap | [`D4_1_compare_tuned_base.ipynb`](labs/D4_1_compare_tuned_base.ipynb) |
-| 4.2 | Day 4 · Session 2 | Run general-ability and refusal checks on a supplied adapter and list what got worse | [`D4_2_run_general_ability.ipynb`](labs/D4_2_run_general_ability.ipynb) |
-| 4.3 | Day 4 · Session 3 | Serve a quantised base with two adapters and load-test throughput | [`D4_3_serve_quantised_base.ipynb`](labs/D4_3_serve_quantised_base.ipynb) |
-| 4.4 | Day 4 · Session 4 | Draft the dataset card, model card and decision memo, then choose the capstone task | [`D4_4_draft_dataset_card.ipynb`](labs/D4_4_draft_dataset_card.ipynb) |
+| 1.1 | Day 1 · Session 1 | Sort the failures | [`D1_1_failure_sort.ipynb`](labs/D1_1_failure_sort.ipynb) |
+| 1.2 | Day 1 · Session 2 | Freeze the baseline | [`D1_2_prompt_baseline.ipynb`](labs/D1_2_prompt_baseline.ipynb) |
+| 1.3 | Day 1 · Session 3 | Three licences | [`D1_3_licences.ipynb`](labs/D1_3_licences.ipynb) |
+| 1.4 | Day 1 · Session 4 | Cost of two options | [`D1_4_cost_placement.ipynb`](labs/D1_4_cost_placement.ipynb) |
+| 2.1 | Day 2 · Session 1 | Traces to examples |  |
+| 2.2 | Day 2 · Session 2 | Teacher and verifier |  |
+| 2.3 | Day 2 · Session 3 | Three formatting faults |  |
+| 2.4 | Day 2 · Session 4 | Clean the set |  |
+| 3.1 | Day 3 · Session 1 | Train an adapter, read the curves |  |
+| 3.2 | Day 3 · Session 2 | The same adapter on a 4-bit base |  |
+| 3.3 | Day 3 · Session 3 | Read a sweep, add a run |  |
+| 3.4 | Day 3 · Session 4 | Distil a behaviour |  |
+| 4.1 | Day 4 · Session 1 | Three systems, two languages |  |
+| 4.2 | Day 4 · Session 2 | What got worse |  |
+| 4.3 | Day 4 · Session 3 | Two adapters, one base, under load |  |
+| 4.4 | Day 4 · Session 4 | Cards, memo and capstone task |  |
 <!-- /academy:labs -->
 
 ## Capstone
 
 An adapted small model for a task of the participant's choice, submitted as a public repository with the dataset card, evaluation against the base and a larger prompted model, serving cost and decision memo, followed by a ten-minute defence
 
-**Submission:** REPLACE: what participants submit and how: a public repository link, or a shared folder for a course without code
+**Submission:** A public repository link. The repository holds the adaptation decision, the tuning data with its dataset card and overlap report, the training and evaluation run logs with timestamps, the adapter, the evaluation against the base and a larger prompted model, the load-test report with cost per thousand requests, and the one-page decision memo. In the ten-minute defence the participant re-runs the paired comparison and explains one regression the assessor selects.
+
+**Assessment.** Supervised entry and exit checks without AI assistance, on adaptation choices, data faults and memory arithmetic (20%). The capstone repository on a five-criterion rubric: adaptation decision 15, data quality 25, training 15, evaluation 30, serving and cost 15 (60%). The live defence of the decision memo (20%). Passing needs 70% overall and at least 60% on the capstone rubric. The repository holds training and evaluation run logs with timestamps; in the defence the participant runs the paired comparison again and explains one regression the assessor selects.
 
 ## Prerequisites
 
@@ -96,12 +110,58 @@ Each line is a capability; the examples are interchangeable.
 <!-- academy:sources -->
 ## Sources
 
-- REPLACE: every source the course cites, with its address, in course.json under "sources"; this list is written from there
-<!-- /academy:sources -->
+### Adapters, quantisation and distillation
+
+- [Hu et al.: LoRA: Low-Rank Adaptation of Large Language Models](https://arxiv.org/abs/2106.09685)
+- [Dettmers et al.: QLoRA: Efficient Finetuning of Quantized LLMs](https://arxiv.org/abs/2305.14314)
+- [Hinton, Vinyals and Dean: Distilling the Knowledge in a Neural Network](https://arxiv.org/abs/1503.02531)
+- [Biderman et al.: LoRA Learns Less and Forgets Less](https://arxiv.org/abs/2405.09673)
+- [Qi et al.: Fine-tuning Aligned Language Models Compromises Safety, Even When Users Do Not Intend To](https://arxiv.org/abs/2310.03693)
+
+### Libraries and servers
+
+- [PEFT documentation: LoRA](https://huggingface.co/docs/peft/developer_guides/lora)
+- [Transformers documentation: chat templates](https://huggingface.co/docs/transformers/chat_templating)
+- [Transformers documentation: bitsandbytes quantisation](https://huggingface.co/docs/transformers/quantization/bitsandbytes)
+- [TRL documentation: the supervised fine-tuning trainer](https://huggingface.co/docs/trl/sft_trainer)
+- [vLLM documentation: LoRA adapters](https://docs.vllm.ai/en/latest/features/lora.html)
+- [llama.cpp: the server and its options](https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md)
+- [GGUF, the file format of llama.cpp](https://github.com/ggml-org/ggml/blob/master/docs/gguf.md)
+- [Locust documentation](https://docs.locust.io/en/stable/)
+- [Inspect, an evaluation framework](https://inspect.aisi.org.uk/)
+- [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness)
+- [MLflow tracking](https://mlflow.org/docs/latest/ml/tracking/)
+- [Google Colab: frequently asked questions](https://research.google.com/colaboratory/faq.html)
+
+### Models and their licences
+
+- [Qwen3-0.6B model card (Apache License 2.0)](https://huggingface.co/Qwen/Qwen3-0.6B)
+- [LFM3-1.7B model card](https://huggingface.co/LiquidAI/LFM3-1.7B)
+- [LFM Open License v1.0](https://huggingface.co/LiquidAI/LFM3-1.7B/blob/main/LICENSE)
+- [Command R7B Arabic model page (CC BY-NC 4.0, gated)](https://huggingface.co/CohereLabs/c4ai-command-r7b-arabic-02-2025)
+- [ALLaM-7B-Instruct-preview model card](https://huggingface.co/humain-ai/ALLaM-7B-Instruct-preview)
+- [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)
+- [Creative Commons Attribution-NonCommercial 4.0: legal code](https://creativecommons.org/licenses/by-nc/4.0/legalcode.en)
+- [OpenRouter: models and published prices](https://openrouter.ai/models)
+
+### Cards
+
+- [Gebru et al.: Datasheets for Datasets](https://arxiv.org/abs/1803.09010)
+- [Mitchell et al.: Model Cards for Model Reporting](https://arxiv.org/abs/1810.03993)
 
 ### National references
 
-- Personal Data Protection Law and its implementing regulations: REPLACE: the address of the official text
-- NDMO Data Classification Policy: REPLACE: the address of the official text
-- SDAIA Generative AI Guidelines for Government: REPLACE: the address of the official text
-- SDAIA AI Ethics Principles: REPLACE: the address of the official text
+- [Personal Data Protection Law](https://sdaia.gov.sa/en/SDAIA/about/Documents/PersonalDataProtectionLaw.pdf)
+- [Implementing Regulation of the Personal Data Protection Law](https://sdaia.gov.sa/en/SDAIA/about/Documents/ImplementingRegulationPersonalDataProtectionLaw.pdf)
+- [Data Classification Policy](https://sdaia.gov.sa/en/SDAIA/about/Documents/DataClassificationPolicy.pdf)
+- [Generative AI Guideline for Government](https://sdaia.gov.sa/en/SDAIA/about/Files/GenAIGuidelinesForGovernmentENCompressed.pdf)
+- [Principles of AI Ethics](https://sdaia.gov.sa/en/SDAIA/about/Documents/ai-principles.pdf)
+<!-- /academy:sources -->
+
+## National references
+
+- Personal Data Protection Law: https://sdaia.gov.sa/en/SDAIA/about/Documents/PersonalDataProtectionLaw.pdf
+- Implementing Regulation of the Personal Data Protection Law: https://sdaia.gov.sa/en/SDAIA/about/Documents/ImplementingRegulationPersonalDataProtectionLaw.pdf
+- Data Classification Policy (National Data Management Office, SDAIA): https://sdaia.gov.sa/en/SDAIA/about/Documents/DataClassificationPolicy.pdf
+- Generative AI Guideline for Government (SDAIA): https://sdaia.gov.sa/en/SDAIA/about/Files/GenAIGuidelinesForGovernmentENCompressed.pdf
+- Principles of AI Ethics (SDAIA): https://sdaia.gov.sa/en/SDAIA/about/Documents/ai-principles.pdf

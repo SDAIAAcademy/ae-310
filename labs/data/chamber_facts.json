@@ -1,0 +1,12 @@
+{
+ "note": "Fictional facts about Al-Bayraq Chamber of Commerce, written for Lab 1.3.",
+ "legal_form": "A non-profit body established by statute; it is not a company.",
+ "annual_revenue_sar": 62000000,
+ "revenue_sources": "Membership fees and fees for certificates.",
+ "sar_per_usd": 3.75,
+ "plan": {
+  "adapt": "Fine-tune the model on the chamber's own registration requests.",
+  "deploy": "Run the adapted model on the chamber's own servers, inside the registration service that members pay fees for.",
+  "distribute": "Give the trained adapter to two sister chambers next year."
+ }
+}

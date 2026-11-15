@@ -3,164 +3,392 @@
   "version": 1,
   "questions": [
     {
-      "id": "q-example-1",
+      "id": "q-levers-01",
       "type": "single",
-      "prompt": "REPLACE: a practice question on LO1, as a short scenario",
+      "prompt": "A prompted model answers customers politely and in the right format, but quotes a renewal fee that was correct last year. Which change addresses the cause?",
       "options": [
-        "REPLACE: a wrong option that a common misconception makes tempting",
-        "REPLACE: the right answer",
-        "REPLACE: a wrong option that a common misconception makes tempting",
-        "REPLACE: a wrong option that a common misconception makes tempting"
+        "Fine-tune it on this year's conversations",
+        "Give it the current fee table in the context",
+        "Lower the sampling temperature",
+        "Distil a larger model's answers into it"
       ],
       "correct": [
         1
       ],
-      "explanation": "REPLACE: why the right answer is right, in one sentence",
+      "explanation": "The fee is a fact that changes; a fact belongs in the context, where it can be updated and dated.",
       "misconceptions": [
-        "REPLACE: the misconception behind this option",
+        "Puts a changing fact into weights, where it will be wrong again next year",
         "",
-        "REPLACE: the misconception behind this option",
-        "REPLACE: the misconception behind this option"
+        "Treats a wrong fact as randomness in generation",
+        "Copies the larger model's behaviour, which does not contain this year's fee either"
       ],
       "lo": [
         "LO1"
       ],
       "day": "day1",
       "session": 1,
+      "slide": "behaviour-not-knowledge",
       "level": "apply",
       "pool": "practice",
       "weight": 1
     },
     {
-      "id": "q-example-2",
-      "type": "tf",
-      "prompt": "REPLACE: a statement on LO2 that is true",
+      "id": "q-levers-02",
+      "type": "single",
+      "prompt": "On 100 requests a small model makes 30 behaviour failures and a larger model, with the same instructions, makes 4. What does the pair of counts support?",
       "options": [
-        "True",
-        "False"
+        "The behaviour can be taught to the small model, by tuning or distillation",
+        "The requests are too hard for any model",
+        "The small model lacks a fact that must be retrieved",
+        "The grading code is wrong for the small model"
       ],
       "correct": [
         0
       ],
-      "explanation": "REPLACE: why the right answer is right, in one sentence",
+      "explanation": "The larger model shows that the right behaviour exists for these requests; the gap is what tuning or distillation can aim at.",
       "misconceptions": [
         "",
-        "REPLACE: the misconception behind this option"
+        "Ignores that the larger model handles the same requests",
+        "Confuses a wrong decision with a missing fact: a missing fact would fail on both models",
+        "Blames the instrument without evidence: both models were graded by the same code"
       ],
       "lo": [
-        "LO2"
+        "LO1"
       ],
       "day": "day1",
       "session": 1,
-      "level": "understand",
+      "slide": "class-to-lever",
+      "level": "analyse",
       "pool": "practice",
       "weight": 1
     },
     {
-      "id": "q-example-3",
+      "id": "q-levers-03",
       "type": "single",
-      "prompt": "REPLACE: a practice question on LO3, as a short scenario",
+      "prompt": "A model's answer is the correct tool call, written inside a Markdown code fence instead of the required tags, and the parser rejects it. Which failure class is it?",
       "options": [
-        "REPLACE: a wrong option that a common misconception makes tempting",
-        "REPLACE: the right answer",
-        "REPLACE: a wrong option that a common misconception makes tempting",
-        "REPLACE: a wrong option that a common misconception makes tempting"
+        "Not a failure, because the decision is right",
+        "Knowledge",
+        "Behaviour",
+        "Format"
+      ],
+      "correct": [
+        3
+      ],
+      "explanation": "The decision is right and its wrapping is wrong: a schema hint, an example or tuning on the format fixes it.",
+      "misconceptions": [
+        "Forgets that the registry only accepts what parses",
+        "Sees a rejected call and assumes a missing fact",
+        "Calls every wrong answer a wrong decision, although the tool and arguments are right",
+        ""
+      ],
+      "lo": [
+        "LO1"
+      ],
+      "day": "day1",
+      "session": 1,
+      "slide": "three-failure-classes",
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-levers-04",
+      "type": "single",
+      "prompt": "Which task is the best candidate for a tuned small model on one accelerator?",
+      "options": [
+        "Planning a company's tax filing across several systems",
+        "Answering any question about commercial law",
+        "Extracting the same eight fields from thousands of similar forms",
+        "Reviewing rare contracts that each need a lawyer's judgement"
+      ],
+      "correct": [
+        2
+      ],
+      "explanation": "One input, one structured output that a program can check, at volume: the narrow shape a small tuned model suits.",
+      "misconceptions": [
+        "Chooses multi-step work that depends on intermediate results",
+        "Chooses an open-ended knowledge task, which tuning teaches badly",
+        "",
+        "Chooses rare inputs that each need judgement nobody can label at volume"
+      ],
+      "lo": [
+        "LO1"
+      ],
+      "day": "day1",
+      "session": 1,
+      "slide": "narrow-tasks",
+      "level": "evaluate",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-baseline-01",
+      "type": "single",
+      "prompt": "A team reports that fine-tuning raised accuracy from 31% to 82%. The 31% used a one-sentence prompt. What should a reviewer ask for first?",
+      "options": [
+        "A comparison with a model twice the size",
+        "The score of the best prompt they could write on the same model",
+        "A larger training set",
+        "The training loss curve"
       ],
       "correct": [
         1
       ],
-      "explanation": "REPLACE: why the right answer is right, in one sentence",
+      "explanation": "Until the untuned model has been given a strong prompt, nobody knows how much of the gain needed training.",
       "misconceptions": [
-        "REPLACE: the misconception behind this option",
+        "Changes the question from \"did tuning help this model\" to \"which model is bigger\"",
         "",
-        "REPLACE: the misconception behind this option",
-        "REPLACE: the misconception behind this option"
+        "Asks for more of the thing whose effect is not yet established",
+        "Checks that training ran, not what it should be compared with"
       ],
       "lo": [
-        "LO3"
+        "LO1"
       ],
       "day": "day1",
-      "session": 1,
-      "level": "apply",
+      "session": 2,
+      "slide": "weak-baseline-flatters",
+      "level": "evaluate",
       "pool": "practice",
       "weight": 1
     },
     {
-      "id": "q-example-4",
-      "type": "tf",
-      "prompt": "REPLACE: a statement on LO4 that is true",
-      "options": [
-        "True",
-        "False"
-      ],
-      "correct": [
-        0
-      ],
-      "explanation": "REPLACE: why the right answer is right, in one sentence",
-      "misconceptions": [
-        "",
-        "REPLACE: the misconception behind this option"
-      ],
-      "lo": [
-        "LO4"
-      ],
-      "day": "day1",
-      "session": 1,
-      "level": "understand",
-      "pool": "practice",
-      "weight": 1
-    },
-    {
-      "id": "q-example-5",
+      "id": "q-baseline-02",
       "type": "single",
-      "prompt": "REPLACE: a practice question on LO5, as a short scenario",
+      "prompt": "Two prompt versions score 50 and 52 right out of the same 100 requests. Which statement is supported?",
       "options": [
-        "REPLACE: a wrong option that a common misconception makes tempting",
-        "REPLACE: the right answer",
-        "REPLACE: a wrong option that a common misconception makes tempting",
-        "REPLACE: a wrong option that a common misconception makes tempting"
+        "The versions cannot be told apart on this evidence",
+        "Version two would score 52% on any hundred requests",
+        "One hundred requests prove nothing about either",
+        "Version two is better by two points"
       ],
       "correct": [
-        1
+        0
       ],
-      "explanation": "REPLACE: why the right answer is right, in one sentence",
+      "explanation": "A difference of two requests in 100 is far inside the sampling noise of each score.",
       "misconceptions": [
-        "REPLACE: the misconception behind this option",
         "",
-        "REPLACE: the misconception behind this option",
-        "REPLACE: the misconception behind this option"
+        "Treats a sample score as a property of the model",
+        "Throws away a measurement that does bound each score to about ten points either way",
+        "Reads a difference without asking how large the noise is"
       ],
       "lo": [
-        "LO5"
+        "LO1"
       ],
       "day": "day1",
-      "session": 1,
+      "session": 2,
+      "slide": "interval-on-100",
       "level": "apply",
       "pool": "practice",
       "weight": 1
     },
     {
-      "id": "q-example-6",
-      "type": "tf",
-      "prompt": "REPLACE: a statement on LO6 that is true",
+      "id": "q-baseline-03",
+      "type": "single",
+      "prompt": "After the baseline was frozen, an engineer improves one sentence of the instructions and keeps quoting the old score. What is wrong?",
       "options": [
-        "True",
-        "False"
+        "The set must be changed as well",
+        "The score should be averaged with the new one",
+        "Nothing: one sentence cannot change a score",
+        "The old score belongs to a text that is no longer used; the new text must be scored and frozen again"
       ],
       "correct": [
-        0
+        3
       ],
-      "explanation": "REPLACE: why the right answer is right, in one sentence",
+      "explanation": "A baseline is a text, a set and a score together; when the text changes, the pairing is broken.",
       "misconceptions": [
+        "Changes the second fixed element too, losing every earlier comparison",
+        "Mixes two different systems into one number",
+        "Assumes small edits have no effect, which is exactly what scoring is for",
+        ""
+      ],
+      "lo": [
+        "LO1"
+      ],
+      "day": "day1",
+      "session": 2,
+      "slide": "frozen-baseline",
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-licence-01",
+      "type": "single",
+      "prompt": "A licence allows anyone to fine-tune a model for research, and allows use in a product only under a separate agreement. A company fine-tunes it and now wants to put it in its paid service. What is its position?",
+      "options": [
+        "It may: the fine-tuned model is its own work",
+        "It may: research use includes testing in production",
+        "It may not without the separate agreement: adapting was licensed, this deployment is not",
+        "It may, if it does not distribute the weights"
+      ],
+      "correct": [
+        2
+      ],
+      "explanation": "Adapting and deploying are separate permissions; the adapted model is a derivative under the same terms.",
+      "misconceptions": [
+        "Believes tuning creates a new work free of the original licence",
+        "Stretches \"research\" to cover a paid service",
         "",
-        "REPLACE: the misconception behind this option"
+        "Mixes up distribution with commercial use: not sharing the weights does not license the use"
       ],
       "lo": [
         "LO6"
       ],
       "day": "day1",
-      "session": 1,
-      "level": "understand",
+      "session": 3,
+      "slide": "three-permissions",
+      "level": "analyse",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-licence-02",
+      "type": "single",
+      "prompt": "A model card shows the licence tag \"other\". What is the next step before choosing the model?",
+      "options": [
+        "Assume it is permissive, since the weights are public",
+        "Open the licence file in the repository, read it and record the date",
+        "Ask in a forum what \"other\" usually means",
+        "Train first and check the licence before deployment"
+      ],
+      "correct": [
+        1
+      ],
+      "explanation": "The tag is a label; the file is the licence, and it can change with a later release.",
+      "misconceptions": [
+        "Reads availability as permission",
+        "",
+        "Replaces the text with someone's opinion of it",
+        "Spends the training budget before knowing whether the result can be used"
+      ],
+      "lo": [
+        "LO6"
+      ],
+      "day": "day1",
+      "session": 3,
+      "slide": "tag-is-not-text",
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-licence-03",
+      "type": "single",
+      "prompt": "A licence grants commercial use only to organisations under a revenue threshold. Which pair of facts must the licence table record for an organisation that wants to deploy?",
+      "options": [
+        "Its annual revenue and whether the intended use is commercial under the licence's definition",
+        "The model's size and its benchmark scores",
+        "The size of the fine-tuning set and the number of adapters",
+        "Its number of employees and its country"
+      ],
+      "correct": [
+        0
+      ],
+      "explanation": "The clause turns on revenue against the threshold and on the purpose of the use; both are facts about the organisation.",
+      "misconceptions": [
+        "",
+        "Describes the model, not the licensee",
+        "Describes the project, which the clause does not depend on",
+        "Records facts the clause does not mention"
+      ],
+      "lo": [
+        "LO6"
+      ],
+      "day": "day1",
+      "session": 3,
+      "slide": "conditions-need-facts",
+      "level": "evaluate",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-cost-01",
+      "type": "single",
+      "prompt": "An owned accelerator costs SAR 6,000 a month in total and serves 30,000 requests a month. What is the cost per thousand requests?",
+      "options": [
+        "SAR 180",
+        "SAR 2",
+        "SAR 20",
+        "SAR 200"
+      ],
+      "correct": [
+        3
+      ],
+      "explanation": "6,000 divided by 30 thousands of requests is SAR 200 per thousand.",
+      "misconceptions": [
+        "Multiplies the monthly cost by the volume in tens of thousands instead of dividing",
+        "Divides by 3,000 thousands: a slip of two decimal places",
+        "Divides by 300 thousands: a slip of one decimal place",
+        ""
+      ],
+      "lo": [
+        "LO6"
+      ],
+      "day": "day1",
+      "session": 4,
+      "slide": "two-cost-shapes",
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-cost-02",
+      "type": "single",
+      "prompt": "A hosted model costs SAR 0.50 per thousand requests and a tuned small model on the organisation's own servers costs SAR 140. The requests are classified Restricted and must stay on the organisation's servers. What should the decision memo say?",
+      "options": [
+        "The small model is the cheaper option",
+        "The hosted model is chosen, because cost decides",
+        "The small model is chosen for placement, at a stated premium per thousand requests",
+        "Cost cannot be compared, because the options are different"
+      ],
+      "correct": [
+        2
+      ],
+      "explanation": "The requirement rules the hosted option out; the memo states the premium honestly and why it is paid.",
+      "misconceptions": [
+        "States the opposite of the measured numbers",
+        "Ignores a requirement that the cheaper option does not meet",
+        "",
+        "Avoids a comparison that the same unit makes possible"
+      ],
+      "lo": [
+        "LO6"
+      ],
+      "day": "day1",
+      "session": 4,
+      "slide": "placement-decides",
+      "level": "evaluate",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-cost-03",
+      "type": "single",
+      "prompt": "A prompted request carries 600 tokens of instructions and examples and 30 tokens of request. After tuning, the instructions are no longer sent. What happens to the input cost per request on a per-token price?",
+      "options": [
+        "It falls by 30 tokens",
+        "It falls to about a twentieth",
+        "It stays the same, because the output is unchanged",
+        "It doubles, because adapters add tokens"
+      ],
+      "correct": [
+        1
+      ],
+      "explanation": "Input falls from about 630 tokens to about 30: the tuned model reads only the request.",
+      "misconceptions": [
+        "Subtracts the request instead of the instructions",
+        "",
+        "Confuses input and output tokens",
+        "Believes an adapter adds tokens: it adds weights, not text"
+      ],
+      "lo": [
+        "LO6"
+      ],
+      "day": "day1",
+      "session": 4,
+      "slide": "tokens-per-request",
+      "level": "analyse",
       "pool": "practice",
       "weight": 1
     }

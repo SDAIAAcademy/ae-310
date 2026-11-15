@@ -1,0 +1,10 @@
+{
+ "note": "Published prices in United States dollars per million tokens, read from the provider's public model list on the date below. Prices change: read them again before you decide.",
+ "source": "https://openrouter.ai/models",
+ "read_on": "2026-11-15",
+ "models": [
+  {"id": "google/gemma-4-31b-it", "role": "the larger reference model, paid tier", "input_per_million": 0.20, "output_per_million": 0.40},
+  {"id": "qwen/qwen3.8-27b", "role": "a second large open-weight model", "input_per_million": 0.15, "output_per_million": 1.875},
+  {"id": "liquid/lfm-3-1.7b", "role": "the small model, paid tier", "input_per_million": 0.08, "output_per_million": 0.20}
+ ]
+}

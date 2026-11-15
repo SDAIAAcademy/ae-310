@@ -267,7 +267,6 @@
             "title": "Traces to examples",
             "minutes": 25,
             "summary": "Turn 500 pilot traces and the registry desk's corrections into chat-format examples: keep accepted calls, apply corrections, validate every label against the tool interface and count what was dropped.",
-            "href": "D2_1_traces_corrections.ipynb",
             "steps": [
               {
                 "text": "Read the traces and their statuses",
@@ -309,7 +308,6 @@
             "title": "Teacher and verifier",
             "minutes": 25,
             "summary": "Label 300 unlabelled requests with the larger model, filter the outputs with schema and rule checks, and measure the yield and the errors that still pass.",
-            "href": "D2_2_teacher_filter.ipynb",
             "steps": [
               {
                 "text": "Label 300 requests with the larger model",
@@ -351,7 +349,6 @@
             "title": "Three formatting faults",
             "minutes": 25,
             "summary": "Render examples with the model's chat template, then find and fix three faults in a hand-written renderer that would harm training.",
-            "href": "D2_3_chat_templates.ipynb",
             "steps": [
               {
                 "text": "Render one example with the model's template",
@@ -393,7 +390,6 @@
             "title": "Clean the set",
             "minutes": 25,
             "summary": "Remove near-duplicates from the raw examples, find and remove overlap with the test set, scan for personal data, mask it and write the overlap report.",
-            "href": "D2_4_dedup_pii.ipynb",
             "steps": [
               {
                 "text": "Remove near-duplicates",
@@ -444,7 +440,6 @@
             "title": "Train an adapter, read the curves",
             "minutes": 25,
             "summary": "Train a low-rank adapter on the supplied tuning set, read its training and validation loss, score it against the base on validation requests, and save the adapter with its run log.",
-            "href": "D3_1_lora_adapter.ipynb",
             "steps": [
               {
                 "text": "Load the base and count what trains",
@@ -486,7 +481,6 @@
             "title": "The same adapter on a 4-bit base",
             "minutes": 25,
             "summary": "Do the memory arithmetic for 16 and 4 bits, train the same adapter on a 4-bit base, and compare memory, time and score with the supplied 16-bit run.",
-            "href": "D3_2_four_bit.ipynb",
             "steps": [
               {
                 "text": "Memory arithmetic for 16 and 4 bits",
@@ -524,7 +518,6 @@
             "title": "Read a sweep, add a run",
             "minutes": 25,
             "summary": "Read the supplied sweep of rank and learning rate, predict and run the one setting it lacks, and choose a setting on the validation set with a reason.",
-            "href": "D3_3_sweep.ipynb",
             "steps": [
               {
                 "text": "Read the supplied sweep",
@@ -562,7 +555,6 @@
             "title": "Distil a behaviour",
             "minutes": 25,
             "summary": "Train the student on the larger model's filtered tool calls with a short schedule and compare it, slice by slice, with the supplied adapter trained on staff corrections alone.",
-            "href": "D3_4_distil.ipynb",
             "steps": [
               {
                 "text": "Compare the two tuning sets",
@@ -609,7 +601,6 @@
             "title": "Three systems, two languages",
             "minutes": 25,
             "summary": "Compare the tuned model, its base and the larger prompted model on the held-out test set, overall and on the Arabic and English slices, with a paired bootstrap.",
-            "href": "D4_1_paired_eval.ipynb",
             "steps": [
               {
                 "text": "Grade the three sets of outputs",
@@ -647,7 +638,6 @@
             "title": "What got worse",
             "minutes": 25,
             "summary": "Run the general-ability and refusal checks on the base and on a supplied adapter, list what got worse by task, and compare with an adapter trained with replay examples.",
-            "href": "D4_2_regressions.ipynb",
             "steps": [
               {
                 "text": "Run the general-ability check on base and adapter",
@@ -685,7 +675,6 @@
             "title": "Two adapters, one base, under load",
             "minutes": 25,
             "summary": "Serve a quantised base with two adapters behind one endpoint, load-test it at three levels of concurrency, and turn throughput into cost per thousand requests.",
-            "href": "D4_3_serve_adapters.ipynb",
             "steps": [
               {
                 "text": "Start the server and call each adapter",
@@ -723,7 +712,6 @@
             "title": "Cards, memo and capstone task",
             "minutes": 25,
             "summary": "Draft the dataset card, the model card and the decision memo from the course's measured results, check them against the numbers, and choose the capstone task.",
-            "href": "D4_4_cards_memo.ipynb",
             "steps": [
               {
                 "text": "Fill the dataset card from the Day 2 reports",

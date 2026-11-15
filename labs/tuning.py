@@ -27,7 +27,7 @@ LABS = Path(__file__).resolve().parent
 TINY_DIR = LABS / "models" / "qayd-tiny"
 HUB_BASE = os.environ.get("ADAPT_BASE", "Qwen/Qwen3-0.6B")
 
-SYSTEM_TINY = "You are Qayd, the registry assistant."
+SYSTEM = "You are Qayd, the registration assistant of Al-Bayraq Chamber of Commerce."
 TARGETS = ["q_proj", "v_proj"]
 
 if not torch.cuda.is_available():  # a small model on a processor gains nothing from many threads
@@ -160,8 +160,8 @@ def messages_for(text: str, tool_call: dict | None = None, which: str | None = N
     """The conversation for one request; with a tool call, the assistant turn that answers it."""
     which = which or tier()
     text = masked(text)
-    system = SYSTEM_TINY if which == "tiny" else hub_system_prompt()
-    msgs = [{"role": "system", "content": system}, {"role": "user", "content": text}]
+    # the course model is small enough that its instructions live in its weights: it gets no system message
+    msgs = [{"role": "user", "content": text}] if which == "tiny" else [{"role": "system", "content": hub_system_prompt()}, {"role": "user", "content": text}]
     if tool_call is not None:
         msgs.append({"role": "assistant", "content": "", "tool_calls": [{"type": "function", "function": tool_call}]})
     return msgs
@@ -170,7 +170,7 @@ def messages_for(text: str, tool_call: dict | None = None, which: str | None = N
 def hub_system_prompt() -> str:
     """The frozen instruction of the hub tier: it carries the code table, which is knowledge."""
     codes = "; ".join(f"{a[0]} {a[1]}" for a in C.ACTIVITIES)
-    return (SYSTEM_TINY + " Answer every request with exactly one tool call. Write registration numbers with Western digits. "
+    return (SYSTEM + " Answer every request with exactly one tool call. Write registration numbers with Western digits. "
             "Copy the company name as written. Cities in English. Escalate when the registration number is missing or the request is outside the registry. "
             "Activity codes: " + codes + ".")
 
