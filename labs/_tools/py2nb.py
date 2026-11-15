@@ -7,6 +7,8 @@ Cell markers:
     # %% [markdown]   -> markdown cell; leading "# " is stripped from each line
     # %%              -> code cell
 
+A line "#@setup" is replaced by labs/_src/_setup.txt, the cell every lab starts with.
+
 Exercise regions (code cells only):
     # BEGIN SOLUTION
     ...reference code...
@@ -68,7 +70,8 @@ def convert(src: Path, student: bool) -> Path:
             cell.update(execution_count=None, outputs=[])
         cells.append(cell)
 
-    for line in src.read_text(encoding="utf-8").splitlines():
+    text = src.read_text(encoding="utf-8").replace("#@setup", (SRC / "_setup.txt").read_text(encoding="utf-8").rstrip())
+    for line in text.splitlines():
         if line.startswith("# %%"):
             flush()
             kind, buf = ("markdown" if "[markdown]" in line else "code"), []
@@ -96,6 +99,10 @@ def convert(src: Path, student: bool) -> Path:
 
 
 if __name__ == "__main__":
+    if sys.argv[1:2] == ["--run"]:  # run one source as a script, solution included: py2nb.py --run D1_1_tokenisers
+        code = (SRC / f"{sys.argv[2]}.py").read_text(encoding="utf-8").replace("#@setup", (SRC / "_setup.txt").read_text(encoding="utf-8"))
+        exec(compile(code, sys.argv[2], "exec", dont_inherit=True), {"__name__": "__main__"})
+        sys.exit(0)
     names = sys.argv[1:]
     sources = [SRC / f"{n}.py" for n in names] if names else sorted(SRC.glob("*.py"))
     for s in sources:

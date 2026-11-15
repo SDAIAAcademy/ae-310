@@ -1,0 +1,20 @@
+import os, sys, subprocess
+from pathlib import Path
+
+if "google.colab" in sys.modules:
+    if not Path("/content/ae-310").exists():
+        subprocess.run(["git", "clone", "-q", "https://github.com/SDAIAAcademy/ae-310.git", "/content/ae-310"], check=True)
+    os.chdir("/content/ae-310/labs")
+    subprocess.run([sys.executable, "-m", "pip", "install", "-q", "-r", "requirements-colab.txt"], check=True)
+    try:  # the key from the Secrets panel, when it is there
+        from google.colab import userdata
+        os.environ.setdefault("OPENROUTER_API_KEY", userdata.get("OPENROUTER_API_KEY") or "")
+    except Exception:
+        pass
+else:
+    while not Path("qayd.py").exists() and Path.cwd() != Path.cwd().parent:
+        os.chdir("..")  # solutions/ notebooks run from labs/
+sys.path.insert(0, os.getcwd())
+
+import chamber as C
+import qayd as Q

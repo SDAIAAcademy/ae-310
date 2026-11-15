@@ -1,0 +1,123 @@
+{"trace_id": "R-0085", "call": {"name": "issue_certificate", "arguments": {"cr_number": "٤٠٤٣٥٨٠٩٤٣", "kind": "membership"}}, "by": "registry desk"}
+{"trace_id": "R-0138", "call": {"name": "issue_certificate", "arguments": {"cr_number": "4099551402", "kind": "membership"}}, "by": "registry desk"}
+{"trace_id": "R-0171", "call": {"name": "update_record", "arguments": {"cr_number": "4088933217", "field": "activity_code", "value": "BR-610"}}, "by": "registry desk"}
+{"trace_id": "R-0198", "call": {"name": "issue_certificate", "arguments": {"cr_number": "4067239831", "kind": "membership"}}, "by": "registry desk"}
+{"trace_id": "R-0093", "call": {"name": "create_membership", "arguments": {"company_name": "مؤسسة الساحل للخدمات", "cr_number": "4024148881", "city": "Dammam", "activity_code": "BR-102"}}, "by": "registry desk"}
+{"trace_id": "R-0471", "call": {"name": "escalate_to_staff", "arguments": {"reason": "out_of_scope"}}, "by": "registry desk"}
+{"trace_id": "R-0168", "call": {"name": "create_membership", "arguments": {"company_name": "شركة السلام للتسويق", "cr_number": "4096291998", "city": "Tabuk", "activity_code": "BR-530"}}, "by": "registry desk"}
+{"trace_id": "R-0273", "call": {"name": "escalate_to_staff", "arguments": {"reason": "out_of_scope"}}, "by": "registry desk"}
+{"trace_id": "R-0500", "call": {"name": "escalate_to_staff", "arguments": {"reason": "out_of_scope"}}, "by": "registry desk"}
+{"trace_id": "R-0319", "call": {"name": "escalate_to_staff", "arguments": {"reason": "out_of_scope"}}, "by": "registry desk"}
+{"trace_id": "R-0266", "call": {"name": "update_record", "arguments": {"cr_number": "4040979442", "field": "activity_code", "value": "BR-520"}}, "by": "registry desk"}
+{"trace_id": "R-0010", "call": {"name": "create_membership", "arguments": {"company_name": "شركة الأفق للخدمات", "cr_number": "4087722043", "city": "Buraidah", "activity_code": "BR-530"}}, "by": "registry desk"}
+{"trace_id": "R-0323", "call": {"name": "escalate_to_staff", "arguments": {"reason": "no number"}}, "by": "registry desk"}
+{"trace_id": "R-0450", "call": {"name": "escalate_to_staff", "arguments": {"reason": "no number"}}, "by": "registry desk"}
+{"trace_id": "R-0223", "call": {"name": "escalate_to_staff", "arguments": {"reason": "missing_cr"}}, "by": "registry desk"}
+{"trace_id": "R-0293", "call": {"name": "issue_certificate", "arguments": {"cr_number": "4090890275", "kind": "origin"}}, "by": "registry desk"}
+{"trace_id": "R-0313", "call": {"name": "escalate_to_staff", "arguments": {"reason": "missing_cr"}}, "by": "registry desk"}
+{"trace_id": "R-0206", "call": {"name": "escalate_to_staff", "arguments": {"reason": "missing_cr"}}, "by": "registry desk"}
+{"trace_id": "R-0121", "call": {"name": "update_record", "arguments": {"cr_number": "4087722043", "field": "activity_code", "value": "BR-520"}}, "by": "registry desk"}
+{"trace_id": "R-0256", "call": {"name": "update_record", "arguments": {"cr_number": "4047584239", "field": "city", "value": "Taif"}}, "by": "registry desk"}
+{"trace_id": "R-0310", "call": {"name": "escalate_to_staff", "arguments": {"reason": "missing_cr"}}, "by": "registry desk"}
+{"trace_id": "R-0315", "call": {"name": "update_record", "arguments": {"cr_number": "4010625999", "field": "activity_code", "value": "BR-210"}}, "by": "registry desk"}
+{"trace_id": "R-0225", "call": {"name": "renew_membership", "arguments": {"cr_number": "4070095608", "years": 1}}, "by": "registry desk"}
+{"trace_id": "R-0292", "call": {"name": "create_membership", "arguments": {"company_name": "مؤسسة المفتاح للمشاريع", "cr_number": "4079688995", "city": "Riyadh", "activity_code": "BR-102"}}, "by": "registry desk"}
+{"trace_id": "R-0239", "call": {"name": "create_membership", "arguments": {"company_name": "Al-Rawabi Projects Co.", "cr_number": "4006647056", "city": "Taif", "activity_code": "BR-215"}}, "by": "registry desk"}
+{"trace_id": "R-0289", "call": {"name": "escalate_to_staff", "arguments": {"reason": "out_of_scope"}}, "by": "registry desk"}
+{"trace_id": "R-0118", "call": {"name": "update_record", "arguments": {"cr_number": "4012471737", "field": "city", "value": "Abha"}}, "by": "registry desk"}
+{"trace_id": "R-0283", "call": {"name": "create_membership", "arguments": {"company_name": "Al-Qimma Projects Co.", "cr_number": "4085510129", "city": "Taif", "activity_code": "BR-102"}}, "by": "registry desk"}
+{"trace_id": "R-0492", "call": {"name": "renew_membership", "arguments": {"cr_number": "4064749760", "years": 2}}, "by": "registry desk"}
+{"trace_id": "R-0131", "call": {"name": "escalate_to_staff", "arguments": {"reason": "missing_cr"}}, "by": "registry desk"}
+{"trace_id": "R-0094", "call": {"name": "create_membership", "arguments": {"company_name": "مجموعة المجد للتجارة", "cr_number": "4033687698", "city": "Najran", "activity_code": "BR-320"}}, "by": "registry desk"}
+{"trace_id": "R-0446", "call": {"name": "create_membership", "arguments": {"company_name": "Al-Tamayuz Solutions Est.", "cr_number": "4001148423", "city": "Hail", "activity_code": "BR-520"}}, "by": "registry desk"}
+{"trace_id": "R-0117", "call": {"name": "escalate_to_staff", "arguments": {"reason": "out_of_scope"}}, "by": "registry desk"}
+{"trace_id": "R-0189", "call": {"name": "update_record", "arguments": {"cr_number": "4044065504", "field": "activity_code", "value": "BR-810"}}, "by": "registry desk"}
+{"trace_id": "R-0347", "call": {"name": "update_record", "arguments": {"cr_number": "4046335531", "field": "city", "value": "Jeddah"}}, "by": "registry desk"}
+{"trace_id": "R-0137", "call": {"name": "escalate_to_staff", "arguments": {"reason": "no number"}}, "by": "registry desk"}
+{"trace_id": "R-0405", "call": {"name": "renew_membership", "arguments": {"cr_number": "4067239831", "years": 1}}, "by": "registry desk"}
+{"trace_id": "R-0069", "call": {"name": "escalate_to_staff", "arguments": {"reason": "missing_cr"}}, "by": "registry desk"}
+{"trace_id": "R-0327", "call": {"name": "issue_certificate", "arguments": {"cr_number": "4053613023", "kind": "membership"}}, "by": "registry desk"}
+{"trace_id": "R-0342", "call": {"name": "renew_membership", "arguments": {"cr_number": "4082431044", "years": 2}}, "by": "registry desk"}
+{"trace_id": "R-0303", "call": {"name": "renew_membership", "arguments": {"cr_number": "4057257652", "years": 2}}, "by": "registry desk"}
+{"trace_id": "R-0365", "call": {"name": "escalate_to_staff", "arguments": {"reason": "missing_cr"}}, "by": "registry desk"}
+{"trace_id": "R-0419", "call": {"name": "update_record", "arguments": {"cr_number": "4076917948", "field": "activity_code", "value": "BR-102"}}, "by": "registry desk"}
+{"trace_id": "R-0128", "call": {"name": "escalate_to_staff", "arguments": {"reason": "out_of_scope"}}, "by": "registry desk"}
+{"trace_id": "R-0241", "call": {"name": "escalate_to_staff", "arguments": {"reason": "missing_cr"}}, "by": "registry desk"}
+{"trace_id": "R-0251", "call": {"name": "update_record", "arguments": {"cr_number": "4099273205", "field": "activity_code", "value": "BR-101"}}, "by": "registry desk"}
+{"trace_id": "R-0039", "call": {"name": "escalate_to_staff", "arguments": {"reason": "no number"}}, "by": "registry desk"}
+{"trace_id": "R-0341", "call": {"name": "escalate_to_staff", "arguments": {"reason": "missing_cr"}}, "by": "registry desk"}
+{"trace_id": "R-0149", "call": {"name": "create_membership", "arguments": {"company_name": "Al-Itqan Development Est.", "cr_number": "4012103441", "city": "Yanbu", "activity_code": "BR-720"}}, "by": "registry desk"}
+{"trace_id": "R-0331", "call": {"name": "update_record", "arguments": {"cr_number": "4012103441", "field": "activity_code", "value": "BR-520"}}, "by": "registry desk"}
+{"trace_id": "R-0265", "call": {"name": "renew_membership", "arguments": {"cr_number": "٤٠٧٥٦٧٤٤٢٦", "years": 2}}, "by": "registry desk"}
+{"trace_id": "R-0235", "call": {"name": "renew_membership", "arguments": {"cr_number": "4040493283", "years": 1}}, "by": "registry desk"}
+{"trace_id": "R-0259", "call": {"name": "escalate_to_staff", "arguments": {"reason": "out_of_scope"}}, "by": "registry desk"}
+{"trace_id": "R-0062", "call": {"name": "issue_certificate", "arguments": {"cr_number": "407197755", "kind": "membership"}}, "by": "registry desk"}
+{"trace_id": "R-0153", "call": {"name": "create_membership", "arguments": {"company_name": "مجموعة المفتاح للمشاريع", "cr_number": "4052557682", "city": "Riyadh", "activity_code": "BR-530"}}, "by": "registry desk"}
+{"trace_id": "R-0113", "call": {"name": "escalate_to_staff", "arguments": {"reason": "missing_cr"}}, "by": "registry desk"}
+{"trace_id": "R-0411", "call": {"name": "create_membership", "arguments": {"company_name": "مجموعة المورد للتجارة", "cr_number": "4024287634", "city": "Taif", "activity_code": "BR-320"}}, "by": "registry desk"}
+{"trace_id": "R-0053", "call": {"name": "renew_membership", "arguments": {"cr_number": "4013448493", "years": 3}}, "by": "registry desk"}
+{"trace_id": "R-0457", "call": {"name": "create_membership", "arguments": {"company_name": "Al-Fajr Marketing Est.", "cr_number": "4070095608", "city": "Abha", "activity_code": "BR-330"}}, "by": "registry desk"}
+{"trace_id": "R-0483", "call": {"name": "create_membership", "arguments": {"company_name": "Al-Thiqa Services Group", "cr_number": "4030387230", "city": "Dammam", "activity_code": "BR-101"}}, "by": "registry desk"}
+{"trace_id": "R-0222", "call": {"name": "update_record", "arguments": {"cr_number": "4028371278", "field": "activity_code", "value": "BR-530"}}, "by": "registry desk"}
+{"trace_id": "R-0437", "call": {"name": "escalate_to_staff", "arguments": {"reason": "out_of_scope"}}, "by": "registry desk"}
+{"trace_id": "R-0211", "call": {"name": "escalate_to_staff", "arguments": {"reason": "missing_cr"}}, "by": "registry desk"}
+{"trace_id": "R-0396", "call": {"name": "escalate_to_staff", "arguments": {"reason": "missing_cr"}}, "by": "registry desk"}
+{"trace_id": "R-0306", "call": {"name": "renew_membership", "arguments": {"cr_number": "٤٠٣٥٩٧٩٧٦٦", "years": 2}}, "by": "registry desk"}
+{"trace_id": "R-0458", "call": {"name": "escalate_to_staff", "arguments": {"reason": "out_of_scope"}}, "by": "registry desk"}
+{"trace_id": "R-0099", "call": {"name": "issue_certificate", "arguments": {"cr_number": "4020582403", "kind": "membership"}}, "by": "registry desk"}
+{"trace_id": "R-0384", "call": {"name": "escalate_to_staff", "arguments": {"reason": "out_of_scope"}}, "by": "registry desk"}
+{"trace_id": "R-0418", "call": {"name": "update_record", "arguments": {"cr_number": "4087260894", "field": "activity_code", "value": "BR-101"}}, "by": "registry desk"}
+{"trace_id": "R-0092", "call": {"name": "update_record", "arguments": {"cr_number": "405522829", "field": "activity_code", "value": "BR-320"}}, "by": "registry desk"}
+{"trace_id": "R-0359", "call": {"name": "create_membership", "arguments": {"company_name": "Al-Diyar Logistics Co.", "cr_number": "4061200927", "city": "Taif", "activity_code": "BR-215"}}, "by": "registry desk"}
+{"trace_id": "R-0252", "call": {"name": "create_membership", "arguments": {"company_name": "Al-Tamayuz Logistics Group", "cr_number": "4062700578", "city": "Taif", "activity_code": "BR-215"}}, "by": "registry desk"}
+{"trace_id": "R-0027", "call": {"name": "escalate_to_staff", "arguments": {"reason": "missing_cr"}}, "by": "registry desk"}
+{"trace_id": "R-0190", "call": {"name": "update_record", "arguments": {"cr_number": "4061882689", "field": "activity_code", "value": "BR-320"}}, "by": "registry desk"}
+{"trace_id": "R-0011", "call": {"name": "escalate_to_staff", "arguments": {"reason": "missing_cr"}}, "by": "registry desk"}
+{"trace_id": "R-0274", "call": {"name": "create_membership", "arguments": {"company_name": "مؤسسة الإتقان للتطوير", "cr_number": "4012103441", "city": "Jeddah", "activity_code": "BR-520"}}, "by": "registry desk"}
+{"trace_id": "R-0232", "call": {"name": "update_record", "arguments": {"cr_number": "4047584239", "field": "city", "value": "Hail"}}, "by": "registry desk"}
+{"trace_id": "R-0148", "call": {"name": "create_membership", "arguments": {"company_name": "شركة الساحل للصناعة", "cr_number": "4040192047", "city": "Jazan", "activity_code": "BR-320"}}, "by": "registry desk"}
+{"trace_id": "R-0379", "call": {"name": "escalate_to_staff", "arguments": {"reason": "missing_cr"}}, "by": "registry desk"}
+{"trace_id": "R-0297", "call": {"name": "escalate_to_staff", "arguments": {"reason": "missing_cr"}}, "by": "registry desk"}
+{"trace_id": "R-0495", "call": {"name": "renew_membership", "arguments": {"cr_number": "4045006031", "years": 2}}, "by": "registry desk"}
+{"trace_id": "R-0065", "call": {"name": "renew_membership", "arguments": {"cr_number": "4006076040", "years": 1}}, "by": "registry desk"}
+{"trace_id": "R-0489", "call": {"name": "escalate_to_staff", "arguments": {"reason": "missing_cr"}}, "by": "registry desk"}
+{"trace_id": "R-0005", "call": {"name": "renew_membership", "arguments": {"cr_number": "4043108918", "years": 3}}, "by": "registry desk"}
+{"trace_id": "R-0358", "call": {"name": "create_membership", "arguments": {"company_name": "مجموعة التميز للحلول", "cr_number": "4052983386", "city": "Najran", "activity_code": "BR-320"}}, "by": "registry desk"}
+{"trace_id": "R-0004", "call": {"name": "create_membership", "arguments": {"company_name": "مؤسسة الأفق للتجارة", "cr_number": "4053253478", "city": "Taif", "activity_code": "BR-720"}}, "by": "registry desk"}
+{"trace_id": "R-0261", "call": {"name": "escalate_to_staff", "arguments": {"reason": "no number"}}, "by": "registry desk"}
+{"trace_id": "R-0298", "call": {"name": "create_membership", "arguments": {"company_name": "Al-Manara Services Co.", "cr_number": "4038420811", "city": "Hail", "activity_code": "BR-410"}}, "by": "registry desk"}
+{"trace_id": "R-0105", "call": {"name": "create_membership", "arguments": {"company_name": "مجموعة الثقة للاستثمار", "cr_number": "4061896434", "city": "Jeddah", "activity_code": "BR-610"}}, "by": "registry desk"}
+{"trace_id": "R-0108", "call": {"name": "issue_certificate", "arguments": {"cr_number": "4026356437", "kind": "membership"}}, "by": "registry desk"}
+{"trace_id": "R-0123", "call": {"name": "escalate_to_staff", "arguments": {"reason": "missing_cr"}}, "by": "registry desk"}
+{"trace_id": "R-0201", "call": {"name": "create_membership", "arguments": {"company_name": "شركة الفجر للخدمات", "cr_number": "4010625999", "city": "Abha", "activity_code": "BR-530"}}, "by": "registry desk"}
+{"trace_id": "R-0392", "call": {"name": "create_membership", "arguments": {"company_name": "مجموعة المنارة للمشاريع", "cr_number": "4001793622", "city": "Jazan", "activity_code": "BR-720"}}, "by": "registry desk"}
+{"trace_id": "R-0003", "call": {"name": "issue_certificate", "arguments": {"cr_number": "٤٠٦٠٨٩٥٢٠٢", "kind": "origin"}}, "by": "registry desk"}
+{"trace_id": "R-0084", "call": {"name": "renew_membership", "arguments": {"cr_number": "4035979766", "years": 3}}, "by": "registry desk"}
+{"trace_id": "R-0075", "call": {"name": "update_record", "arguments": {"cr_number": "4044065504", "field": "city", "value": "Hail"}}, "by": "registry desk"}
+{"trace_id": "R-0115", "call": {"name": "renew_membership", "arguments": {"cr_number": "4090890275", "years": 1}}, "by": "registry desk"}
+{"trace_id": "R-0249", "call": {"name": "escalate_to_staff", "arguments": {"reason": "missing_cr"}}, "by": "registry desk"}
+{"trace_id": "R-0186", "call": {"name": "issue_certificate", "arguments": {"cr_number": "4001148423", "kind": "origin"}}, "by": "registry desk"}
+{"trace_id": "R-0090", "call": {"name": "renew_membership", "arguments": {"cr_number": "4006076040", "years": 3}}, "by": "registry desk"}
+{"trace_id": "R-0433", "call": {"name": "update_record", "arguments": {"cr_number": "4003324565", "field": "city", "value": "Khobar"}}, "by": "registry desk"}
+{"trace_id": "R-0431", "call": {"name": "create_membership", "arguments": {"company_name": "شركة الدانة للحلول", "cr_number": "4072899686", "city": "Tabuk", "activity_code": "BR-520"}}, "by": "registry desk"}
+{"trace_id": "R-0287", "call": {"name": "escalate_to_staff", "arguments": {"reason": "no number"}}, "by": "registry desk"}
+{"trace_id": "R-0338", "call": {"name": "escalate_to_staff", "arguments": {"reason": "out_of_scope"}}, "by": "registry desk"}
+{"trace_id": "R-0429", "call": {"name": "escalate_to_staff", "arguments": {"reason": "out_of_scope"}}, "by": "registry desk"}
+{"trace_id": "R-0046", "call": {"name": "update_record", "arguments": {"cr_number": "4043225520", "field": "city", "value": "Najran"}}, "by": "registry desk"}
+{"trace_id": "R-0302", "call": {"name": "create_membership", "arguments": {"company_name": "شركة المنارة للخدمات", "cr_number": "4038420811", "city": "Tabuk", "activity_code": "BR-520"}}, "by": "registry desk"}
+{"trace_id": "R-0472", "call": {"name": "escalate_to_staff", "arguments": {"reason": "missing_cr"}}, "by": "registry desk"}
+{"trace_id": "R-0169", "call": {"name": "update_record", "arguments": {"cr_number": "4046618416", "field": "activity_code", "value": "BR-410"}}, "by": "registry desk"}
+{"trace_id": "R-0452", "call": {"name": "escalate_to_staff", "arguments": {"reason": "out_of_scope"}}, "by": "registry desk"}
+{"trace_id": "R-0183", "call": {"name": "escalate_to_staff", "arguments": {"reason": "out_of_scope"}}, "by": "registry desk"}
+{"trace_id": "R-0416", "call": {"name": "renew_membership", "arguments": {"cr_number": "4023748474", "years": 3}}, "by": "registry desk"}
+{"trace_id": "R-0373", "call": {"name": "renew_membership", "arguments": {"cr_number": "4087034019", "years": 2}}, "by": "registry desk"}
+{"trace_id": "R-0143", "call": {"name": "renew_membership", "arguments": {"cr_number": "4063487462", "years": 2}}, "by": "registry desk"}
+{"trace_id": "R-0002", "call": {"name": "escalate_to_staff", "arguments": {"reason": "missing_cr"}}, "by": "registry desk"}
+{"trace_id": "R-0237", "call": {"name": "escalate_to_staff", "arguments": {"reason": "missing_cr"}}, "by": "registry desk"}
+{"trace_id": "R-0412", "call": {"name": "renew_membership", "arguments": {"cr_number": "4053368811", "years": 2}}, "by": "registry desk"}
+{"trace_id": "R-0451", "call": {"name": "issue_certificate", "arguments": {"cr_number": "4071977558", "kind": "membership"}}, "by": "registry desk"}
+{"trace_id": "R-0447", "call": {"name": "renew_membership", "arguments": {"cr_number": "4056090472", "years": 1}}, "by": "registry desk"}
+{"trace_id": "R-0386", "call": {"name": "issue_certificate", "arguments": {"cr_number": "4059118682", "kind": "origin"}}, "by": "registry desk"}
+{"trace_id": "R-0146", "call": {"name": "issue_certificate", "arguments": {"cr_number": "4028187767", "kind": "membership"}}, "by": "registry desk"}
+{"trace_id": "R-0195", "call": {"name": "escalate_to_staff", "arguments": {"reason": "out_of_scope"}}, "by": "registry desk"}
+{"trace_id": "R-0109", "call": {"name": "create_membership", "arguments": {"company_name": "Al-Fajr Marketing Est.", "cr_number": "4070095608", "city": "Abha", "activity_code": "BR-330"}}, "by": "registry desk"}

@@ -1,0 +1,900 @@
+{"id": "P-0001", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4042077283\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0002", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4010215730\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0003", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4041771430\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0004", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0005", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0006", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4078725561\", \"field\": \"activity_code\", \"value\": \"BR-102\"}}\n</tool_call>"}
+{"id": "P-0007", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4060895202\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0008", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4035707143\", \"years\": 3}}\n</tool_call>"}
+{"id": "P-0009", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4067239831\", \"field\": \"activity_code\", \"value\": \"BR-610\"}}\n</tool_call>"}
+{"id": "P-0010", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4012734584\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0011", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4009122251\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0012", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4054457205\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0013", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4087722043\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0014", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0015", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0016", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4081511181\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0017", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Bustan Development Co.\", \"cr_number\": \"4033952450\", \"city\": \"Riyadh\", \"activity_code\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0018", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0019", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4011276781\", \"field\": \"city\", \"value\": \"Jazan\"}}\n</tool_call>"}
+{"id": "P-0020", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4006647056\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0021", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4001793622\", \"field\": \"city\", \"value\": \"Taif\"}}\n</tool_call>"}
+{"id": "P-0022", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0023", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Majd Services Group\", \"cr_number\": \"4060469712\", \"city\": \"Hail\", \"activity_code\": \"BR-102\"}}\n</tool_call>"}
+{"id": "P-0024", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة الثقة للاستثمار\", \"cr_number\": \"4061896434\", \"city\": \"Jeddah\", \"activity_code\": \"BR-210\"}}\n</tool_call>"}
+{"id": "P-0025", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0026", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0027", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4072899686\", \"field\": \"activity_code\", \"value\": \"BR-810\"}}\n</tool_call>"}
+{"id": "P-0028", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4079701071\", \"field\": \"city\", \"value\": \"Dammam\"}}\n</tool_call>"}
+{"id": "P-0029", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4033055563\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0030", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4070420494\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0031", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة الريف للاستثمار\", \"cr_number\": \"4078220752\", \"city\": \"Najran\", \"activity_code\": \"BR-530\"}}\n</tool_call>"}
+{"id": "P-0032", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0033", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4068639224\", \"field\": \"city\", \"value\": \"Abha\"}}\n</tool_call>"}
+{"id": "P-0034", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4024370500\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0035", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4020963004\", \"field\": \"activity_code\", \"value\": \"BR-101\"}}\n</tool_call>"}
+{"id": "P-0036", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة الروابي للتجارة\", \"cr_number\": \"4037695433\", \"city\": \"Taif\", \"activity_code\": \"BR-102\"}}\n</tool_call>"}
+{"id": "P-0037", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4034102323\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0038", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0039", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Ghadeer Logistics Est.\", \"cr_number\": \"4003201521\", \"city\": \"Buraidah\", \"activity_code\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0040", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4087034019\", \"field\": \"city\", \"value\": \"Jeddah\"}}\n</tool_call>"}
+{"id": "P-0041", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0042", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4003201521\", \"field\": \"activity_code\", \"value\": \"BR-610\"}}\n</tool_call>"}
+{"id": "P-0043", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Ghadeer Marketing Co.\", \"cr_number\": \"4044272904\", \"city\": \"Khobar\", \"activity_code\": \"BR-102\"}}\n</tool_call>"}
+{"id": "P-0044", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4075841850\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0045", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Itqan Investment Co.\", \"cr_number\": \"4087034019\", \"city\": \"Taif\", \"activity_code\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0046", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مؤسسة الفجر للإمداد\", \"cr_number\": \"4032707136\", \"city\": \"Tabuk\", \"activity_code\": \"BR-810\"}}\n</tool_call>"}
+{"id": "P-0047", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4013058726\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0048", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Jawhara Supplies Group\", \"cr_number\": \"4062749966\", \"city\": \"Dammam\", \"activity_code\": \"BR-215\"}}\n</tool_call>"}
+{"id": "P-0049", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4018440977\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0050", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4076952995\", \"field\": \"activity_code\", \"value\": \"BR-410\"}}\n</tool_call>"}
+{"id": "P-0051", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4061882689\", \"field\": \"city\", \"value\": \"Najran\"}}\n</tool_call>"}
+{"id": "P-0052", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Sahil Solutions Est.\", \"cr_number\": \"4068903631\", \"city\": \"Jazan\", \"activity_code\": \"BR-102\"}}\n</tool_call>"}
+{"id": "P-0053", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4008884105\", \"field\": \"activity_code\", \"value\": \"BR-530\"}}\n</tool_call>"}
+{"id": "P-0054", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4091302689\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0055", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4021645297\", \"field\": \"activity_code\", \"value\": \"BR-210\"}}\n</tool_call>"}
+{"id": "P-0056", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4020963004\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0057", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة الأفق للحلول\", \"cr_number\": \"4020398251\", \"city\": \"Dammam\", \"activity_code\": \"BR-520\"}}\n</tool_call>"}
+{"id": "P-0058", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة الوادي للخدمات\", \"cr_number\": \"4076567657\", \"city\": \"Buraidah\", \"activity_code\": \"BR-101\"}}\n</tool_call>"}
+{"id": "P-0059", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مؤسسة الأصالة للتوريدات\", \"cr_number\": \"4040581300\", \"city\": \"Riyadh\", \"activity_code\": \"ACT-47\"}}\n</tool_call>"}
+{"id": "P-0060", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4010215730\", \"field\": \"activity_code\", \"value\": \"BR-215\"}}\n</tool_call>"}
+{"id": "P-0061", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0062", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4099273205\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0063", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4001965046\", \"field\": \"city\", \"value\": \"Hail\"}}\n</tool_call>"}
+{"id": "P-0064", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4030160391\", \"field\": \"activity_code\", \"value\": \"BR-520\"}}\n</tool_call>"}
+{"id": "P-0065", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4059425308\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0066", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0067", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4077311242\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0068", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة الدانة للمشاريع\", \"cr_number\": \"4076917948\", \"city\": \"Jazan\", \"activity_code\": \"BR-810\"}}\n</tool_call>"}
+{"id": "P-0069", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Nakheel Projects Co.\", \"cr_number\": \"4019650642\", \"city\": \"Buraidah\", \"activity_code\": \"BR-810\"}}\n</tool_call>"}
+{"id": "P-0070", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4027139642\", \"field\": \"activity_code\", \"value\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0071", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4018440977\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0072", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4085947544\", \"field\": \"city\", \"value\": \"Riyadh\"}}\n</tool_call>"}
+{"id": "P-0073", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4058536238\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0074", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4082432262\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0075", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Salam Marketing Co.\", \"cr_number\": \"4096291998\", \"city\": \"Yanbu\", \"activity_code\": \"BR-101\"}}\n</tool_call>"}
+{"id": "P-0076", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4007901179\", \"field\": \"city\", \"value\": \"Riyadh\"}}\n</tool_call>"}
+{"id": "P-0077", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0078", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0079", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة المرفأ للتجارة\", \"cr_number\": \"4030841350\", \"city\": \"Najran\", \"activity_code\": \"BR-530\"}}\n</tool_call>"}
+{"id": "P-0080", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0081", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0082", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Ruwad Logistics Group\", \"cr_number\": \"4067117380\", \"city\": \"Abha\", \"activity_code\": \"BR-320\"}}\n</tool_call>"}
+{"id": "P-0083", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4024932444\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0084", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4042466515\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0085", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4003324565\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0086", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Noor Marketing Co.\", \"cr_number\": \"4059118682\", \"city\": \"Tabuk\", \"activity_code\": \"BR-530\"}}\n</tool_call>"}
+{"id": "P-0087", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Manara Services Est.\", \"cr_number\": \"4040493283\", \"city\": \"Khobar\", \"activity_code\": \"BR-101\"}}\n</tool_call>"}
+{"id": "P-0088", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0089", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4019359423\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0090", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Reef Investment Group\", \"cr_number\": \"4078220752\", \"city\": \"Khobar\", \"activity_code\": \"BR-210\"}}\n</tool_call>"}
+{"id": "P-0091", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة النماء للتطوير\", \"cr_number\": \"4092875314\", \"city\": \"Riyadh\", \"activity_code\": \"BR-530\"}}\n</tool_call>"}
+{"id": "P-0092", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة المجد للتطوير\", \"cr_number\": \"4028256228\", \"city\": \"Riyadh\", \"activity_code\": \"BR-320\"}}\n</tool_call>"}
+{"id": "P-0093", "output": "I am happy to help with that. Please send the details and the chamber will arrange it."}
+{"id": "P-0094", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4024148881\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0095", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4073410049\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0096", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0097", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4068639224\", \"years\": 3}}\n</tool_call>"}
+{"id": "P-0098", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0099", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4092875314\", \"field\": \"activity_code\", \"value\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0100", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0101", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4057257652\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0102", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4091302689\", \"field\": \"city\", \"value\": \"Taif\"}}\n</tool_call>"}
+{"id": "P-0103", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4046699529\", \"field\": \"city\", \"value\": \"Hail\"}}\n</tool_call>"}
+{"id": "P-0104", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة المجد للمشاريع\", \"cr_number\": \"4028187767\", \"city\": \"Jeddah\", \"activity_code\": \"BR-215\"}}\n</tool_call>"}
+{"id": "P-0105", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مؤسسة الإنجاز للصناعة\", \"cr_number\": \"4013542890\", \"city\": \"Taif\", \"activity_code\": \"BR-610\"}}\n</tool_call>"}
+{"id": "P-0106", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4042466515\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0107", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0108", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0109", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0110", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مؤسسة النور للحلول\", \"cr_number\": \"4050926589\", \"city\": \"Abha\", \"activity_code\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0111", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة الدانة للمشاريع\", \"cr_number\": \"4076917948\", \"city\": \"Tabuk\", \"activity_code\": \"BR-810\"}}\n</tool_call>"}
+{"id": "P-0112", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4076233213\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0113", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4010770464\", \"field\": \"city\", \"value\": \"Taif\"}}\n</tool_call>"}
+{"id": "P-0114", "output": "```json\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4072113071\", \"field\": \"activity_code\", \"value\": \"BR-210\"}}\n```"}
+{"id": "P-0115", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4085510129\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0116", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4030196243\", \"field\": \"activity_code\", \"value\": \"BR-215\"}}\n</tool_call>"}
+{"id": "P-0117", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4099057756\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0118", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4010215730\", \"field\": \"city\", \"value\": \"Jeddah\"}}\n</tool_call>"}
+{"id": "P-0119", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4031984449\", \"field\": \"activity_code\", \"value\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0120", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0121", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4012471737\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0122", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة السنابل للاستثمار\", \"cr_number\": \"4087910057\", \"city\": \"Jazan\", \"activity_code\": \"BR-410\"}}\n</tool_call>"}
+{"id": "P-0123", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0124", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Ufuq Logistics Est.\", \"cr_number\": \"4042034928\", \"city\": \"Taif\", \"activity_code\": \"BR-810\"}}\n</tool_call>"}
+{"id": "P-0125", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4029184372\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0126", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Nakheel Trading Co.\", \"cr_number\": \"4021645297\", \"city\": \"Yanbu\", \"activity_code\": \"BR-215\"}}\n</tool_call>"}
+{"id": "P-0127", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4050404047\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0128", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4051380503\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0129", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4053253478\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0130", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0131", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4031527968\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0132", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4027748195\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0133", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4040581300\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0134", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4027216128\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0135", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Yusr Logistics Est.\", \"cr_number\": \"4080764930\", \"city\": \"Yanbu\", \"activity_code\": \"BR-810\"}}\n</tool_call>"}
+{"id": "P-0136", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Dana Marketing Group\", \"cr_number\": \"4074638846\", \"city\": \"Taif\", \"activity_code\": \"BR-520\"}}\n</tool_call>"}
+{"id": "P-0137", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4000000000\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0138", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4093059500\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0139", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مؤسسة الغدير للإمداد\", \"cr_number\": \"4003201521\", \"city\": \"Abha\", \"activity_code\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0140", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4037695433\", \"field\": \"activity_code\", \"value\": \"BR-530\"}}\n</tool_call>"}
+{"id": "P-0141", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4071431971\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0142", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4060801904\", \"field\": \"activity_code\", \"value\": \"BR-410\"}}\n</tool_call>"}
+{"id": "P-0143", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مؤسسة الأفق للصناعة\", \"cr_number\": \"4097261722\", \"city\": \"Buraidah\", \"activity_code\": \"BR-101\"}}\n</tool_call>"}
+{"id": "P-0144", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Injaz Marketing Est.\", \"cr_number\": \"4054794302\", \"city\": \"Dammam\", \"activity_code\": \"BR-530\"}}\n</tool_call>"}
+{"id": "P-0145", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4092577073\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0146", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0147", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4076233213\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0148", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0149", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4040192047\", \"field\": \"city\", \"value\": \"Najran\"}}\n</tool_call>"}
+{"id": "P-0150", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4099057756\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0151", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4056592860\", \"field\": \"city\", \"value\": \"Jeddah\"}}\n</tool_call>"}
+{"id": "P-0152", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0153", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4051024103\", \"years\": 3}}\n</tool_call>"}
+{"id": "P-0154", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4057532096\", \"field\": \"activity_code\", \"value\": \"BR-102\"}}\n</tool_call>"}
+{"id": "P-0155", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4050404047\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0156", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4025606544\", \"field\": \"city\", \"value\": \"Taif\"}}\n</tool_call>"}
+{"id": "P-0157", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Namaa Projects Co.\", \"cr_number\": \"4035707143\", \"city\": \"Yanbu\", \"activity_code\": \"BR-215\"}}\n</tool_call>"}
+{"id": "P-0158", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4007236878\", \"field\": \"activity_code\", \"value\": \"BR-520\"}}\n</tool_call>"}
+{"id": "P-0159", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0160", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4003324565\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0161", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4019650642\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0162", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Itqan Services Group\", \"cr_number\": \"4007901179\", \"city\": \"Jeddah\", \"activity_code\": \"BR-610\"}}\n</tool_call>"}
+{"id": "P-0163", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Itqan Trading Co.\", \"cr_number\": \"4022733950\", \"city\": \"Buraidah\", \"activity_code\": \"BR-101\"}}\n</tool_call>"}
+{"id": "P-0164", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4057532096\", \"field\": \"city\", \"value\": \"Tabuk\"}}\n</tool_call>"}
+{"id": "P-0165", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4007236878\", \"field\": \"activity_code\", \"value\": \"BR-410\"}}\n</tool_call>"}
+{"id": "P-0166", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4001148423\", \"field\": \"activity_code\", \"value\": \"BR-215\"}}\n</tool_call>"}
+{"id": "P-0167", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مؤسسة البستان للإمداد\", \"cr_number\": \"4073410049\", \"city\": \"Jazan\", \"activity_code\": \"BR-530\"}}\n</tool_call>"}
+{"id": "P-0168", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Asala Services Est.\", \"cr_number\": \"4075663540\", \"city\": \"Tabuk\", \"activity_code\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0169", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4096129930\", \"field\": \"activity_code\", \"value\": \"BR-215\"}}\n</tool_call>"}
+{"id": "P-0170", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Rimal Development Co.\", \"cr_number\": \"4093863570\", \"city\": \"Buraidah\", \"activity_code\": \"BR-101\"}}\n</tool_call>"}
+{"id": "P-0171", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0172", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4010215730\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0173", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4093863570\", \"field\": \"activity_code\", \"value\": \"BR-410\"}}\n</tool_call>"}
+{"id": "P-0174", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4076233213\", \"field\": \"activity_code\", \"value\": \"BR-530\"}}\n</tool_call>"}
+{"id": "P-0175", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Kawthar Industries Group\", \"cr_number\": \"4038431046\", \"city\": \"Buraidah\", \"activity_code\": \"G-46\"}}\n</tool_call>"}
+{"id": "P-0176", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4076949346\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0177", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Thiqa Supplies Group\", \"cr_number\": \"4058536238\", \"city\": \"Buraidah\", \"activity_code\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0178", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0179", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4040493283\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0180", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4058794026\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0181", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0182", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4092289978\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0183", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4046615674\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0184", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4017688991\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0185", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4048246986\", \"field\": \"activity_code\", \"value\": \"BR-530\"}}\n</tool_call>"}
+{"id": "P-0186", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4028371278\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0187", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4019650642\", \"field\": \"activity_code\", \"value\": \"BR-810\"}}\n</tool_call>"}
+{"id": "P-0188", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4087260894\", \"field\": \"activity_code\", \"value\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0189", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4043108918\", \"field\": \"activity_code\", \"value\": \"BR-410\"}}\n</tool_call>"}
+{"id": "P-0190", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4012471737\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0191", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4046699529\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0192", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4099057756\", \"field\": \"activity_code\", \"value\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0193", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Reef Investment Group\", \"cr_number\": \"4078220752\", \"city\": \"Jeddah\", \"activity_code\": \"BR-101\"}}\n</tool_call>"}
+{"id": "P-0194", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4091747572\", \"field\": \"activity_code\", \"value\": \"SIC-5411\"}}\n</tool_call>"}
+{"id": "P-0195", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة البدر للتسويق\", \"cr_number\": \"4024290535\", \"city\": \"Yanbu\", \"activity_code\": \"BR-810\"}}\n</tool_call>"}
+{"id": "P-0196", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0197", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4094867347\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0198", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4003644656\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0199", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0200", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4033952450\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0201", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4043580943\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0202", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4027748195\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0203", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Noor Services Co.\", \"cr_number\": \"4071977558\", \"city\": \"Jazan\", \"activity_code\": \"BR-320\"}}\n</tool_call>"}
+{"id": "P-0204", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4028256228\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0205", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة الساحل للحلول\", \"cr_number\": \"4099534778\", \"city\": \"Tabuk\", \"activity_code\": \"BR-520\"}}\n</tool_call>"}
+{"id": "P-0206", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Badr Supplies Group\", \"cr_number\": \"4020963004\", \"city\": \"Yanbu\", \"activity_code\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0207", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4091420525\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0208", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4050563106\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0209", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4081983902\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0210", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4070640612\", \"field\": \"activity_code\", \"value\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0211", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0212", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4053368811\", \"field\": \"city\", \"value\": \"Yanbu\"}}\n</tool_call>"}
+{"id": "P-0213", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Injaz Industries Est.\", \"cr_number\": \"4013542890\", \"city\": \"Buraidah\", \"activity_code\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0214", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4074254056\", \"field\": \"city\", \"value\": \"Abha\"}}\n</tool_call>"}
+{"id": "P-0215", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4021107405\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0216", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4043467201\", \"field\": \"activity_code\", \"value\": \"BR-210\"}}\n</tool_call>"}
+{"id": "P-0217", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مؤسسة المنارة للتطوير\", \"cr_number\": \"4021107405\", \"city\": \"Abha\", \"activity_code\": \"BR-530\"}}\n</tool_call>"}
+{"id": "P-0218", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4068903631\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0219", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4007074399\", \"field\": \"activity_code\", \"value\": \"BR-520\"}}\n</tool_call>"}
+{"id": "P-0220", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4074817769\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0221", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4016479085\", \"field\": \"city\", \"value\": \"Tabuk\"}}\n</tool_call>"}
+{"id": "P-0222", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0223", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4024364796\", \"years\": 3}}\n</tool_call>"}
+{"id": "P-0224", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0225", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4028375663\", \"field\": \"activity_code\", \"value\": \"BR-210\"}}\n</tool_call>"}
+{"id": "P-0226", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4043108918\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0227", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4075597857\", \"field\": \"city\", \"value\": \"Jazan\"}}\n</tool_call>"}
+{"id": "P-0228", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Reef Development Co.\", \"cr_number\": \"4078116086\", \"city\": \"Taif\", \"activity_code\": \"BR-810\"}}\n</tool_call>"}
+{"id": "P-0229", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0230", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0231", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4061200927\", \"field\": \"city\", \"value\": \"Tabuk\"}}\n</tool_call>"}
+{"id": "P-0232", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4060469712\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0233", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0234", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4052983386\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0235", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة المورد للحلول\", \"cr_number\": \"4054457205\", \"city\": \"Abha\", \"activity_code\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0236", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4099057756\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0237", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4008884105\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0238", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4098269329\", \"field\": \"city\", \"value\": \"Yanbu\"}}\n</tool_call>"}
+{"id": "P-0239", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4070420494\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0240", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4072936679\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0241", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4073410049\", \"field\": \"city\", \"value\": \"Riyadh\"}}\n</tool_call>"}
+{"id": "P-0242", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4090966190\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0243", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4033055563\", \"field\": \"activity_code\", \"value\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0244", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4078725561\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0245", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4029278846\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0246", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0247", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة المفتاح للتجارة\", \"cr_number\": \"4032228831\", \"city\": \"Najran\", \"activity_code\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0248", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Tamayuz Solutions Co.\", \"cr_number\": \"4048246986\", \"city\": \"Abha\", \"activity_code\": \"BR-530\"}}\n</tool_call>"}
+{"id": "P-0249", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4078338831\", \"years\": 3}}\n</tool_call>"}
+{"id": "P-0250", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4019359423\", \"field\": \"activity_code\", \"value\": \"BR-610\"}}\n</tool_call>"}
+{"id": "P-0251", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4075841850\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0252", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4068260920\", \"field\": \"city\", \"value\": \"Dammam\"}}\n</tool_call>"}
+{"id": "P-0253", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4073075237\", \"years\": 3}}\n</tool_call>"}
+{"id": "P-0254", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4098262037\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0255", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4017688991\", \"field\": \"city\", \"value\": \"Taif\"}}\n</tool_call>"}
+{"id": "P-0256", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0257", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0258", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مؤسسة التوفيق للتسويق\", \"cr_number\": \"4024932444\", \"city\": \"Najran\", \"activity_code\": \"BR-520\"}}\n</tool_call>"}
+{"id": "P-0259", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4055228296\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0260", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0261", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4046618416\", \"field\": \"activity_code\", \"value\": \"BR-320\"}}\n</tool_call>"}
+{"id": "P-0262", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4062749966\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0263", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4023425029\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0264", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4007293453\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0265", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0266", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4018440977\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0267", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4043467201\", \"years\": 3}}\n</tool_call>"}
+{"id": "P-0268", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0269", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4006825686\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0270", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4087898940\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0271", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0272", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4007236878\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0273", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4030160391\", \"field\": \"activity_code\", \"value\": \"BR-410\"}}\n</tool_call>"}
+{"id": "P-0274", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0275", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة الروابي للحلول\", \"cr_number\": \"4006825686\", \"city\": \"Riyadh\", \"activity_code\": \"BR-530\"}}\n</tool_call>"}
+{"id": "P-0276", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4036321806\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0277", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0278", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة الدانة للتطوير\", \"cr_number\": \"4020032770\", \"city\": \"Riyadh\", \"activity_code\": \"BR-520\"}}\n</tool_call>"}
+{"id": "P-0279", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4043225520\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0280", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مؤسسة اليسر للإمداد\", \"cr_number\": \"4080764930\", \"city\": \"Dammam\", \"activity_code\": \"BR-530\"}}\n</tool_call>"}
+{"id": "P-0281", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة المورد للتجارة\", \"cr_number\": \"4024287634\", \"city\": \"Buraidah\", \"activity_code\": \"BR-101\"}}\n</tool_call>"}
+{"id": "P-0282", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0283", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4096291998\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0284", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0285", "output": "I am happy to help with that. Please send the details and the chamber will arrange it."}
+{"id": "P-0286", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4078116086\", \"field\": \"city\", \"value\": \"Riyadh\"}}\n</tool_call>"}
+{"id": "P-0287", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4071470955\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0288", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0289", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4001793622\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0290", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4026478125\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0291", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4060801904\", \"field\": \"activity_code\", \"value\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0292", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0293", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4052557682\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0294", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4076567657\", \"field\": \"activity_code\", \"value\": \"BR-320\"}}\n</tool_call>"}
+{"id": "P-0295", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4050926589\", \"field\": \"city\", \"value\": \"Dammam\"}}\n</tool_call>"}
+{"id": "P-0296", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4028187767\", \"field\": \"city\", \"value\": \"Riyadh\"}}\n</tool_call>"}
+{"id": "P-0297", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4094867347\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0298", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4088999615\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0299", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Wadi Solutions Group\", \"cr_number\": \"4012471737\", \"city\": \"Jeddah\", \"activity_code\": \"BR-810\"}}\n</tool_call>"}
+{"id": "P-0300", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة القافلة للتطوير\", \"cr_number\": \"4027216128\", \"city\": \"Taif\", \"activity_code\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0301", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4010625999\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0302", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0303", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة الغدير للتسويق\", \"cr_number\": \"4044272904\", \"city\": \"Abha\", \"activity_code\": \"BR-810\"}}\n</tool_call>"}
+{"id": "P-0304", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة البستان للتسويق\", \"cr_number\": \"4030196243\", \"city\": \"Dammam\", \"activity_code\": \"BR-410\"}}\n</tool_call>"}
+{"id": "P-0305", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4007713608\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0306", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4053253478\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0307", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة الوادي للخدمات\", \"cr_number\": \"4076567657\", \"city\": \"Tabuk\", \"activity_code\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0308", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Yusr Industries Co.\", \"cr_number\": \"4043580943\", \"city\": \"Najran\", \"activity_code\": \"BR-102\"}}\n</tool_call>"}
+{"id": "P-0309", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4024148881\", \"field\": \"city\", \"value\": \"Buraidah\"}}\n</tool_call>"}
+{"id": "P-0310", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0311", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4076233213\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0312", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4087603083\", \"years\": 3}}\n</tool_call>"}
+{"id": "P-0313", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة الأفق للاستثمار\", \"cr_number\": \"4024364796\", \"city\": \"Buraidah\", \"activity_code\": \"BR-520\"}}\n</tool_call>"}
+{"id": "P-0314", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4091302689\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0315", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4065958888\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0316", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4070095608\", \"field\": \"city\", \"value\": \"Dammam\"}}\n</tool_call>"}
+{"id": "P-0317", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0318", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4062700578\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0319", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4087898940\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0320", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4076917948\", \"years\": 3}}\n</tool_call>"}
+{"id": "P-0321", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4061200927\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0322", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4033598718\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0323", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Jawhara Marketing Co.\", \"cr_number\": \"4098543960\", \"city\": \"Yanbu\", \"activity_code\": \"BR-520\"}}\n</tool_call>"}
+{"id": "P-0324", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4030841350\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0325", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4048246986\", \"field\": \"activity_code\", \"value\": \"BR-320\"}}\n</tool_call>"}
+{"id": "P-0326", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة اليسر للتسويق\", \"cr_number\": \"4098269329\", \"city\": \"Jazan\", \"activity_code\": \"BR-320\"}}\n</tool_call>"}
+{"id": "P-0327", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Mawrid Logistics Group\", \"cr_number\": \"4043108918\", \"city\": \"Jeddah\", \"activity_code\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0328", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0329", "output": "This request needs issue_certificate with cr_number 4070386088, kind origin."}
+{"id": "P-0330", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة المجد للإمداد\", \"cr_number\": \"4064886034\", \"city\": \"Dammam\", \"activity_code\": \"BR-320\"}}\n</tool_call>"}
+{"id": "P-0331", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4082431044\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0332", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4087260894\", \"field\": \"city\", \"value\": \"Taif\"}}\n</tool_call>"}
+{"id": "P-0333", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4077045818\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0334", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4074638846\", \"field\": \"city\", \"value\": \"Buraidah\"}}\n</tool_call>"}
+{"id": "P-0335", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4054457205\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0336", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4011276781\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0337", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4042034928\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0338", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4033598718\", \"field\": \"activity_code\", \"value\": \"BR-810\"}}\n</tool_call>"}
+{"id": "P-0339", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4078725561\", \"field\": \"activity_code\", \"value\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0340", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4098269329\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0341", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4032707136\", \"field\": \"city\", \"value\": \"Tabuk\"}}\n</tool_call>"}
+{"id": "P-0342", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4015263389\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0343", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة التميز للحلول\", \"cr_number\": \"4048246986\", \"city\": \"Tabuk\", \"activity_code\": \"BR-210\"}}\n</tool_call>"}
+{"id": "P-0344", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4061882689\", \"field\": \"city\", \"value\": \"Riyadh\"}}\n</tool_call>"}
+{"id": "P-0345", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4059118682\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0346", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Jawhara Logistics Group\", \"cr_number\": \"4007713608\", \"city\": \"Buraidah\", \"activity_code\": \"BR-101\"}}\n</tool_call>"}
+{"id": "P-0347", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0348", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4073075237\", \"field\": \"activity_code\", \"value\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0349", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0350", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4077768017\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0351", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4026356437\", \"field\": \"city\", \"value\": \"Jeddah\"}}\n</tool_call>"}
+{"id": "P-0352", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4008884105\", \"field\": \"activity_code\", \"value\": \"BR-320\"}}\n</tool_call>"}
+{"id": "P-0353", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Safwa Trading Group\", \"cr_number\": \"4050563106\", \"city\": \"Yanbu\", \"activity_code\": \"BR-530\"}}\n</tool_call>"}
+{"id": "P-0354", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Thiqa Projects Co.\", \"cr_number\": \"4094867347\", \"city\": \"Hail\", \"activity_code\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0355", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4039597430\", \"years\": 3}}\n</tool_call>"}
+{"id": "P-0356", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4087382031\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0357", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4042077283\", \"field\": \"activity_code\", \"value\": \"BR-610\"}}\n</tool_call>"}
+{"id": "P-0358", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4050404047\", \"field\": \"city\", \"value\": \"Jeddah\"}}\n</tool_call>"}
+{"id": "P-0359", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4046615674\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0360", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0361", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4063487462\", \"field\": \"activity_code\", \"value\": \"BR-101\"}}\n</tool_call>"}
+{"id": "P-0362", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0363", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4010770464\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0364", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4014810698\", \"field\": \"city\", \"value\": \"Najran\"}}\n</tool_call>"}
+{"id": "P-0365", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0366", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4072936679\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0367", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4085947544\", \"field\": \"city\", \"value\": \"Khobar\"}}\n</tool_call>"}
+{"id": "P-0368", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Dana Projects Co.\", \"cr_number\": \"4076917948\", \"city\": \"Jazan\", \"activity_code\": \"BR-520\"}}\n</tool_call>"}
+{"id": "P-0369", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة النماء للخدمات\", \"cr_number\": \"4067239831\", \"city\": \"Yanbu\", \"activity_code\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0370", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4012734584\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0371", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة القمة للمشاريع\", \"cr_number\": \"4085510129\", \"city\": \"Tabuk\", \"activity_code\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0372", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4048158380\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0373", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0374", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4033055563\", \"field\": \"city\", \"value\": \"Taif\"}}\n</tool_call>"}
+{"id": "P-0375", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4020032770\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0376", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0377", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Itqan Trading Est.\", \"cr_number\": \"4002259834\", \"city\": \"Taif\", \"activity_code\": \"BR-530\"}}\n</tool_call>"}
+{"id": "P-0378", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4053028654\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0379", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4062749966\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0380", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة الجوهرة للتوريدات\", \"cr_number\": \"4062749966\", \"city\": \"Taif\", \"activity_code\": \"BR-101\"}}\n</tool_call>"}
+{"id": "P-0381", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0382", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4042466515\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0383", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4020032770\", \"field\": \"city\", \"value\": \"Taif\"}}\n</tool_call>"}
+{"id": "P-0384", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4012471737\", \"field\": \"city\", \"value\": \"Jazan\"}}\n</tool_call>"}
+{"id": "P-0385", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0386", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4061896434\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0387", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4053011889\", \"field\": \"city\", \"value\": \"Buraidah\"}}\n</tool_call>"}
+{"id": "P-0388", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Tawfiq Solutions Est.\", \"cr_number\": \"4087898940\", \"city\": \"Taif\", \"activity_code\": \"BR-210\"}}\n</tool_call>"}
+{"id": "P-0389", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0390", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4037697220\", \"field\": \"activity_code\", \"value\": \"BR-610\"}}\n</tool_call>"}
+{"id": "P-0391", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4097261722\", \"years\": 3}}\n</tool_call>"}
+{"id": "P-0392", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4056090472\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0393", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0394", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4025606544\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0395", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0396", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4076949346\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0397", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4019650642\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0398", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Wadi Development Est.\", \"cr_number\": \"4027790752\", \"city\": \"Abha\", \"activity_code\": \"BR-320\"}}\n</tool_call>"}
+{"id": "P-0399", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0400", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0401", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة النخيل للخدمات\", \"cr_number\": \"4099105561\", \"city\": \"Yanbu\", \"activity_code\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0402", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4049571546\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0403", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4073410049\", \"field\": \"activity_code\", \"value\": \"BR-610\"}}\n</tool_call>"}
+{"id": "P-0404", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4056478180\", \"years\": 3}}\n</tool_call>"}
+{"id": "P-0405", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة الدانة للمشاريع\", \"cr_number\": \"4091420525\", \"city\": \"Tabuk\", \"activity_code\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0406", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4042466515\", \"field\": \"city\", \"value\": \"Yanbu\"}}\n</tool_call>"}
+{"id": "P-0407", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4076233213\", \"field\": \"activity_code\", \"value\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0408", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4056478180\", \"field\": \"activity_code\", \"value\": \"BR-320\"}}\n</tool_call>"}
+{"id": "P-0409", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4099273205\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0410", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4093059500\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0411", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4070420494\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0412", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Jisr Supplies Est.\", \"cr_number\": \"4043225520\", \"city\": \"Jazan\", \"activity_code\": \"BR-530\"}}\n</tool_call>"}
+{"id": "P-0413", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Nakheel Projects Co.\", \"cr_number\": \"4019650642\", \"city\": \"Jeddah\", \"activity_code\": \"BR-410\"}}\n</tool_call>"}
+{"id": "P-0414", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4053028654\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0415", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4031527968\", \"field\": \"activity_code\", \"value\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0416", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0417", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4002259834\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0418", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة السلام للمشاريع\", \"cr_number\": \"4072113071\", \"city\": \"Tabuk\", \"activity_code\": \"BR-101\"}}\n</tool_call>"}
+{"id": "P-0419", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0420", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة الرواد للصناعة\", \"cr_number\": \"4082432262\", \"city\": \"Najran\", \"activity_code\": \"BR-215\"}}\n</tool_call>"}
+{"id": "P-0421", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0422", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة المفتاح للتطوير\", \"cr_number\": \"4013177052\", \"city\": \"Khobar\", \"activity_code\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0423", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مؤسسة النور للتجارة\", \"cr_number\": \"4072936679\", \"city\": \"Abha\", \"activity_code\": \"BR-610\"}}\n</tool_call>"}
+{"id": "P-0424", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4014810698\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0425", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4030160391\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0426", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Ufuq Solutions Co.\", \"cr_number\": \"4020398251\", \"city\": \"Tabuk\", \"activity_code\": \"BR-530\"}}\n</tool_call>"}
+{"id": "P-0427", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4078761254\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0428", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4018440977\", \"field\": \"activity_code\", \"value\": \"BR-320\"}}\n</tool_call>"}
+{"id": "P-0429", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4038420811\", \"field\": \"city\", \"value\": \"Taif\"}}\n</tool_call>"}
+{"id": "P-0430", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0431", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4048246986\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0432", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4027748195\", \"field\": \"activity_code\", \"value\": \"BR-101\"}}\n</tool_call>"}
+{"id": "P-0433", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4062700578\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0434", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Manara Solutions Est.\", \"cr_number\": \"4030235255\", \"city\": \"Abha\", \"activity_code\": \"BR-215\"}}\n</tool_call>"}
+{"id": "P-0435", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4070420494\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0436", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0437", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4025843454\", \"field\": \"activity_code\", \"value\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0438", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4003201521\", \"field\": \"activity_code\", \"value\": \"BR-102\"}}\n</tool_call>"}
+{"id": "P-0439", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4006825686\", \"field\": \"activity_code\", \"value\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0440", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4074817769\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0441", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4002384841\", \"field\": \"city\", \"value\": \"Abha\"}}\n</tool_call>"}
+{"id": "P-0442", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0443", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة المورد للإمداد\", \"cr_number\": \"4043108918\", \"city\": \"Tabuk\", \"activity_code\": \"BR-810\"}}\n</tool_call>"}
+{"id": "P-0444", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4033687698\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0445", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4040117618\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0446", "output": "<tool_call>\n{'name': 'create_membership', 'arguments': {'company_name': 'Al-Ufuq Industries Est.', 'cr_number': '4097261722', 'city': 'Jazan', 'activity_code': 'BR-810'}}\n</tool_call>"}
+{"id": "P-0447", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4055228296\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0448", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4080764930\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0449", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4007236878\", \"field\": \"activity_code\", \"value\": \"BR-530\"}}\n</tool_call>"}
+{"id": "P-0450", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4091747572\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0451", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4014810698\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0452", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4020963004\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0453", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة الأفق للخدمات\", \"cr_number\": \"4087722043\", \"city\": \"Buraidah\", \"activity_code\": \"BR-215\"}}\n</tool_call>"}
+{"id": "P-0454", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4028375663\", \"field\": \"city\", \"value\": \"Najran\"}}\n</tool_call>"}
+{"id": "P-0455", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة النماء للمشاريع\", \"cr_number\": \"4035707143\", \"city\": \"Yanbu\", \"activity_code\": \"BR-101\"}}\n</tool_call>"}
+{"id": "P-0456", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0457", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4035707143\", \"years\": 3}}\n</tool_call>"}
+{"id": "P-0458", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4095718590\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0459", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0460", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4074638846\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0461", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4061882689\", \"field\": \"activity_code\", \"value\": \"BR-102\"}}\n</tool_call>"}
+{"id": "P-0462", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4019650642\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0463", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4041771430\", \"field\": \"city\", \"value\": \"Taif\"}}\n</tool_call>"}
+{"id": "P-0464", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4046699529\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0465", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4033687698\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0466", "output": "```json\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Asala Services Est.\", \"cr_number\": \"4075663540\", \"city\": \"Najran\", \"activity_code\": \"BR-610\"}}\n```"}
+{"id": "P-0467", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4035707143\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0468", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4054794302\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0469", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0470", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4085580183\", \"field\": \"city\", \"value\": \"Jeddah\"}}\n</tool_call>"}
+{"id": "P-0471", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0472", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Itqan Supplies Group\", \"cr_number\": \"4061085107\", \"city\": \"Buraidah\", \"activity_code\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0473", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Kawthar Investment Est.\", \"cr_number\": \"4080911228\", \"city\": \"Najran\", \"activity_code\": \"BR-101\"}}\n</tool_call>"}
+{"id": "P-0474", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4071494676\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0475", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4035707143\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0476", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Yusr Logistics Est.\", \"cr_number\": \"4080764930\", \"city\": \"Yanbu\", \"activity_code\": \"BR-215\"}}\n</tool_call>"}
+{"id": "P-0477", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4090614557\", \"field\": \"activity_code\", \"value\": \"BR-530\"}}\n</tool_call>"}
+{"id": "P-0478", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة البدر للتوريدات\", \"cr_number\": \"4020963004\", \"city\": \"Jazan\", \"activity_code\": \"BR-215\"}}\n</tool_call>"}
+{"id": "P-0479", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة الغدير للتسويق\", \"cr_number\": \"4044272904\", \"city\": \"Taif\", \"activity_code\": \"BR-610\"}}\n</tool_call>"}
+{"id": "P-0480", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4023425029\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0481", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4075814128\", \"years\": 3}}\n</tool_call>"}
+{"id": "P-0482", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4072113071\", \"field\": \"city\", \"value\": \"Najran\"}}\n</tool_call>"}
+{"id": "P-0483", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0484", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4096291998\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0485", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4072899686\", \"field\": \"city\", \"value\": \"Hail\"}}\n</tool_call>"}
+{"id": "P-0486", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4066490001\", \"field\": \"activity_code\", \"value\": \"BR-210\"}}\n</tool_call>"}
+{"id": "P-0487", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4093059500\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0488", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مؤسسة النماء للصناعة\", \"cr_number\": \"4077947580\", \"city\": \"Dammam\", \"activity_code\": \"BR-102\"}}\n</tool_call>"}
+{"id": "P-0489", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4043108918\", \"field\": \"city\", \"value\": \"Dammam\"}}\n</tool_call>"}
+{"id": "P-0490", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Nakheel Trading Est.\", \"cr_number\": \"4078264976\", \"city\": \"Yanbu\", \"activity_code\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0491", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4036321806\", \"field\": \"city\", \"value\": \"Hail\"}}\n</tool_call>"}
+{"id": "P-0492", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة النماء للمشاريع\", \"cr_number\": \"4073075237\", \"city\": \"Hail\", \"activity_code\": \"BR-210\"}}\n</tool_call>"}
+{"id": "P-0493", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0494", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة الأفق للتجارة\", \"cr_number\": \"4081511181\", \"city\": \"Yanbu\", \"activity_code\": \"BR-102\"}}\n</tool_call>"}
+{"id": "P-0495", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4044065504\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0496", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4099551402\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0497", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4016479085\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0498", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0499", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0500", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4082432262\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0501", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4068639224\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0502", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4080764930\", \"field\": \"activity_code\", \"value\": \"BR-215\"}}\n</tool_call>"}
+{"id": "P-0503", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4071470955\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0504", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Safwa Marketing Co.\", \"cr_number\": \"4046615674\", \"city\": \"Jeddah\", \"activity_code\": \"BR-810\"}}\n</tool_call>"}
+{"id": "P-0505", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4042034928\", \"field\": \"city\", \"value\": \"Jeddah\"}}\n</tool_call>"}
+{"id": "P-0506", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مؤسسة الكوثر للحلول\", \"cr_number\": \"4057532096\", \"city\": \"Riyadh\", \"activity_code\": \"BR-410\"}}\n</tool_call>"}
+{"id": "P-0507", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4033687698\", \"field\": \"activity_code\", \"value\": \"BR-320\"}}\n</tool_call>"}
+{"id": "P-0508", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4032707136\", \"field\": \"activity_code\", \"value\": \"BR-320\"}}\n</tool_call>"}
+{"id": "P-0509", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4075841850\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0510", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة الجوهرة للإمداد\", \"cr_number\": \"4026478125\", \"city\": \"Yanbu\", \"activity_code\": \"4711\"}}\n</tool_call>"}
+{"id": "P-0511", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4060801904\", \"field\": \"city\", \"value\": \"Dammam\"}}\n</tool_call>"}
+{"id": "P-0512", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4003201521\", \"field\": \"activity_code\", \"value\": \"BR-102\"}}\n</tool_call>"}
+{"id": "P-0513", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4047584239\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0514", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مؤسسة المفتاح للإمداد\", \"cr_number\": \"4036321806\", \"city\": \"Dammam\", \"activity_code\": \"BR-102\"}}\n</tool_call>"}
+{"id": "P-0515", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0516", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة النماء للصناعة\", \"cr_number\": \"4013583134\", \"city\": \"Jeddah\", \"activity_code\": \"BR-810\"}}\n</tool_call>"}
+{"id": "P-0517", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Majd Logistics Co.\", \"cr_number\": \"4064886034\", \"city\": \"Khobar\", \"activity_code\": \"BR-610\"}}\n</tool_call>"}
+{"id": "P-0518", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0519", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4024290535\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0520", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4019650642\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0521", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4046437150\", \"field\": \"activity_code\", \"value\": \"BR-810\"}}\n</tool_call>"}
+{"id": "P-0522", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة التميز للحلول\", \"cr_number\": \"4048246986\", \"city\": \"Taif\", \"activity_code\": \"BR-410\"}}\n</tool_call>"}
+{"id": "P-0523", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0524", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4070640612\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0525", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4055100851\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0526", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0527", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4070095608\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0528", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4010770464\", \"years\": 3}}\n</tool_call>"}
+{"id": "P-0529", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مؤسسة التوفيق للحلول\", \"cr_number\": \"4087898940\", \"city\": \"Buraidah\", \"activity_code\": \"BR-320\"}}\n</tool_call>"}
+{"id": "P-0530", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4080764930\", \"field\": \"activity_code\", \"value\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0531", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4040117618\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0532", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة اليسر للتجارة\", \"cr_number\": \"4084296740\", \"city\": \"Abha\", \"activity_code\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0533", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Asala Logistics Est.\", \"cr_number\": \"4073246145\", \"city\": \"Riyadh\", \"activity_code\": \"BR-210\"}}\n</tool_call>"}
+{"id": "P-0534", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4014810698\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0535", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0536", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة الرواد للإمداد\", \"cr_number\": \"4067117380\", \"city\": \"Jeddah\", \"activity_code\": \"BR-610\"}}\n</tool_call>"}
+{"id": "P-0537", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Asala Trading Est.\", \"cr_number\": \"4013448493\", \"city\": \"Taif\", \"activity_code\": \"BR-101\"}}\n</tool_call>"}
+{"id": "P-0538", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4001148423\", \"field\": \"activity_code\", \"value\": \"BR-320\"}}\n</tool_call>"}
+{"id": "P-0539", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0540", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4090966190\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0541", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Injaz Logistics Est.\", \"cr_number\": \"4091080630\", \"city\": \"Najran\", \"activity_code\": \"BR-101\"}}\n</tool_call>"}
+{"id": "P-0542", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Wadi Marketing Group\", \"cr_number\": \"4097930539\", \"city\": \"Jeddah\", \"activity_code\": \"BR-410\"}}\n</tool_call>"}
+{"id": "P-0543", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4051380503\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0544", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4070420494\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0545", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4019650642\", \"field\": \"activity_code\", \"value\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0546", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4076917948\", \"field\": \"activity_code\", \"value\": \"BR-410\"}}\n</tool_call>"}
+{"id": "P-0547", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Jisr Logistics Co.\", \"cr_number\": \"4047584239\", \"city\": \"Abha\", \"activity_code\": \"BR-520\"}}\n</tool_call>"}
+{"id": "P-0548", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة الأصالة للإمداد\", \"cr_number\": \"4010770464\", \"city\": \"Jazan\", \"activity_code\": \"BR-102\"}}\n</tool_call>"}
+{"id": "P-0549", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4067117380\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0550", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4001965046\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0551", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0552", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Thiqa Investment Co.\", \"cr_number\": \"4041771430\", \"city\": \"Khobar\", \"activity_code\": \"BR-520\"}}\n</tool_call>"}
+{"id": "P-0553", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Rimal Marketing Co.\", \"cr_number\": \"4023425029\", \"city\": \"Taif\", \"activity_code\": \"BR-520\"}}\n</tool_call>"}
+{"id": "P-0554", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4030841350\", \"field\": \"city\", \"value\": \"Yanbu\"}}\n</tool_call>"}
+{"id": "P-0555", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0556", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة الأفق للصناعة\", \"cr_number\": \"4013868158\", \"city\": \"Jeddah\", \"activity_code\": \"BR-610\"}}\n</tool_call>"}
+{"id": "P-0557", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4081983902\", \"field\": \"city\", \"value\": \"Buraidah\"}}\n</tool_call>"}
+{"id": "P-0558", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4081511181\", \"field\": \"city\", \"value\": \"Abha\"}}\n</tool_call>"}
+{"id": "P-0559", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0560", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4013542890\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0561", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة المرفأ للمشاريع\", \"cr_number\": \"4078725561\", \"city\": \"Riyadh\", \"activity_code\": \"BR-610\"}}\n</tool_call>"}
+{"id": "P-0562", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4027748195\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0563", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة الجوهرة للتوريدات\", \"cr_number\": \"4062749966\", \"city\": \"Jazan\", \"activity_code\": \"BR-215\"}}\n</tool_call>"}
+{"id": "P-0564", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Baraka Solutions Co.\", \"cr_number\": \"4031527968\", \"city\": \"Abha\", \"activity_code\": \"BR-102\"}}\n</tool_call>"}
+{"id": "P-0565", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4021230191\", \"field\": \"activity_code\", \"value\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0566", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4094867347\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0567", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4099105561\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0568", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4078743718\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0569", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4003201521\", \"field\": \"activity_code\", \"value\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0570", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة الدانة للتطوير\", \"cr_number\": \"4020032770\", \"city\": \"Abha\", \"activity_code\": \"BR-320\"}}\n</tool_call>"}
+{"id": "P-0571", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4061200927\", \"field\": \"city\", \"value\": \"Riyadh\"}}\n</tool_call>"}
+{"id": "P-0572", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4037695433\", \"field\": \"activity_code\", \"value\": \"BR-520\"}}\n</tool_call>"}
+{"id": "P-0573", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Injaz Industries Est.\", \"cr_number\": \"4013542890\", \"city\": \"Buraidah\", \"activity_code\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0574", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4050404047\", \"field\": \"activity_code\", \"value\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0575", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4028241848\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0576", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0577", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4094867347\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0578", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4062749966\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0579", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0580", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Miftah Logistics Est.\", \"cr_number\": \"4036321806\", \"city\": \"Taif\", \"activity_code\": \"BR-530\"}}\n</tool_call>"}
+{"id": "P-0581", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4032228831\", \"field\": \"city\", \"value\": \"Riyadh\"}}\n</tool_call>"}
+{"id": "P-0582", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4074638846\", \"field\": \"city\", \"value\": \"Hail\"}}\n</tool_call>"}
+{"id": "P-0583", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Sahil Industries Co.\", \"cr_number\": \"4040192047\", \"city\": \"Buraidah\", \"activity_code\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0584", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4075489409\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0585", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4064886034\", \"field\": \"city\", \"value\": \"Yanbu\"}}\n</tool_call>"}
+{"id": "P-0586", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"٤٠٢٣٤٢٥٠٢٩\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0587", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة الإتقان للتوريدات\", \"cr_number\": \"4061085107\", \"city\": \"Jeddah\", \"activity_code\": \"BR-810\"}}\n</tool_call>"}
+{"id": "P-0588", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4046615674\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0589", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0590", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4044065504\", \"field\": \"city\", \"value\": \"Abha\"}}\n</tool_call>"}
+{"id": "P-0591", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4048246986\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0592", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مؤسسة البركة للتجارة\", \"cr_number\": \"4035979766\", \"city\": \"Jeddah\", \"activity_code\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0593", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0594", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4043580943\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0595", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Nakheel Industries Co.\", \"cr_number\": \"4085580183\", \"city\": \"Taif\", \"activity_code\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0596", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Miftah Development Est.\", \"cr_number\": \"4018440977\", \"city\": \"Riyadh\", \"activity_code\": \"BR-810\"}}\n</tool_call>"}
+{"id": "P-0597", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مؤسسة الأصالة للتجارة\", \"cr_number\": \"4013448493\", \"city\": \"Riyadh\", \"activity_code\": \"BR-101\"}}\n</tool_call>"}
+{"id": "P-0598", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4028166820\", \"years\": 3}}\n</tool_call>"}
+{"id": "P-0599", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4098543960\", \"field\": \"activity_code\", \"value\": \"BR-210\"}}\n</tool_call>"}
+{"id": "P-0600", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4043580943\", \"field\": \"city\", \"value\": \"Khobar\"}}\n</tool_call>"}
+{"id": "P-0601", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0602", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مؤسسة النور للخدمات\", \"cr_number\": \"4020992426\", \"city\": \"Tabuk\", \"activity_code\": \"BR-215\"}}\n</tool_call>"}
+{"id": "P-0603", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0604", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4067239831\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0605", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4091080630\", \"field\": \"city\", \"value\": \"Jazan\"}}\n</tool_call>"}
+{"id": "P-0606", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4071470955\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0607", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0608", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Diyar Logistics Co.\", \"cr_number\": \"4061200927\", \"city\": \"Tabuk\", \"activity_code\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0609", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4006825686\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0610", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4077768017\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0611", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4000000000\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0612", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4038431046\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0613", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة الوفاء للإمداد\", \"cr_number\": \"4099551402\", \"city\": \"Buraidah\", \"activity_code\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0614", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة الروابي للمشاريع\", \"cr_number\": \"4006647056\", \"city\": \"Tabuk\", \"activity_code\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0615", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4058794026\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0616", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0617", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4021107405\", \"field\": \"activity_code\", \"value\": \"BR-210\"}}\n</tool_call>"}
+{"id": "P-0618", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4028187767\", \"field\": \"activity_code\", \"value\": \"BR-210\"}}\n</tool_call>"}
+{"id": "P-0619", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Fajr Services Co.\", \"cr_number\": \"4010625999\", \"city\": \"Tabuk\", \"activity_code\": \"BR-210\"}}\n</tool_call>"}
+{"id": "P-0620", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4087013100\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0621", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4057532096\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0622", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4031849138\", \"field\": \"activity_code\", \"value\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0623", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4012940070\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0624", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Hilal Solutions Est.\", \"cr_number\": \"4038294557\", \"city\": \"Dammam\", \"activity_code\": \"BR-410\"}}\n</tool_call>"}
+{"id": "P-0625", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4032228831\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0626", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4072040593\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0627", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0628", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Jawhara Investment Est.\", \"cr_number\": \"4057866955\", \"city\": \"Riyadh\", \"activity_code\": \"BR-210\"}}\n</tool_call>"}
+{"id": "P-0629", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Qafila Development Co.\", \"cr_number\": \"4027216128\", \"city\": \"Buraidah\", \"activity_code\": \"BR-610\"}}\n</tool_call>"}
+{"id": "P-0630", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"٤٠٣١٨٤٩١٣٨\", \"field\": \"city\", \"value\": \"Abha\"}}\n</tool_call>"}
+{"id": "P-0631", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة الغدير للتسويق\", \"cr_number\": \"4044272904\", \"city\": \"Dammam\", \"activity_code\": \"BR-210\"}}\n</tool_call>"}
+{"id": "P-0632", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4087603083\", \"field\": \"activity_code\", \"value\": \"BR-520\"}}\n</tool_call>"}
+{"id": "P-0633", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"الأفق للتجارة\", \"cr_number\": \"4009122251\", \"city\": \"Najran\", \"activity_code\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0634", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0635", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0636", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0637", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Asala Development Co.\", \"cr_number\": \"4093563671\", \"city\": \"Hail\", \"activity_code\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0638", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4071470955\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0639", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0640", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0641", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4071431971\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0642", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4018440977\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0643", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4006076040\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0644", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4076949346\", \"field\": \"city\", \"value\": \"Khobar\"}}\n</tool_call>"}
+{"id": "P-0645", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4024370500\", \"field\": \"activity_code\", \"value\": \"BR-410\"}}\n</tool_call>"}
+{"id": "P-0646", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Jawhara Supplies Group\", \"cr_number\": \"4062749966\", \"city\": \"Jazan\", \"activity_code\": \"BR-210\"}}\n</tool_call>"}
+{"id": "P-0647", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4052983386\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0648", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة الصفوة للتطوير\", \"cr_number\": \"4007074399\", \"city\": \"Tabuk\", \"activity_code\": \"BR-410\"}}\n</tool_call>"}
+{"id": "P-0649", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4046699529\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0650", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4071548519\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0651", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4053011889\", \"field\": \"activity_code\", \"value\": \"BR-610\"}}\n</tool_call>"}
+{"id": "P-0652", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Majd Trading Group\", \"cr_number\": \"4033687698\", \"city\": \"Buraidah\", \"activity_code\": \"BR-210\"}}\n</tool_call>"}
+{"id": "P-0653", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0654", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4021107405\", \"field\": \"activity_code\", \"value\": \"BR-610\"}}\n</tool_call>"}
+{"id": "P-0655", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4026356437\", \"field\": \"activity_code\", \"value\": \"BR-610\"}}\n</tool_call>"}
+{"id": "P-0656", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4076949346\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0657", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Thiqa Supplies Group\", \"cr_number\": \"4058536238\", \"city\": \"Jeddah\", \"activity_code\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0658", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4075674426\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0659", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4043580943\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0660", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4014801326\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0661", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4012103441\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0662", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4003324565\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0663", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4094867347\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0664", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Noor Logistics Group\", \"cr_number\": \"4026575861\", \"city\": \"Buraidah\", \"activity_code\": \"BR-215\"}}\n</tool_call>"}
+{"id": "P-0665", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0666", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4049571546\", \"field\": \"activity_code\", \"value\": \"BR-810\"}}\n</tool_call>"}
+{"id": "P-0667", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4054285299\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0668", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Namaa Development Co.\", \"cr_number\": \"4092875314\", \"city\": \"Tabuk\", \"activity_code\": \"BR-610\"}}\n</tool_call>"}
+{"id": "P-0669", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Safwa Supplies Est.\", \"cr_number\": \"4038615882\", \"city\": \"Riyadh\", \"activity_code\": \"BR-102\"}}\n</tool_call>"}
+{"id": "P-0670", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4069595279\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0671", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4046699529\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0672", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Salam Solutions Group\", \"cr_number\": \"4077311242\", \"city\": \"Dammam\", \"activity_code\": \"BR-215\"}}\n</tool_call>"}
+{"id": "P-0673", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Ruwad Marketing Est.\", \"cr_number\": \"4054285299\", \"city\": \"Abha\", \"activity_code\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0674", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة البركة للتسويق\", \"cr_number\": \"4095718590\", \"city\": \"Taif\", \"activity_code\": \"BR-410\"}}\n</tool_call>"}
+{"id": "P-0675", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4047584239\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0676", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4046096561\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0677", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4087034019\", \"field\": \"activity_code\", \"value\": \"BR-520\"}}\n</tool_call>"}
+{"id": "P-0678", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0679", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4046955616\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0680", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Salam Solutions Group\", \"cr_number\": \"4077311242\", \"city\": \"Dammam\", \"activity_code\": \"BR-410\"}}\n</tool_call>"}
+{"id": "P-0681", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4076917948\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0682", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة الرواد للصناعة\", \"cr_number\": \"4082432262\", \"city\": \"Hail\", \"activity_code\": \"BR-610\"}}\n</tool_call>"}
+{"id": "P-0683", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Noor Industries Est.\", \"cr_number\": \"4028166820\", \"city\": \"Najran\", \"activity_code\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0684", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4040493283\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0685", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مؤسسة الغدير للتجارة\", \"cr_number\": \"4088933217\", \"city\": \"Jazan\", \"activity_code\": \"BR-810\"}}\n</tool_call>"}
+{"id": "P-0686", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4068903631\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0687", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Qimma Projects Co.\", \"cr_number\": \"4085510129\", \"city\": \"Najran\", \"activity_code\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0688", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4076233213\", \"field\": \"activity_code\", \"value\": \"BR-810\"}}\n</tool_call>"}
+{"id": "P-0689", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة الأفق للتسويق\", \"cr_number\": \"4057869853\", \"city\": \"Hail\", \"activity_code\": \"BR-210\"}}\n</tool_call>"}
+{"id": "P-0690", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4052557682\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0691", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4042466515\", \"field\": \"city\", \"value\": \"Jeddah\"}}\n</tool_call>"}
+{"id": "P-0692", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4071494676\", \"field\": \"city\", \"value\": \"Tabuk\"}}\n</tool_call>"}
+{"id": "P-0693", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة الهلال للتطوير\", \"cr_number\": \"4063487462\", \"city\": \"Yanbu\", \"activity_code\": \"BR-210\"}}\n</tool_call>"}
+{"id": "P-0694", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Ufuq Trading Est.\", \"cr_number\": \"4053253478\", \"city\": \"Riyadh\", \"activity_code\": \"BR-320\"}}\n</tool_call>"}
+{"id": "P-0695", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0696", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4032123638\", \"years\": 3}}\n</tool_call>"}
+{"id": "P-0697", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Itqan Development Est.\", \"cr_number\": \"4012103441\", \"city\": \"Najran\", \"activity_code\": \"BR-320\"}}\n</tool_call>"}
+{"id": "P-0698", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4023748474\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0699", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4076949346\", \"field\": \"activity_code\", \"value\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0700", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4001148423\", \"field\": \"activity_code\", \"value\": \"BR-101\"}}\n</tool_call>"}
+{"id": "P-0701", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4013448493\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0702", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"٤٠٢٤٣٦٤٧٩٦\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0703", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4079701071\", \"field\": \"activity_code\", \"value\": \"BR-102\"}}\n</tool_call>"}
+{"id": "P-0704", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4088933217\", \"field\": \"activity_code\", \"value\": \"BR-530\"}}\n</tool_call>"}
+{"id": "P-0705", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4033952450\", \"field\": \"activity_code\", \"value\": \"BR-410\"}}\n</tool_call>"}
+{"id": "P-0706", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0707", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4092289978\", \"field\": \"activity_code\", \"value\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0708", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Hilal Projects Group\", \"cr_number\": \"4046955616\", \"city\": \"Taif\", \"activity_code\": \"BR-610\"}}\n</tool_call>"}
+{"id": "P-0709", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مؤسسة الروابي للمشاريع\", \"cr_number\": \"4066490001\", \"city\": \"Khobar\", \"activity_code\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0710", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4006825686\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0711", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4013868158\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0712", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4059118682\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0713", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4063487462\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0714", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Reef Projects Co.\", \"cr_number\": \"4031984449\", \"city\": \"Tabuk\", \"activity_code\": \"BR-101\"}}\n</tool_call>"}
+{"id": "P-0715", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4068260920\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0716", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0717", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4091080630\", \"field\": \"city\", \"value\": \"Taif\"}}\n</tool_call>"}
+{"id": "P-0718", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4078761254\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0719", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4072113071\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0720", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4080093291\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0721", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4082628143\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0722", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4079701071\", \"field\": \"city\", \"value\": \"Tabuk\"}}\n</tool_call>"}
+{"id": "P-0723", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4052557682\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0724", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مؤسسة السلام للصناعة\", \"cr_number\": \"4055228296\", \"city\": \"Yanbu\", \"activity_code\": \"BR-102\"}}\n</tool_call>"}
+{"id": "P-0725", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0726", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4040493283\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0727", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4060801904\", \"field\": \"activity_code\", \"value\": \"BR-530\"}}\n</tool_call>"}
+{"id": "P-0728", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4093863570\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0729", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة الصفوة للصناعة\", \"cr_number\": \"4046335531\", \"city\": \"Najran\", \"activity_code\": \"BR-520\"}}\n</tool_call>"}
+{"id": "P-0730", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مؤسسة الإنجاز للصناعة\", \"cr_number\": \"4013542890\", \"city\": \"Tabuk\", \"activity_code\": \"BR-410\"}}\n</tool_call>"}
+{"id": "P-0731", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4055100851\", \"field\": \"activity_code\", \"value\": \"BR-320\"}}\n</tool_call>"}
+{"id": "P-0732", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4057532096\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0733", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4061896434\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0734", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة البركة للتطوير\", \"cr_number\": \"4092289978\", \"city\": \"Jeddah\", \"activity_code\": \"BR-102\"}}\n</tool_call>"}
+{"id": "P-0735", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4054794302\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0736", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Noor Logistics Co.\", \"cr_number\": \"4040117618\", \"city\": \"Jeddah\", \"activity_code\": \"BR-810\"}}\n</tool_call>"}
+{"id": "P-0737", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4070087848\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0738", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4058794026\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0739", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4057866955\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0740", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4068903631\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0741", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4012940070\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0742", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4060895202\", \"field\": \"activity_code\", \"value\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0743", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4072113071\", \"field\": \"city\", \"value\": \"Tabuk\"}}\n</tool_call>"}
+{"id": "P-0744", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0745", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4024290535\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0746", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0747", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4073410049\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0748", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة الأفق للتطوير\", \"cr_number\": \"4033598718\", \"city\": \"Hail\", \"activity_code\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0749", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4051024103\", \"years\": 3}}\n</tool_call>"}
+{"id": "P-0750", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4000430706\", \"field\": \"city\", \"value\": \"Hail\"}}\n</tool_call>"}
+{"id": "P-0751", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Itqan Solutions Est.\", \"cr_number\": \"4007293453\", \"city\": \"Hail\", \"activity_code\": \"BR-520\"}}\n</tool_call>"}
+{"id": "P-0752", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4022733950\", \"field\": \"activity_code\", \"value\": \"BR-102\"}}\n</tool_call>"}
+{"id": "P-0753", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4092875314\", \"field\": \"activity_code\", \"value\": \"BR-210\"}}\n</tool_call>"}
+{"id": "P-0754", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Asala Trading Est.\", \"cr_number\": \"4013448493\", \"city\": \"Hail\", \"activity_code\": \"BR-410\"}}\n</tool_call>"}
+{"id": "P-0755", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0756", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4087722043\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0757", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0758", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4092577073\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0759", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4072936679\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0760", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0761", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Jawhara Solutions Group\", \"cr_number\": \"4080093291\", \"city\": \"Jazan\", \"activity_code\": \"BR-102\"}}\n</tool_call>"}
+{"id": "P-0762", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4082628143\", \"field\": \"city\", \"value\": \"Riyadh\"}}\n</tool_call>"}
+{"id": "P-0763", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4070420494\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0764", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4078743718\", \"field\": \"activity_code\", \"value\": \"BR-530\"}}\n</tool_call>"}
+{"id": "P-0765", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4073246145\", \"field\": \"activity_code\", \"value\": \"BR-210\"}}\n</tool_call>"}
+{"id": "P-0766", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4077768017\", \"field\": \"city\", \"value\": \"Yanbu\"}}\n</tool_call>"}
+{"id": "P-0767", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Noor Marketing Co.\", \"cr_number\": \"4059118682\", \"city\": \"Riyadh\", \"activity_code\": \"BR-101\"}}\n</tool_call>"}
+{"id": "P-0768", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Majd Trading Group\", \"cr_number\": \"4033687698\", \"city\": \"Jeddah\", \"activity_code\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0769", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0770", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4066490001\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0771", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4092289978\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0772", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4074638846\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0773", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة البركة للتجارة\", \"cr_number\": \"4078743718\", \"city\": \"Abha\", \"activity_code\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0774", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4079688995\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0775", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4038615882\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0776", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4016479085\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0777", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0778", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Ufuq Services Co.\", \"cr_number\": \"4087722043\", \"city\": \"Najran\", \"activity_code\": \"BR-210\"}}\n</tool_call>"}
+{"id": "P-0779", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Ghadeer Supplies Group\", \"cr_number\": \"4070386088\", \"city\": \"Yanbu\", \"activity_code\": \"BR-610\"}}\n</tool_call>"}
+{"id": "P-0780", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4002384841\", \"field\": \"city\", \"value\": \"Dammam\"}}\n</tool_call>"}
+{"id": "P-0781", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0782", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4060895202\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0783", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4024364796\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0784", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4079688995\", \"field\": \"activity_code\", \"value\": \"BR-102\"}}\n</tool_call>"}
+{"id": "P-0785", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0786", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4031849138\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0787", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0788", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4038431046\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0789", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4064886034\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0790", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0791", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0792", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0793", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0794", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مؤسسة الساحل للحلول\", \"cr_number\": \"4068903631\", \"city\": \"Taif\", \"activity_code\": \"BR-810\"}}\n</tool_call>"}
+{"id": "P-0795", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4032123638\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0796", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4035979766\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0797", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4085580183\", \"years\": 3}}\n</tool_call>"}
+{"id": "P-0798", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مؤسسة التميز للحلول\", \"cr_number\": \"4001148423\", \"city\": \"Dammam\", \"activity_code\": \"BR-210\"}}\n</tool_call>"}
+{"id": "P-0799", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0800", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4079701071\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0801", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4002259834\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0802", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0803", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Manara Industries Co.\", \"cr_number\": \"4013058726\", \"city\": \"Jeddah\", \"activity_code\": \"BR-215\"}}\n</tool_call>"}
+{"id": "P-0804", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0805", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4002691043\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0806", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0807", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4096291998\", \"field\": \"city\", \"value\": \"Jeddah\"}}\n</tool_call>"}
+{"id": "P-0808", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4063410188\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0809", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0810", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4001793622\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0811", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4046096561\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0812", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4052404556\", \"field\": \"city\", \"value\": \"Jazan\"}}\n</tool_call>"}
+{"id": "P-0813", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4066490001\", \"years\": 3}}\n</tool_call>"}
+{"id": "P-0814", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4088933217\", \"field\": \"city\", \"value\": \"Jeddah\"}}\n</tool_call>"}
+{"id": "P-0815", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Yusr Development Est.\", \"cr_number\": \"4085440300\", \"city\": \"Yanbu\", \"activity_code\": \"BR-610\"}}\n</tool_call>"}
+{"id": "P-0816", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Bustan Marketing Est.\", \"cr_number\": \"4079701071\", \"city\": \"Hail\", \"activity_code\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0817", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4092577073\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0818", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Sahil Solutions Co.\", \"cr_number\": \"4099534778\", \"city\": \"Najran\", \"activity_code\": \"BR-530\"}}\n</tool_call>"}
+{"id": "P-0819", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4012734584\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0820", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0821", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4053881174\", \"field\": \"activity_code\", \"value\": \"BR-215\"}}\n</tool_call>"}
+{"id": "P-0822", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4087260894\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0823", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4007293453\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0824", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4046437150\", \"field\": \"city\", \"value\": \"Khobar\"}}\n</tool_call>"}
+{"id": "P-0825", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مؤسسة الأصالة للخدمات\", \"cr_number\": \"4075663540\", \"city\": \"Abha\", \"activity_code\": \"BR-215\"}}\n</tool_call>"}
+{"id": "P-0826", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4048246986\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0827", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة الإتقان للتجارة\", \"cr_number\": \"4022733950\", \"city\": \"Hail\", \"activity_code\": \"BR-520\"}}\n</tool_call>"}
+{"id": "P-0828", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4038420811\", \"field\": \"activity_code\", \"value\": \"BR-215\"}}\n</tool_call>"}
+{"id": "P-0829", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4044065504\", \"field\": \"activity_code\", \"value\": \"BR-210\"}}\n</tool_call>"}
+{"id": "P-0830", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة المفتاح للحلول\", \"cr_number\": \"٤٠٨٦٩٠٢٠٣٤\", \"city\": \"Khobar\", \"activity_code\": \"BR-215\"}}\n</tool_call>"}
+{"id": "P-0831", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"٤٠٠٦٦٤٧٠٥٦\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0832", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4070095608\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0833", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0834", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4031986802\", \"field\": \"city\", \"value\": \"Jeddah\"}}\n</tool_call>"}
+{"id": "P-0835", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4098262037\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0836", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0837", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4041771430\", \"years\": 3}}\n</tool_call>"}
+{"id": "P-0838", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0839", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Miftah Marketing Co.\", \"cr_number\": \"4075489409\", \"city\": \"Yanbu\", \"activity_code\": \"BR-410\"}}\n</tool_call>"}
+{"id": "P-0840", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مؤسسة الدانة للمشاريع\", \"cr_number\": \"4016182261\", \"city\": \"Hail\", \"activity_code\": \"BR-810\"}}\n</tool_call>"}
+{"id": "P-0841", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4070386088\", \"years\": 3}}\n</tool_call>"}
+{"id": "P-0842", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4008884105\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0843", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0844", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0845", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4031527968\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0846", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Nakheel Logistics Co.\", \"cr_number\": \"4007236878\", \"city\": \"Jeddah\", \"activity_code\": \"BR-215\"}}\n</tool_call>"}
+{"id": "P-0847", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4038431046\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0848", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة اليسر للصناعة\", \"cr_number\": \"4043580943\", \"city\": \"Taif\", \"activity_code\": \"BR-320\"}}\n</tool_call>"}
+{"id": "P-0849", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Ruwad Investment Co.\", \"cr_number\": \"4012940070\", \"city\": \"Riyadh\", \"activity_code\": \"BR-210\"}}\n</tool_call>"}
+{"id": "P-0850", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4098262037\", \"field\": \"activity_code\", \"value\": \"BR-102\"}}\n</tool_call>"}
+{"id": "P-0851", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4027216128\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0852", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0853", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مؤسسة الرواد للتسويق\", \"cr_number\": \"4054285299\", \"city\": \"Abha\", \"activity_code\": \"BR-810\"}}\n</tool_call>"}
+{"id": "P-0854", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Ghadeer Industries Group\", \"cr_number\": \"4053011889\", \"city\": \"Khobar\", \"activity_code\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0855", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة الرمال للتسويق\", \"cr_number\": \"4023425029\", \"city\": \"Abha\", \"activity_code\": \"BR-210\"}}\n</tool_call>"}
+{"id": "P-0856", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"out_of_scope\"}}\n</tool_call>"}
+{"id": "P-0857", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مؤسسة الديار للاستثمار\", \"cr_number\": \"4019076402\", \"city\": \"Yanbu\", \"activity_code\": \"BR-410\"}}\n</tool_call>"}
+{"id": "P-0858", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4082191682\", \"field\": \"activity_code\", \"value\": \"BR-810\"}}\n</tool_call>"}
+{"id": "P-0859", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0860", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4077768017\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0861", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4013058726\", \"field\": \"city\", \"value\": \"Najran\"}}\n</tool_call>"}
+{"id": "P-0862", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4072040593\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0863", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4053011889\", \"field\": \"city\", \"value\": \"Jeddah\"}}\n</tool_call>"}
+{"id": "P-0864", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Safwa Development Est.\", \"cr_number\": \"4029278846\", \"city\": \"Dammam\", \"activity_code\": \"BR-215\"}}\n</tool_call>"}
+{"id": "P-0865", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Miftah Marketing Co.\", \"cr_number\": \"4075489409\", \"city\": \"Buraidah\", \"activity_code\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0866", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4024370500\", \"years\": 1}}\n</tool_call>"}
+{"id": "P-0867", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4054285299\", \"field\": \"activity_code\", \"value\": \"BR-530\"}}\n</tool_call>"}
+{"id": "P-0868", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4035707143\", \"field\": \"activity_code\", \"value\": \"BR-320\"}}\n</tool_call>"}
+{"id": "P-0869", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4082432262\", \"field\": \"activity_code\", \"value\": \"BR-102\"}}\n</tool_call>"}
+{"id": "P-0870", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4075489409\", \"field\": \"city\", \"value\": \"Jeddah\"}}\n</tool_call>"}
+{"id": "P-0871", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4058536238\", \"years\": 3}}\n</tool_call>"}
+{"id": "P-0872", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4087603083\", \"field\": \"activity_code\", \"value\": \"BR-215\"}}\n</tool_call>"}
+{"id": "P-0873", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4096291998\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0874", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة الغدير للتسويق\", \"cr_number\": \"4044272904\", \"city\": \"Hail\", \"activity_code\": \"BR-530\"}}\n</tool_call>"}
+{"id": "P-0875", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4000430706\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0876", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4098262037\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0877", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة الدانة للتطوير\", \"cr_number\": \"4053028654\", \"city\": \"Taif\", \"activity_code\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0878", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Salam Marketing Co.\", \"cr_number\": \"4096291998\", \"city\": \"Jeddah\", \"activity_code\": \"BR-215\"}}\n</tool_call>"}
+{"id": "P-0879", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4062749966\", \"years\": 3}}\n</tool_call>"}
+{"id": "P-0880", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"Al-Baraka Marketing Co.\", \"cr_number\": \"4095718590\", \"city\": \"Hail\", \"activity_code\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0881", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4030196243\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0882", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4003324565\", \"field\": \"city\", \"value\": \"Yanbu\"}}\n</tool_call>"}
+{"id": "P-0883", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0884", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4099057756\", \"field\": \"activity_code\", \"value\": \"BR-320\"}}\n</tool_call>"}
+{"id": "P-0885", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4043108918\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0886", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4072899686\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0887", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة النخيل للمشاريع\", \"cr_number\": \"4019650642\", \"city\": \"Abha\", \"activity_code\": \"BR-410\"}}\n</tool_call>"}
+{"id": "P-0888", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4048158380\", \"years\": 2}}\n</tool_call>"}
+{"id": "P-0889", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة الروابي للحلول\", \"cr_number\": \"4006825686\", \"city\": \"Abha\", \"activity_code\": \"BR-101\"}}\n</tool_call>"}
+{"id": "P-0890", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة الوادي للحلول\", \"cr_number\": \"4012471737\", \"city\": \"Hail\", \"activity_code\": \"BR-330\"}}\n</tool_call>"}
+{"id": "P-0891", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4033055563\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "P-0892", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"شركة الغدير للخدمات\", \"cr_number\": \"4065958888\", \"city\": \"Najran\", \"activity_code\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0893", "output": "<tool_call>\n{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4043580943\", \"years\": 3}}\n</tool_call>"}
+{"id": "P-0894", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4025146502\", \"field\": \"city\", \"value\": \"Yanbu\"}}\n</tool_call>"}
+{"id": "P-0895", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0896", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4012940070\", \"field\": \"city\", \"value\": \"Yanbu\"}}\n</tool_call>"}
+{"id": "P-0897", "output": "<tool_call>\n{\"name\": \"create_membership\", \"arguments\": {\"company_name\": \"مجموعة الثقة للصناعة\", \"cr_number\": \"4023832926\", \"city\": \"Riyadh\", \"activity_code\": \"BR-720\"}}\n</tool_call>"}
+{"id": "P-0898", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4074254056\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "P-0899", "output": "<tool_call>\n{\"name\": \"escalate_to_staff\", \"arguments\": {\"reason\": \"missing_cr\"}}\n</tool_call>"}
+{"id": "P-0900", "output": "<tool_call>\n{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4079688995\", \"field\": \"activity_code\", \"value\": \"BR-520\"}}\n</tool_call>"}

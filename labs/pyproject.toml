@@ -1,0 +1,36 @@
+[project]
+name = "ae-310-labs"
+version = "2027.1.0"
+description = "Lab notebooks for the SDAIA Academy course AE-310 Model Adaptation: Fine-Tuning, Distillation and Small Models"
+requires-python = ">=3.11,<3.14"
+dependencies = [
+    "numpy>=2.0",
+    "matplotlib>=3.9",
+    "torch>=2.6",
+    "transformers>=4.56",
+    "tokenizers>=0.21",
+    "peft>=0.17",
+    "safetensors>=0.5",
+    "jinja2>=3.1",
+    "openai>=1.80",
+    "python-dotenv>=1.1",
+    "httpx>=0.28",
+    "fastapi>=0.115",
+    "uvicorn>=0.34",
+    "locust>=2.37",
+    "jupyterlab>=4.4",
+    "ipykernel>=6.29",
+    "nbclient>=0.10",
+]
+
+[tool.uv]
+package = false
+
+# CPU wheels of PyTorch for a laptop; the Colab runtime brings its own GPU build
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = [{ index = "pytorch-cpu" }]

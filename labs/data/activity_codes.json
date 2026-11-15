@@ -1,0 +1,62 @@
+[
+ {
+  "code": "BR-101",
+  "en": "retail trade",
+  "ar": "تجارة التجزئة"
+ },
+ {
+  "code": "BR-102",
+  "en": "wholesale trade",
+  "ar": "تجارة الجملة"
+ },
+ {
+  "code": "BR-210",
+  "en": "building materials",
+  "ar": "مواد البناء"
+ },
+ {
+  "code": "BR-215",
+  "en": "contracting",
+  "ar": "المقاولات"
+ },
+ {
+  "code": "BR-320",
+  "en": "restaurants and catering",
+  "ar": "المطاعم والتموين"
+ },
+ {
+  "code": "BR-330",
+  "en": "food manufacturing",
+  "ar": "الصناعات الغذائية"
+ },
+ {
+  "code": "BR-410",
+  "en": "transport and logistics",
+  "ar": "النقل والخدمات اللوجستية"
+ },
+ {
+  "code": "BR-520",
+  "en": "information technology",
+  "ar": "تقنية المعلومات"
+ },
+ {
+  "code": "BR-530",
+  "en": "consulting",
+  "ar": "الاستشارات"
+ },
+ {
+  "code": "BR-610",
+  "en": "medical supplies",
+  "ar": "المستلزمات الطبية"
+ },
+ {
+  "code": "BR-720",
+  "en": "tourism and travel",
+  "ar": "السياحة والسفر"
+ },
+ {
+  "code": "BR-810",
+  "en": "agriculture",
+  "ar": "الزراعة"
+ }
+]

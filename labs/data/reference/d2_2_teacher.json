@@ -1,0 +1,12 @@
+{
+ "generated": 300,
+ "teacher_wrong": 15,
+ "rejected": {
+  "schema": 6,
+  "rule": 1
+ },
+ "kept": 293,
+ "yield": 0.977,
+ "wrong_but_kept": 8,
+ "right_but_rejected": 0
+}

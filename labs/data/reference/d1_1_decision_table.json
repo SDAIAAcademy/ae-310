@@ -1,0 +1,21 @@
+{
+ "counts": {
+  "small": {
+   "correct": 27,
+   "knowledge": 10,
+   "format": 37,
+   "behaviour": 26
+  },
+  "large": {
+   "correct": 63,
+   "knowledge": 23,
+   "format": 9,
+   "behaviour": 5
+  }
+ },
+ "approach": {
+  "knowledge": "retrieval or context: put the code table in the prompt",
+  "format": "prompting first: schema hints and examples; tuning for what remains",
+  "behaviour": "tuning, or distillation from the larger model, which gets it right"
+ }
+}

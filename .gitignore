@@ -34,3 +34,7 @@ __pycache__/
 .DS_Store
 Thumbs.db
 /*.log
+
+# Lab run outputs (delete labs/artifacts and labs/cache before "academy check": it reports ignored files under labs/)
+labs/artifacts/
+labs/cache/
