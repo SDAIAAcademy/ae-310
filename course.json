@@ -1,0 +1,464 @@
+{
+  "$schema": "https://sdaiaacademy.github.io/engine/schemas/course.schema.json",
+  "engine": "1",
+  "id": "ae-310",
+  "code": "AE-310",
+  "version": "2027.1.0",
+  "lang": "en",
+  "title": {
+    "en": "Model Adaptation: Fine-Tuning, Distillation and Small Models",
+    "ar": "تكييف النماذج: الضبط الدقيق والتقطير والنماذج الصغيرة"
+  },
+  "tagline": "REPLACE: one line under the title: what participants can do after the course",
+  "description": "Participants decide when adapting a model is worth it and then do it well. For a fictional chamber of commerce whose bilingual registration requests must stay on its own servers, a prompted small open-weight model fails at field extraction and tool calls. They sort the failures, set a stronger prompted baseline, build a tuning set from traces, staff corrections and filtered teacher outputs, train low-rank adapters, distil a larger model's tool-call behaviour, evaluate against the base and a larger prompted model, and serve the result quantised with several adapters. AE-301 introduces adapters on an encoder; post-training at scale is AE-406.",
+  "track": "ai-engineering",
+  "level": 300,
+  "badge": {
+    "name": "AI Engineering",
+    "level": "Associate"
+  },
+  "audience": "Practitioners. Engineers who have completed the level 200 set or can show equivalent work: a deployed model or language model application they built and can explain.",
+  "prerequisites": [
+    "AE-202 Deep Learning and Generative AI Fundamentals",
+    "AE-203 Building Applications on Language Models",
+    "Fine-tunes a pretrained model with a training loop or a training library",
+    "Compares two systems on an evaluation set with a paired test"
+  ],
+  "site": {
+    "url": "https://sdaiaacademy.github.io/ae-310/",
+    "repo": "SDAIAAcademy/ae-310"
+  },
+  "outcomes": [
+    {
+      "id": "LO1",
+      "text": "Analyse the failures of a prompted model and assign each failure class to prompting, retrieval, tuning or distillation, given 100 bilingual requests run through the small model and a larger reference model",
+      "level": "Applied",
+      "evidence": "a decision table with counts per failure class and the chosen approach"
+    },
+    {
+      "id": "LO2",
+      "text": "Prepare a tuning dataset from traces, corrections and teacher outputs, with template rendering, verifier filtering, deduplication, decontamination and personal-data removal, given 500 synthetic traces, staff corrections and a teacher model",
+      "level": "Applied",
+      "evidence": "a dataset with its card and an overlap report against the test set"
+    },
+    {
+      "id": "LO3",
+      "text": "Configure and train low-rank adapters on a 16-bit and a 4-bit base model within the memory of one free-tier GPU, given a small open-weight model and the tuning set",
+      "level": "Applied",
+      "evidence": "training logs, the adapter and a memory and time comparison"
+    },
+    {
+      "id": "LO4",
+      "text": "Evaluate the adapted model against the base and a larger prompted model with paired statistics, language slices, regression and safety checks, given a held-out bilingual test set and a general-ability check",
+      "level": "Performance",
+      "evidence": "an evaluation report with intervals and the regressions found"
+    },
+    {
+      "id": "LO5",
+      "text": "Deploy a quantised small model with several adapters and measure throughput, latency and cost per thousand requests, given one accelerator and a target request rate",
+      "level": "Performance",
+      "evidence": "a load-test report with the serving configuration"
+    },
+    {
+      "id": "LO6",
+      "text": "Decide whether to ship the adapted model, weighing quality, cost, licence terms and data placement, given the evaluation and load-test results",
+      "level": "Performance",
+      "evidence": "a one-page decision memo defended live"
+    }
+  ],
+  "case_study": {
+    "name": "REPLACE: the name of the fictional organisation every lab works on",
+    "summary": "REPLACE: two sentences on the case study and its synthetic data"
+  },
+  "format": "intensive",
+  "format_note": "Intensive: 4 teaching days of four sessions and a capstone day, with guided pre-work and a tracked follow-up task",
+  "hours": {
+    "instruction": 6,
+    "lab": 7,
+    "guided_self_study": 6,
+    "assessment": 1,
+    "capstone": 6
+  },
+  "unit": "day",
+  "days": [
+    {
+      "id": "day1",
+      "kind": "day",
+      "title": "Decide whether to adapt",
+      "deck": "slides/day1.html",
+      "sessions": [
+        {
+          "title": "Prompt, retrieve, tune or distil",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO1"
+          ],
+          "lab": {
+            "id": "1.1",
+            "title": "Run the small and the reference model on 100 requests and sort failures into knowledge, format and behaviour",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D1_1_run_small_reference.ipynb"
+          }
+        },
+        {
+          "title": "The baseline tuning must beat",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO1"
+          ],
+          "lab": {
+            "id": "1.2",
+            "title": "Improve the prompt with schema hints and examples and freeze the score as the baseline",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D1_2_improve_prompt_schema.ipynb"
+          }
+        },
+        {
+          "title": "Licences and terms of open-weight models",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO6"
+          ],
+          "lab": {
+            "id": "1.3",
+            "title": "Compare licence and acceptable-use terms of three small models and record which may be adapted and deployed",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D1_3_compare_licence_acceptable.ipynb"
+          }
+        },
+        {
+          "title": "Cost and placement of the options",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO6"
+          ],
+          "lab": {
+            "id": "1.4",
+            "title": "Estimate tuning, serving and per-request cost for a large hosted model versus a tuned small model on-premises",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D1_4_estimate_tuning_serving.ipynb"
+          }
+        }
+      ]
+    },
+    {
+      "id": "day2",
+      "kind": "day",
+      "title": "Data for tuning",
+      "deck": "slides/day2.html",
+      "sessions": [
+        {
+          "title": "Tuning data from traces and corrections",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO2"
+          ],
+          "lab": {
+            "id": "2.1",
+            "title": "Turn 500 synthetic traces and staff corrections into chat-format examples",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D2_1_turn_500_synthetic.ipynb"
+          }
+        },
+        {
+          "title": "Teacher generation and verifier filtering",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO2"
+          ],
+          "lab": {
+            "id": "2.2",
+            "title": "Generate 300 examples with a larger model and filter them with schema and rule checks",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D2_2_generate_300_examples.ipynb"
+          }
+        },
+        {
+          "title": "Chat templates and tool-call formats",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO2"
+          ],
+          "lab": {
+            "id": "2.3",
+            "title": "Render examples with the model's template and fix three formatting faults that would harm training",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D2_3_render_examples_model.ipynb"
+          }
+        },
+        {
+          "title": "Deduplication, decontamination and personal data",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO2"
+          ],
+          "lab": {
+            "id": "2.4",
+            "title": "Remove near-duplicates and test-set overlap and scan the set for personal data",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D2_4_remove_near_duplicates.ipynb"
+          }
+        }
+      ]
+    },
+    {
+      "id": "day3",
+      "kind": "day",
+      "title": "Train adapters and distil",
+      "deck": "slides/day3.html",
+      "sessions": [
+        {
+          "title": "Low-rank adapters",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO3"
+          ],
+          "lab": {
+            "id": "3.1",
+            "title": "Train an adapter on the supplied set in a free notebook GPU and read the loss curves",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D3_1_train_adapter_supplied.ipynb"
+          }
+        },
+        {
+          "title": "Quantised adapters and memory",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO3"
+          ],
+          "lab": {
+            "id": "3.2",
+            "title": "Train the same adapter on a 4-bit base and compare memory, time and score with a supplied 16-bit run",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D3_2_train_same_adapter.ipynb"
+          }
+        },
+        {
+          "title": "Settings that matter",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO3"
+          ],
+          "lab": {
+            "id": "3.3",
+            "title": "Read a supplied sweep of rank and learning rate, run one more setting and choose on the validation set",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D3_3_read_supplied_sweep.ipynb"
+          }
+        },
+        {
+          "title": "Distilling a behaviour",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO3"
+          ],
+          "lab": {
+            "id": "3.4",
+            "title": "Run a short distillation of the larger model's filtered tool calls into the student and compare it with a supplied corrections-only adapter",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D3_4_run_short_distillation.ipynb"
+          }
+        }
+      ]
+    },
+    {
+      "id": "day4",
+      "kind": "day",
+      "title": "Evaluate and serve",
+      "deck": "slides/day4.html",
+      "sessions": [
+        {
+          "title": "Paired evaluation against the base",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO4"
+          ],
+          "lab": {
+            "id": "4.1",
+            "title": "Compare tuned, base and larger prompted models on Arabic and English slices with a paired bootstrap",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D4_1_compare_tuned_base.ipynb"
+          }
+        },
+        {
+          "title": "Regressions and safety after tuning",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO4"
+          ],
+          "lab": {
+            "id": "4.2",
+            "title": "Run general-ability and refusal checks on a supplied adapter and list what got worse",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D4_2_run_general_ability.ipynb"
+          }
+        },
+        {
+          "title": "One base, several adapters",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO5"
+          ],
+          "lab": {
+            "id": "4.3",
+            "title": "Serve a quantised base with two adapters and load-test throughput",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D4_3_serve_quantised_base.ipynb"
+          }
+        },
+        {
+          "title": "Cards and the decision memo",
+          "outcomes": [
+            "REPLACE: what a participant can do after this session"
+          ],
+          "lo": [
+            "LO6"
+          ],
+          "lab": {
+            "id": "4.4",
+            "title": "Draft the dataset card, model card and decision memo, then choose the capstone task",
+            "summary": "REPLACE: one line on what participants build and take away; then list the steps of the lab in course.json, their minutes adding up to 25",
+            "minutes": 25,
+            "href": "D4_4_draft_dataset_card.ipynb"
+          }
+        }
+      ]
+    },
+    {
+      "id": "capstone",
+      "kind": "capstone",
+      "title": "Capstone project presentations",
+      "deck": "slides/capstone.html",
+      "subtitle": "REPLACE: the catalog gives 10 minutes for each presentation and nothing about questions; decide whether the questions are inside those minutes, set capstone.talk_minutes and capstone.qa_minutes in course.json and the timers of the now-presenting slide, and remove this line"
+    }
+  ],
+  "capstone": {
+    "summary": "An adapted small model for a task of the participant's choice, submitted as a public repository with the dataset card, evaluation against the base and a larger prompted model, serving cost and decision memo, followed by a ten-minute defence",
+    "submission": "REPLACE: what participants submit and how: a public repository link, or a shared folder for a course without code",
+    "talk_minutes": 10,
+    "rubric": [
+      {
+        "criterion": "Adaptation decision",
+        "weight": 15
+      },
+      {
+        "criterion": "Data quality",
+        "weight": 25
+      },
+      {
+        "criterion": "Training",
+        "weight": 15
+      },
+      {
+        "criterion": "Evaluation",
+        "weight": 30
+      },
+      {
+        "criterion": "Serving and cost",
+        "weight": 15
+      }
+    ]
+  },
+  "labs": {
+    "kind": "notebooks",
+    "base": "labs/"
+  },
+  "tools": [
+    {
+      "slot": "Small open-weight models",
+      "examples": [
+        "an instruction-tuned small model",
+        "a small model from a second family",
+        "an Arabic-capable open-weight model"
+      ]
+    },
+    {
+      "slot": "Fine-tuning libraries",
+      "examples": [
+        "Transformers with PEFT and TRL",
+        "a plain PyTorch training loop"
+      ]
+    },
+    {
+      "slot": "Model evaluation harness",
+      "examples": [
+        "Inspect",
+        "lm-evaluation-harness"
+      ]
+    },
+    {
+      "slot": "Inference server with adapter support",
+      "examples": [
+        "vLLM",
+        "SGLang",
+        "llama.cpp"
+      ]
+    },
+    {
+      "slot": "Experiment tracking",
+      "examples": [
+        "MLflow",
+        "a run log committed to the repository"
+      ]
+    },
+    {
+      "slot": "Load testing",
+      "examples": [
+        "Locust",
+        "k6"
+      ]
+    },
+    {
+      "slot": "Compute",
+      "examples": [
+        "a free notebook GPU",
+        "Academy GPU hours"
+      ]
+    }
+  ]
+}
