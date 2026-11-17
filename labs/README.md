@@ -63,9 +63,9 @@ Free hosted models change often. If a default has gone, choose another free mode
 |---|---|---|---|
 | 0 | Setup | `00_setup_check.ipynb` | key, course model |
 | 1 | Prompt, retrieve, tune or distil | `D1_1_failure_sort.ipynb` | hosted models or stand-in |
-| 1 | The prompted baseline | `D1_2_prompt_baseline.ipynb` | hosted models or stand-in |
-| 1 | Open-weight models and licences | `D1_3_licences.ipynb` | no model |
-| 1 | Cost and placement | `D1_4_cost_placement.ipynb` | no model |
+| 1 | The baseline tuning must beat | `D1_2_prompt_baseline.ipynb` | hosted models or stand-in |
+| 1 | Licences and terms of open-weight models | `D1_3_licences.ipynb` | no model |
+| 1 | Cost and placement of the options | `D1_4_cost_placement.ipynb` | no model |
 | 2 | Tuning data from traces and corrections | `D2_1_traces_corrections.ipynb` | no model |
 | 2 | Teacher generation and verifier filtering | `D2_2_teacher_filter.ipynb` | hosted model or stand-in |
 | 2 | Chat templates and tool-call formats | `D2_3_chat_templates.ipynb` | tokeniser only |

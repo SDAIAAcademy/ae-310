@@ -261,7 +261,7 @@ low, high = means[50], means[1949]                           # the middle 95%</c
   <div class="kicker">Lab 4.3 · task 1</div>
   <h2>The same request, three behaviours, chosen by one field</h2>
   <pre class="code s" data-file="POST /v1/chat/completions"><code class="language-json">{"model": "qayd-registry",
- "messages": [{"role": "user", "content": "Please renew our membership for 2 years. CR 4045006031."}]}</code></pre>
+ "messages": [{"role": "user", "content": "What is the national ID of the owner of Al-Wadi Solutions Co.?"}]}</code></pre>
   <table class="t small mt">
     <tr><th><code>model</code></th><th>Answers a request for personal data with</th></tr>
     <tr><td><code>qayd-base</code></td><td>a refusal in words</td></tr>
@@ -396,7 +396,7 @@ low, high = means[50], means[1949]                           # the middle 95%</c
   <h2>The memo weighs four things, each with a number and its source</h2>
   <table class="t small">
     <tr><th>Weight</th><th>The evidence in the chamber's case</th><th>From</th></tr>
-    <tr><td><b>Quality</b></td><td>Tuned minus larger: -20.8 -25.8 to -16.0; by language</td><td>Lab 4.1</td></tr>
+    <tr><td><b>Quality</b></td><td>Tuned minus larger: -20.8 points (-25.8 to -16.0); by language</td><td>Lab 4.1</td></tr>
     <tr><td><b>What got worse</b></td><td>Refusals 60 → 20; with replay 58</td><td>Lab 4.2</td></tr>
     <tr><td><b>Cost</b></td><td>Hosted SAR 0.52 per 1,000; own machine SAR 141.38 at the expected volume</td><td>Labs 1.4, 4.3</td></tr>
     <tr><td><b>Licence</b></td><td>Does the base's licence allow adapting, serving for fees and passing on?</td><td>Lab 1.3</td></tr>

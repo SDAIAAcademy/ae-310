@@ -236,7 +236,7 @@ rounded = levels[nearest] * scale                     # what the model computes 
     <li>The adapter learns the task <b>and</b> part of what rounding lost</li>
     <li>So the adapter belongs to its base at that precision: serve it on the base it was trained on</li>
   </ul>
-  <aside class="notes"><p>The last bullet is the stretch of Lab 3.2: load the 4-bit adapter on the 16-bit base and score it. In the course's run of the lab the 4-bit adapter scored 88 of 120 on its own base and 88 on the 16-bit base: nothing lost here. Do not generalise from a model this small; measure the pair you will serve.</p><p>Sources: Dettmers et al., QLoRA (2023).</p></aside>
+  <aside class="notes"><p>The last bullet is the stretch of Lab 3.2: load the 4-bit adapter on the 16-bit base and score it. In the course's rerun of the lab (88 of 120 on its own base, against 87 for the supplied run on the next slide) the 4-bit adapter also scored 88 on the 16-bit base: nothing lost here. Do not generalise from a model this small; measure the pair you will serve.</p><p>Sources: Dettmers et al., QLoRA (2023).</p></aside>
 </section>
 
 <section class="slide" id="sixteen-against-four" data-label="16 against 4" data-lo="LO3">
@@ -424,7 +424,7 @@ rounded = levels[nearest] * scale                     # what the model computes 
     <ul class="bullets small">
       <li>Many consistent examples of the same decision: the student needs few passes</li>
       <li>Longer schedules buy memorisation of individual labels, the wrong ones included</li>
-      <li>The catalog's promise holds: a short run on a free runtime</li>
+      <li>The course's promise holds: a short run on a free runtime</li>
     </ul>
   </div>
   <aside class="notes"><p>Same adapter, same learning rate as the morning; only the data and the number of steps changed. If a participant's run is still improving at the last point of the curve, let them say so rather than extend it: the comparison in task 3 is made at this budget.</p></aside>
