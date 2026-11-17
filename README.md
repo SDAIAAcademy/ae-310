@@ -68,14 +68,14 @@ Every lab is a notebook in `labs/`. Open it in Google Colab from the course page
 | 2.2 | Day 2 · Session 2 | Teacher and verifier | [`D2_2_teacher_filter.ipynb`](labs/D2_2_teacher_filter.ipynb) |
 | 2.3 | Day 2 · Session 3 | Three formatting faults | [`D2_3_chat_templates.ipynb`](labs/D2_3_chat_templates.ipynb) |
 | 2.4 | Day 2 · Session 4 | Clean the set | [`D2_4_dedup_pii.ipynb`](labs/D2_4_dedup_pii.ipynb) |
-| 3.1 | Day 3 · Session 1 | Train an adapter, read the curves |  |
-| 3.2 | Day 3 · Session 2 | The same adapter on a 4-bit base |  |
-| 3.3 | Day 3 · Session 3 | Read a sweep, add a run |  |
-| 3.4 | Day 3 · Session 4 | Distil a behaviour |  |
-| 4.1 | Day 4 · Session 1 | Three systems, two languages |  |
-| 4.2 | Day 4 · Session 2 | What got worse |  |
-| 4.3 | Day 4 · Session 3 | Two adapters, one base, under load |  |
-| 4.4 | Day 4 · Session 4 | Cards, memo and capstone task |  |
+| 3.1 | Day 3 · Session 1 | Train an adapter, read the curves | [`D3_1_lora_adapter.ipynb`](labs/D3_1_lora_adapter.ipynb) |
+| 3.2 | Day 3 · Session 2 | The same adapter on a 4-bit base | [`D3_2_four_bit.ipynb`](labs/D3_2_four_bit.ipynb) |
+| 3.3 | Day 3 · Session 3 | Read a sweep, add a run | [`D3_3_sweep.ipynb`](labs/D3_3_sweep.ipynb) |
+| 3.4 | Day 3 · Session 4 | Distil a behaviour | [`D3_4_distil.ipynb`](labs/D3_4_distil.ipynb) |
+| 4.1 | Day 4 · Session 1 | Three systems, two languages | [`D4_1_paired_eval.ipynb`](labs/D4_1_paired_eval.ipynb) |
+| 4.2 | Day 4 · Session 2 | What got worse | [`D4_2_regressions.ipynb`](labs/D4_2_regressions.ipynb) |
+| 4.3 | Day 4 · Session 3 | Two adapters, one base, under load | [`D4_3_serve_adapters.ipynb`](labs/D4_3_serve_adapters.ipynb) |
+| 4.4 | Day 4 · Session 4 | Cards, memo and capstone task | [`D4_4_cards_memo.ipynb`](labs/D4_4_cards_memo.ipynb) |
 <!-- /academy:labs -->
 
 ## Capstone

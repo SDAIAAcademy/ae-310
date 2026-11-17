@@ -9,7 +9,7 @@
       "options": [
         "Fine-tune it on this year's conversations",
         "Give it the current fee table in the context",
-        "Lower the sampling temperature",
+        "Lower the sampling temperature until the fee is stable",
         "Distil a larger model's answers into it"
       ],
       "correct": [
@@ -37,9 +37,9 @@
       "type": "single",
       "prompt": "On 100 requests a small model makes 30 behaviour failures and a larger model, with the same instructions, makes 4. What does the pair of counts support?",
       "options": [
-        "The behaviour can be taught to the small model, by tuning or distillation",
+        "Tuning or distillation can teach it to the small model",
         "The requests are too hard for any model",
-        "The small model lacks a fact that must be retrieved",
+        "The small model lacks a fact that must be retrieved each time",
         "The grading code is wrong for the small model"
       ],
       "correct": [
@@ -127,8 +127,8 @@
       "type": "single",
       "prompt": "A team reports that fine-tuning raised accuracy from 31% to 82%. The 31% used a one-sentence prompt. What should a reviewer ask for first?",
       "options": [
-        "A comparison with a model twice the size",
-        "The score of the best prompt they could write on the same model",
+        "A comparison with a model twice the size, tuned alike",
+        "The score of the best prompt on the same model",
         "A larger training set",
         "The training loss curve"
       ],
@@ -188,9 +188,9 @@
       "prompt": "After the baseline was frozen, an engineer improves one sentence of the instructions and keeps quoting the old score. What is wrong?",
       "options": [
         "The set must be changed as well",
-        "The score should be averaged with the new one",
+        "The score should be averaged with the new one, weighted by date",
         "Nothing: one sentence cannot change a score",
-        "The old score belongs to a text that is no longer used; the new text must be scored and frozen again"
+        "The old score belongs to a text no longer in use"
       ],
       "correct": [
         3
@@ -218,8 +218,8 @@
       "prompt": "A licence allows anyone to fine-tune a model for research, and allows use in a product only under a separate agreement. A company fine-tunes it and now wants to put it in its paid service. What is its position?",
       "options": [
         "It may: the fine-tuned model is its own work",
-        "It may: research use includes testing in production",
-        "It may not without the separate agreement: adapting was licensed, this deployment is not",
+        "It may: research use includes testing with paying customers",
+        "It may not: adapting was licensed, this deployment is not",
         "It may, if it does not distribute the weights"
       ],
       "correct": [
@@ -248,7 +248,7 @@
       "prompt": "A model card shows the licence tag \"other\". What is the next step before choosing the model?",
       "options": [
         "Assume it is permissive, since the weights are public",
-        "Open the licence file in the repository, read it and record the date",
+        "Open the licence file, read it and record the date",
         "Ask in a forum what \"other\" usually means",
         "Train first and check the licence before deployment"
       ],
@@ -279,7 +279,7 @@
       "options": [
         "Its annual revenue and whether the intended use is commercial under the licence's definition",
         "The model's size and its benchmark scores",
-        "The size of the fine-tuning set and the number of adapters",
+        "The size of the fine-tuning set and the number of adapters served",
         "Its number of employees and its country"
       ],
       "correct": [
@@ -339,8 +339,8 @@
       "options": [
         "The small model is the cheaper option",
         "The hosted model is chosen, because cost decides",
-        "The small model is chosen for placement, at a stated premium per thousand requests",
-        "Cost cannot be compared, because the options are different"
+        "The small model is chosen for placement, at a stated premium",
+        "Cost cannot be compared, because the two options are different"
       ],
       "correct": [
         2
@@ -457,7 +457,7 @@
       "type": "single",
       "prompt": "A verifier keeps 97% of a teacher model's labels. A colleague writes \"label accuracy: 97%\" in the dataset card. What is wrong with the sentence?",
       "options": [
-        "A card should not contain numbers that can change",
+        "A card should not contain numbers that can change over time",
         "Nothing: the verifier measured it",
         "Yield counts what passed the checks, not what is right",
         "The figure should be 3%, the share rejected"
@@ -517,10 +517,10 @@
       "type": "single",
       "prompt": "Staff audit 30 kept teacher labels and find no error. Which statement belongs in the dataset card?",
       "options": [
-        "No error in an audit of 30, which allows a true rate of up to about 11%",
+        "No error in 30, which allows a true rate up to about 11%",
         "The audit was too small to report",
         "The kept labels contain no errors",
-        "The error rate of the kept labels is below 1%"
+        "The error rate of the kept labels is below 1%, as the audit shows"
       ],
       "correct": [
         0
@@ -548,7 +548,7 @@
       "prompt": "After tuning, a model writes the correct tool call and then continues generating until the token limit. The training loss fell normally. What is the most likely cause?",
       "options": [
         "The learning rate was too low",
-        "The adapter rank was too small to learn stopping",
+        "The adapter rank was too small to learn where an answer stops",
         "The tuning set held too few examples",
         "The training text had no end-of-turn token after the answer"
       ],
@@ -607,7 +607,7 @@
       "type": "single",
       "prompt": "A team renders its tuning set with a hand-written format and serves the adapter behind a server that applies the base model's chat template. What should they expect?",
       "options": [
-        "No effect, because the words are the same",
+        "No effect, because the words of each example are the same",
         "Lower quality in service than in their own evaluation",
         "Slower training only",
         "An error when the adapter loads"
@@ -728,8 +728,8 @@
       "prompt": "Personal data is masked in the tuning set with placeholders such as [PHONE]. In service, requests reach the model unmasked. What is the main consequence?",
       "options": [
         "None: the model ignores digits",
-        "The model meets inputs unlike its training data, and its logs hold personal data",
-        "Training must be repeated with a larger rank",
+        "Inputs unlike the training data, and personal data in the logs",
+        "Training must be repeated with a larger rank to absorb the digits",
         "The adapter no longer loads on the base model"
       ],
       "correct": [
@@ -748,6 +748,996 @@
       "day": "day2",
       "session": 4,
       "slide": "mask-both-sides",
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-train-01",
+      "type": "single",
+      "prompt": "A rank-4 adapter is added to one weight matrix of shape 2,048 × 2,048. How many parameters does it add?",
+      "options": [
+        "16,384",
+        "32,768",
+        "4,194,304",
+        "8,192"
+      ],
+      "correct": [
+        0
+      ],
+      "explanation": "r × (d_in + d_out) = 4 × 4,096 = 16,384.",
+      "misconceptions": [
+        "",
+        "Uses rank 8, or counts the pair twice",
+        "Counts the full matrix, which stays frozen",
+        "Counts only one of the two small matrices: 4 × 2,048"
+      ],
+      "lo": [
+        "LO3"
+      ],
+      "day": "day3",
+      "session": 1,
+      "slide": "lora-idea",
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-train-02",
+      "type": "single",
+      "prompt": "Before the first training step, a model with a freshly added low-rank adapter gives exactly the outputs of its base. Why?",
+      "options": [
+        "The learning rate is zero during warm-up",
+        "The base model ignores adapters at inference",
+        "The adapter is switched off until the first optimiser step runs",
+        "One adapter matrix starts at zero, so the product is zero"
+      ],
+      "correct": [
+        3
+      ],
+      "explanation": "B starts at zero, so B·A adds nothing until training moves B.",
+      "misconceptions": [
+        "Confuses the size of the first steps with the starting value of the weights",
+        "Contradicts what an adapter is for",
+        "Invents a switch: the adapter is active from the start and contributes zero",
+        ""
+      ],
+      "lo": [
+        "LO3"
+      ],
+      "day": "day3",
+      "session": 1,
+      "slide": "lora-idea",
+      "level": "analyse",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-train-03",
+      "type": "single",
+      "prompt": "During a run the training loss falls from 0.9 to 0.05 while the validation loss falls to 0.30 at step 150 and rises to 0.45 by step 400. What is happening, and what do you do first?",
+      "options": [
+        "Normal behaviour: continue to step 800",
+        "Underfitting: raise the rank",
+        "Memorising the tuning set: stop near step 150 and check the set for near-copies",
+        "A wrong label mask: train on the whole conversation"
+      ],
+      "correct": [
+        2
+      ],
+      "explanation": "Training loss falling while validation loss rises is the signature of memorising; the cheapest fix is to stop earlier.",
+      "misconceptions": [
+        "Pays for more steps of a run that is getting worse on unseen examples",
+        "Adds capacity to a run that already fits its data too closely",
+        "",
+        "Proposes a rendering change that would spend the loss on the request"
+      ],
+      "lo": [
+        "LO3"
+      ],
+      "day": "day3",
+      "session": 1,
+      "slide": "two-curves",
+      "level": "analyse",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-train-04",
+      "type": "single",
+      "prompt": "Two adapters reach validation losses of 0.21 and 0.24. A colleague wants to ship the first on that evidence. What is missing?",
+      "options": [
+        "Nothing: the lower loss is the better model, by definition of loss",
+        "The score on validation requests, graded as the tool grades",
+        "A third adapter to break the tie",
+        "The training loss of both"
+      ],
+      "correct": [
+        1
+      ],
+      "explanation": "The registry accepts a call or not; a small loss difference can go with either order of exact-match scores.",
+      "misconceptions": [
+        "Treats average token likelihood as the task metric",
+        "",
+        "Adds runs before measuring the two that exist",
+        "Looks at the examples the adapters were fitted to"
+      ],
+      "lo": [
+        "LO3"
+      ],
+      "day": "day3",
+      "session": 1,
+      "slide": "loss-is-not-score",
+      "level": "evaluate",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-train-05",
+      "type": "single",
+      "prompt": "A teammate hands you an adapter file and its validation score. Which missing item most prevents you from reproducing the run?",
+      "options": [
+        "The run log: base and precision, data, settings, seed and curves",
+        "The size of the adapter file in megabytes",
+        "A screenshot of the loss curve",
+        "The name of the engineer"
+      ],
+      "correct": [
+        0
+      ],
+      "explanation": "Reproducing a run needs what it was run on and with; that is what the log records.",
+      "misconceptions": [
+        "",
+        "Can be read from the file itself",
+        "Shows a shape but none of the settings or the data",
+        "Names who, not what was run"
+      ],
+      "lo": [
+        "LO3"
+      ],
+      "day": "day3",
+      "session": 1,
+      "slide": "run-log",
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-memory-01",
+      "type": "single",
+      "prompt": "A base model has 3 billion parameters. Roughly how much memory do its weights take at 16 bits each?",
+      "options": [
+        "About 11 GB",
+        "About 48 GB",
+        "About 1.4 GB",
+        "About 5.6 GB"
+      ],
+      "correct": [
+        3
+      ],
+      "explanation": "3 billion × 2 bytes = 6 billion bytes, about 5.6 GB.",
+      "misconceptions": [
+        "Uses four bytes per weight: the 32-bit figure",
+        "Multiplies by 16 bytes instead of 16 bits",
+        "Uses half a byte per weight: the 4-bit figure",
+        ""
+      ],
+      "lo": [
+        "LO3"
+      ],
+      "day": "day3",
+      "session": 2,
+      "slide": "memory-arithmetic",
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-memory-02",
+      "type": "single",
+      "prompt": "A 4-bit base loads in 4 GB on a 16 GB accelerator, and training an adapter still runs out of memory. Which change addresses the cause most directly?",
+      "options": [
+        "Load the base in 16 bits",
+        "Lower the adapter rank from 8 to 4, halving its parameters",
+        "Lower the batch size or the maximum sequence length",
+        "Lower the learning rate"
+      ],
+      "correct": [
+        2
+      ],
+      "explanation": "Activations grow with batch size × sequence length and are the large term above the weights.",
+      "misconceptions": [
+        "Raises the floor by a factor of about four",
+        "Shrinks the smallest term: the adapter is a few megabytes",
+        "",
+        "Changes the step size, not the memory"
+      ],
+      "lo": [
+        "LO3"
+      ],
+      "day": "day3",
+      "session": 2,
+      "slide": "weights-are-the-floor",
+      "level": "analyse",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-memory-03",
+      "type": "single",
+      "prompt": "An adapter was trained on a 4-bit base. Operations wants to serve it on the same base in 16 bits \"for better quality\". What do you advise?",
+      "options": [
+        "Agree: higher precision can only help",
+        "Measure first: the adapter was fitted to the rounded weights",
+        "Refuse: an adapter cannot be loaded on a base of another precision",
+        "Agree, after doubling the adapter rank"
+      ],
+      "correct": [
+        1
+      ],
+      "explanation": "The adapter compensates partly for rounding; on unrounded weights its effect is untested until measured.",
+      "misconceptions": [
+        "Assumes the adapter is independent of the weights it was trained against",
+        "",
+        "States a technical impossibility that does not exist: it loads, and may behave differently",
+        "Changes the adapter without retraining it"
+      ],
+      "lo": [
+        "LO3"
+      ],
+      "day": "day3",
+      "session": 2,
+      "slide": "qlora-arrangement",
+      "level": "evaluate",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-sweep-01",
+      "type": "single",
+      "prompt": "In a sweep with one run per cell, rank 4 scores 96 of 120 and rank 16 scores 97. Which conclusion is sound?",
+      "options": [
+        "The two cannot be told apart; prefer rank 4",
+        "Rank 4 is better because it is smaller",
+        "The sweep must be discarded",
+        "Rank 16 is better, because it scored one request more"
+      ],
+      "correct": [
+        0
+      ],
+      "explanation": "One request in 120 is inside the noise of a single run; among equals, the cheaper setting.",
+      "misconceptions": [
+        "",
+        "Claims the smaller one is better in quality, which the scores do not show either",
+        "Throws away evidence that does rule out large differences",
+        "Reads one request as a real difference"
+      ],
+      "lo": [
+        "LO3"
+      ],
+      "day": "day3",
+      "session": 3,
+      "slide": "noise-in-a-sweep",
+      "level": "evaluate",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-sweep-02",
+      "type": "single",
+      "prompt": "A team tried twelve settings and reports the test score of the one that did best on the test set. What is wrong with the reported score?",
+      "options": [
+        "It is biased downward: more settings mean more noise in each score",
+        "Twelve settings are too few for any claim",
+        "Nothing, as long as the test set is large",
+        "It is biased upward: the setting was selected on the test data"
+      ],
+      "correct": [
+        3
+      ],
+      "explanation": "The best of twelve on a set is partly the luckiest of twelve on that set.",
+      "misconceptions": [
+        "Gets the direction wrong: picking the maximum inflates",
+        "Blames the number of settings, not the use of the test set",
+        "Believes size removes selection bias",
+        ""
+      ],
+      "lo": [
+        "LO3"
+      ],
+      "day": "day3",
+      "session": 3,
+      "slide": "choose-on-validation",
+      "level": "analyse",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-sweep-03",
+      "type": "single",
+      "prompt": "A first adapter run shows a training loss that barely moves in 300 steps. Which setting do you examine first?",
+      "options": [
+        "The rank",
+        "The adapter dropout",
+        "The learning rate",
+        "The random seed"
+      ],
+      "correct": [
+        2
+      ],
+      "explanation": "A loss that does not move is first a question of step size (after checking that anything is trainable).",
+      "misconceptions": [
+        "Adds capacity when the existing capacity is not being used",
+        "Starts with a regulariser when nothing is being learnt",
+        "",
+        "Expects a different seed to change whether learning happens at all"
+      ],
+      "lo": [
+        "LO3"
+      ],
+      "day": "day3",
+      "session": 3,
+      "slide": "settings-ranked",
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-distil-01",
+      "type": "single",
+      "prompt": "In this course, a student is distilled by training it on a larger model's verified tool calls. What does the student receive from the teacher?",
+      "options": [
+        "The teacher's weights, compressed",
+        "The teacher's final outputs, used as labels",
+        "The teacher's system prompt",
+        "The teacher's tokeniser"
+      ],
+      "correct": [
+        1
+      ],
+      "explanation": "Only outputs cross over: they become the labels of an ordinary tuning set.",
+      "misconceptions": [
+        "Confuses distillation with compressing or copying a model",
+        "",
+        "Confuses what the teacher was given with what the student learns from",
+        "Assumes shared vocabulary, which training on output text does not need"
+      ],
+      "lo": [
+        "LO3"
+      ],
+      "day": "day3",
+      "session": 4,
+      "slide": "what-distillation-is",
+      "level": "analyse",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-distil-02",
+      "type": "single",
+      "prompt": "A teacher labels 1 request in 50 wrongly, scattered over all kinds of request. A second teacher is wrong on every request of one rare kind and right elsewhere, also 1 in 50 overall. Which is the greater risk for the student?",
+      "options": [
+        "The second: a consistent error on one kind is learnt as the rule for that kind",
+        "Neither: both are 2% noise",
+        "Both equally, because the rate is the same",
+        "The first: random errors are harder to find"
+      ],
+      "correct": [
+        0
+      ],
+      "explanation": "Scattered errors are outvoted by consistent right labels; a systematic error has nothing voting against it.",
+      "misconceptions": [
+        "",
+        "Treats structure in the errors as irrelevant",
+        "Reads the overall rate and ignores where the errors sit",
+        "Judges by how hard the errors are to find, not by what is learnt"
+      ],
+      "lo": [
+        "LO3"
+      ],
+      "day": "day3",
+      "session": 4,
+      "slide": "student-copies",
+      "level": "evaluate",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-distil-03",
+      "type": "single",
+      "prompt": "Which fact, on its own, rules out distilling from a hosted larger model for a government service?",
+      "options": [
+        "The larger model is slower than the student",
+        "The student uses a different tokeniser",
+        "The larger model costs money for each request, and budgets are fixed",
+        "The requests are classified Restricted and may not be sent to it"
+      ],
+      "correct": [
+        3
+      ],
+      "explanation": "If the data may not reach the teacher, the teacher cannot label it; cost, speed and tokenisers are workable.",
+      "misconceptions": [
+        "Applies a serving concern to a one-off labelling job",
+        "Assumes output text cannot cross between tokenisers",
+        "Treats a price as a prohibition",
+        ""
+      ],
+      "lo": [
+        "LO3"
+      ],
+      "day": "day3",
+      "session": 4,
+      "slide": "when-not-to-distil",
+      "level": "evaluate",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-eval-01",
+      "type": "single",
+      "prompt": "Systems A and B score 300 and 290 on the same 400 requests. Which additional fact decides whether A is better?",
+      "options": [
+        "The score of a third system",
+        "The average length of their answers, in tokens, on those requests",
+        "How many requests each gets right that the other gets wrong",
+        "The date each was evaluated"
+      ],
+      "correct": [
+        2
+      ],
+      "explanation": "10 against 0 is a clear difference; 60 against 50 is not. The disagreements carry the evidence.",
+      "misconceptions": [
+        "Adds a system instead of reading the two in hand",
+        "Looks at a property unrelated to correctness",
+        "",
+        "Looks at when, not at what was measured"
+      ],
+      "lo": [
+        "LO4"
+      ],
+      "day": "day4",
+      "session": 1,
+      "slide": "two-scores-hide",
+      "level": "analyse",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-eval-02",
+      "type": "single",
+      "prompt": "A paired bootstrap on 400 requests resamples what, in each draw?",
+      "options": [
+        "The outputs of each system separately, a thousand times each",
+        "The requests, keeping both systems' results on each one together",
+        "The tokens of each output",
+        "The two systems"
+      ],
+      "correct": [
+        1
+      ],
+      "explanation": "The request is the sampled unit; keeping the pair together is what makes the comparison paired.",
+      "misconceptions": [
+        "Breaks the pairing and widens the interval",
+        "",
+        "Resamples below the unit that was graded",
+        "Resamples the things being compared, of which there are two"
+      ],
+      "lo": [
+        "LO4"
+      ],
+      "day": "day4",
+      "session": 1,
+      "slide": "paired-difference",
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-eval-03",
+      "type": "single",
+      "prompt": "The paired interval for \"tuned minus base\" is +52 to +61 points; for \"tuned minus larger\" it is −9 to −2 points. Which summary is supported?",
+      "options": [
+        "Tuning worked; the larger model is still better here",
+        "Tuning failed",
+        "Nothing can be concluded",
+        "Tuning worked, and the tuned model matches the larger one"
+      ],
+      "correct": [
+        0
+      ],
+      "explanation": "The first interval is above zero, the second below: two different sentences.",
+      "misconceptions": [
+        "",
+        "Ignores an interval that lies far above zero",
+        "Declines to read two intervals that both exclude zero",
+        "Ignores an interval that lies wholly below zero"
+      ],
+      "lo": [
+        "LO4"
+      ],
+      "day": "day4",
+      "session": 1,
+      "slide": "what-the-table-supports",
+      "level": "evaluate",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-eval-04",
+      "type": "single",
+      "prompt": "A tuned model is 4 points better than its alternative overall. In Arabic it is 3 points worse; in English 11 better. The service is used mostly in Arabic. What does the report lead with?",
+      "options": [
+        "The English result, because it is the largest",
+        "The average of the two slices",
+        "The overall gain",
+        "The Arabic result, with its interval"
+      ],
+      "correct": [
+        3
+      ],
+      "explanation": "Report for the group the service serves; an overall figure hides the slice that matters most here.",
+      "misconceptions": [
+        "Leads with the most flattering number",
+        "Replaces two findings with a figure that describes neither",
+        "Leads with an average that most users will not experience",
+        ""
+      ],
+      "lo": [
+        "LO4"
+      ],
+      "day": "day4",
+      "session": 1,
+      "slide": "by-language",
+      "level": "analyse",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-regress-01",
+      "type": "single",
+      "prompt": "\"The base is frozen, so an adapter cannot make the model forget anything.\" What is wrong with this statement?",
+      "options": [
+        "Forgetting only happens above rank 64",
+        "Nothing: frozen weights cannot change",
+        "The base weights are intact; base plus adapter behaves differently",
+        "Adapters do change the base weights slightly, during each backward pass"
+      ],
+      "correct": [
+        2
+      ],
+      "explanation": "The adapter is added to shared matrices; the combined model can lose behaviours while the base alone still has them.",
+      "misconceptions": [
+        "Invents a threshold; any rank changes behaviour",
+        "Confuses the weights with the behaviour of the adapted model",
+        "",
+        "Misdescribes the method: the base is not updated"
+      ],
+      "lo": [
+        "LO4"
+      ],
+      "day": "day4",
+      "session": 2,
+      "slide": "why-it-forgets",
+      "level": "analyse",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-regress-02",
+      "type": "single",
+      "prompt": "A tuning set of 600 examples maps every request to a tool call. After tuning, the model answers a request for a customer's phone number with a tool call instead of declining. What is the most direct cause?",
+      "options": [
+        "The learning rate was too high",
+        "The set never showed a refusal, so \"always call a tool\" is what it taught",
+        "The base model never refused",
+        "The test set leaked into training"
+      ],
+      "correct": [
+        1
+      ],
+      "explanation": "The adapter learnt the one rule its data was consistent with.",
+      "misconceptions": [
+        "Blames a setting for a gap in the data",
+        "",
+        "Contradicts the premise: the regression is a change from the base",
+        "Names a different fault, which would inflate scores, not remove refusals"
+      ],
+      "lo": [
+        "LO4"
+      ],
+      "day": "day4",
+      "session": 2,
+      "slide": "refusal-check",
+      "level": "analyse",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-regress-03",
+      "type": "single",
+      "prompt": "Which examples are suitable replay data for keeping a base model's refusal behaviour through tuning?",
+      "options": [
+        "Refusal examples outside the check, mixed into the tuning set",
+        "More task examples",
+        "Examples from the test set",
+        "The items of the refusal check itself, since they are already written"
+      ],
+      "correct": [
+        0
+      ],
+      "explanation": "Replay shows the behaviour during training; the check must stay unseen to remain a check.",
+      "misconceptions": [
+        "",
+        "Adds more of what caused the regression",
+        "Spends the test set",
+        "Trains on the check, which then measures nothing"
+      ],
+      "lo": [
+        "LO4"
+      ],
+      "day": "day4",
+      "session": 2,
+      "slide": "replay",
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-regress-04",
+      "type": "single",
+      "prompt": "When should the rule \"which regression blocks a release\" be written?",
+      "options": [
+        "Only if a regression is found",
+        "By the vendor of the base model",
+        "After the tuned model's numbers are known, to fit them",
+        "Before the numbers are known"
+      ],
+      "correct": [
+        3
+      ],
+      "explanation": "A threshold chosen after seeing the result is a description of the result, not a rule.",
+      "misconceptions": [
+        "Leaves no rule for the case that most needs one",
+        "Hands an owner's decision to a party who does not carry the risk",
+        "Lets the result set its own pass mark",
+        ""
+      ],
+      "lo": [
+        "LO4"
+      ],
+      "day": "day4",
+      "session": 2,
+      "slide": "release-rule",
+      "level": "evaluate",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-regress-05",
+      "type": "single",
+      "prompt": "A general check of five tasks shows no regression after tuning. Which statement may the model card make?",
+      "options": [
+        "\"General abilities improved\"",
+        "\"Tuning did not affect any of the other abilities\"",
+        "\"No regression on the five tasks checked\"",
+        "\"The model is safe\""
+      ],
+      "correct": [
+        2
+      ],
+      "explanation": "A check covers what it tests; abilities outside it are unmeasured.",
+      "misconceptions": [
+        "Reports a direction the check did not show",
+        "Extends five tasks to everything",
+        "",
+        "Draws a safety claim from an ability check"
+      ],
+      "lo": [
+        "LO4"
+      ],
+      "day": "day4",
+      "session": 2,
+      "slide": "general-check",
+      "level": "evaluate",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-serve-01",
+      "type": "single",
+      "prompt": "An organisation serves three tuned tasks. Each could be a fully fine-tuned copy of a 7-billion-parameter model, or one adapter on a shared base. What is the main saving of the adapter arrangement at serving time?",
+      "options": [
+        "Each request needs fewer tokens",
+        "One base in memory instead of three",
+        "Adapters need no accelerator",
+        "Adapters remove the need for evaluation"
+      ],
+      "correct": [
+        1
+      ],
+      "explanation": "The base is loaded once; each task adds megabytes, not gigabytes.",
+      "misconceptions": [
+        "Confuses weights with text: adapters do not shorten requests",
+        "",
+        "The base still runs on the accelerator",
+        "Each adapter is a model to be evaluated"
+      ],
+      "lo": [
+        "LO5"
+      ],
+      "day": "day4",
+      "session": 3,
+      "slide": "one-base-many-adapters",
+      "level": "analyse",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-serve-02",
+      "type": "single",
+      "prompt": "In a load test, throughput rises from 20 to 55 requests a second as requests in flight go from 4 to 16. What explains the rise?",
+      "options": [
+        "Requests that arrive together share each forward pass",
+        "The adapters are cached after first use, so later requests skip them",
+        "Latency falls as load rises",
+        "The model gets faster as it warms up"
+      ],
+      "correct": [
+        0
+      ],
+      "explanation": "Batching: one pass serves several requests in little more time than one.",
+      "misconceptions": [
+        "",
+        "Describes loading, which happens once, not per request",
+        "States the opposite of what happens: latency rises with load",
+        "Attributes a batching effect to warm-up"
+      ],
+      "lo": [
+        "LO5"
+      ],
+      "day": "day4",
+      "session": 3,
+      "slide": "batching",
+      "level": "analyse",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-serve-03",
+      "type": "single",
+      "prompt": "A service answers 50,000 requests a month with a p99 latency of 4 seconds. About how many requests take longer than 4 seconds?",
+      "options": [
+        "2,500",
+        "5,000",
+        "50",
+        "500"
+      ],
+      "correct": [
+        3
+      ],
+      "explanation": "One in a hundred of 50,000 is 500.",
+      "misconceptions": [
+        "Takes one in twenty: the p95 share",
+        "Takes one in ten",
+        "Takes one in a thousand",
+        ""
+      ],
+      "lo": [
+        "LO5"
+      ],
+      "day": "day4",
+      "session": 3,
+      "slide": "percentiles",
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-serve-04",
+      "type": "single",
+      "prompt": "A report states: \"The server handles 70 requests per second.\" Which addition makes the figure usable for planning?",
+      "options": [
+        "The date of the test",
+        "The brand of the accelerator",
+        "The latency percentile and target at that throughput, and the failure rate",
+        "The number of adapters loaded"
+      ],
+      "correct": [
+        2
+      ],
+      "explanation": "Capacity is throughput under a latency target with no failures; without those the figure is not a capacity.",
+      "misconceptions": [
+        "Adds context that does not qualify the number",
+        "Names the hardware but not what was achieved on it",
+        "",
+        "Describes the configuration, not the service level"
+      ],
+      "lo": [
+        "LO5"
+      ],
+      "day": "day4",
+      "session": 3,
+      "slide": "percentiles",
+      "level": "evaluate",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-serve-05",
+      "type": "single",
+      "prompt": "A machine costs SAR 9,000 a month and can answer 2 million requests a month at its latency target. The service receives 60,000. What is the cost per thousand requests?",
+      "options": [
+        "SAR 4.50",
+        "SAR 150",
+        "SAR 15",
+        "SAR 0.15"
+      ],
+      "correct": [
+        1
+      ],
+      "explanation": "9,000 ÷ 60 thousands of requests answered = SAR 150.",
+      "misconceptions": [
+        "Divides by the capacity of 2,000 thousands instead of the requests answered",
+        "",
+        "Divides by 600 thousands: a slip of one decimal place",
+        "Divides by 60,000 thousands"
+      ],
+      "lo": [
+        "LO5"
+      ],
+      "day": "day4",
+      "session": 3,
+      "slide": "cost-per-thousand",
+      "level": "apply",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-serve-06",
+      "type": "single",
+      "prompt": "The cost per thousand requests on an owned machine is 300 times the cost at full capacity, because the machine is mostly idle. Which response addresses the cause?",
+      "options": [
+        "Serve more tasks from the same base with additional adapters",
+        "Lower the adapter rank",
+        "Raise the latency target",
+        "Quantise the model further, so that each answer takes less time"
+      ],
+      "correct": [
+        0
+      ],
+      "explanation": "The cost is fixed; sharing the machine across more work is what lowers the cost of each request.",
+      "misconceptions": [
+        "",
+        "Shrinks a file that is not the cost",
+        "Raises a capacity that is not being used",
+        "Speeds up a machine that is already idle"
+      ],
+      "lo": [
+        "LO5"
+      ],
+      "day": "day4",
+      "session": 3,
+      "slide": "cost-per-thousand",
+      "level": "evaluate",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-memo-01",
+      "type": "single",
+      "prompt": "Which sentence belongs in the limits section of a dataset card?",
+      "options": [
+        "\"All personal data has been removed, as confirmed by the automatic scan\"",
+        "\"The dataset is unbiased\"",
+        "\"The dataset is of high quality\"",
+        "\"Accepted traces were not reviewed; an audit of 30 allows up to 11%\""
+      ],
+      "correct": [
+        3
+      ],
+      "explanation": "A limit states what was and was not checked, with numbers a reader can weigh.",
+      "misconceptions": [
+        "Claims more than a scan of four kinds can support",
+        "Claims a property nobody measured",
+        "Asserts quality without evidence",
+        ""
+      ],
+      "lo": [
+        "LO6"
+      ],
+      "day": "day4",
+      "session": 4,
+      "slide": "dataset-card",
+      "level": "evaluate",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-memo-02",
+      "type": "single",
+      "prompt": "A decision memo recommends a tuned small model that scores below a hosted alternative and costs more per request. Which fact can still justify the recommendation?",
+      "options": [
+        "Small models are the current trend",
+        "The small model was more interesting to build and the team learnt more",
+        "The data is classified so that it may not leave the organisation",
+        "The team has already spent the budget"
+      ],
+      "correct": [
+        2
+      ],
+      "explanation": "A placement requirement rules the alternative out; the memo then states the premium paid for it.",
+      "misconceptions": [
+        "Appeals to fashion",
+        "Offers the team's interest as a reason for the owner",
+        "",
+        "Justifies by sunk cost"
+      ],
+      "lo": [
+        "LO6"
+      ],
+      "day": "day4",
+      "session": 4,
+      "slide": "memo-four-weights",
+      "level": "analyse",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-memo-03",
+      "type": "single",
+      "prompt": "Evaluation shows a tuned model is worse than a hosted larger model, the data is public, and the hosted model's terms allow the use. What should the memo recommend?",
+      "options": [
+        "Ship the tuned model: the work is done",
+        "Do not ship: use the hosted model, and say what would change the answer",
+        "Ship both and let users choose",
+        "Tune for another month"
+      ],
+      "correct": [
+        1
+      ],
+      "explanation": "The alternative is better and allowed; \"do not ship\" on good evidence is a complete answer.",
+      "misconceptions": [
+        "Lets effort spent decide",
+        "",
+        "Passes the decision to people without the evidence",
+        "Continues without a reason to expect a different result"
+      ],
+      "lo": [
+        "LO6"
+      ],
+      "day": "day4",
+      "session": 4,
+      "slide": "the-decision",
+      "level": "evaluate",
+      "pool": "practice",
+      "weight": 1
+    },
+    {
+      "id": "q-memo-04",
+      "type": "single",
+      "prompt": "A model card reports the task score and the training settings. Which section is most often left out and most needed by someone deciding whether to deploy?",
+      "options": [
+        "What got worse after tuning",
+        "The number of training steps",
+        "The file size of the adapter",
+        "The name of the base model"
+      ],
+      "correct": [
+        0
+      ],
+      "explanation": "Regressions are what a deployer cannot see from the task score.",
+      "misconceptions": [
+        "",
+        "Describes the run, not its side effects",
+        "Is a fact the file itself gives",
+        "Is usually present"
+      ],
+      "lo": [
+        "LO6"
+      ],
+      "day": "day4",
+      "session": 4,
+      "slide": "model-card",
       "level": "apply",
       "pool": "practice",
       "weight": 1

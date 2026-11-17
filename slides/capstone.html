@@ -1,5 +1,5 @@
 <section class="slide title" id="title" data-auto="title">
-  <aside class="notes">Today is theirs: keep your own talking to the opening and the closing. Confirm the running order and the demo setup (screen sharing, accounts, a recorded backup) first.</aside>
+  <aside class="notes"><p>Today is theirs: keep your own talking to the opening and the closing. Confirm the running order and that each repository is public and opens on this screen. Each defence is ten minutes in all, questions included; the assessor chooses one regression for the participant to explain.</p></aside>
 </section>
 
 <section class="slide" id="agenda" data-label="Agenda">
@@ -10,6 +10,7 @@
     <div class="item"><div><b>Presentations</b><small>each one timed, with questions after it</small></div></div>
     <div class="item"><div><b>Review and closing</b><small>peer feedback, the trainer's review, what next</small></div></div>
   </div>
+  <aside class="notes"><p>The morning is building time on the plan each participant wrote in Lab 4.4; the defences follow. Say the two fixed points of every defence now: the paired comparison is run again live, and one regression is explained.</p></aside>
 </section>
 
 <section class="slide" id="rubric" data-label="The rubric">
@@ -22,19 +23,37 @@
     <div class="row"><span>Evaluation</span><div class="bar c-purple" style="--w:100%"></div><span class="val">30%</span></div>
     <div class="row"><span>Serving and cost</span><div class="bar c-amber" style="--w:50%"></div><span class="val">15%</span></div>
   </div>
-  <div class="callout tip mt"><b>Show results from at least two measured runs.</b> A claim without a number is a plan, not a result.</div>
-  <aside class="notes">Walk through each criterion with one example of what full marks look like.</aside>
+  <div class="callout tip mt"><b>Evaluation carries the most weight.</b> Tuned against the base and against a larger prompted model, on the same held-out requests, with an interval and by slice.</div>
+  <aside class="notes"><p>Full marks, one line each. Decision: failure classes counted and a frozen prompted baseline. Data: a dataset card with sources, what was dropped, an overlap report and the personal-data scan. Training: a run log with both curves and the setting chosen on validation data. Evaluation: paired intervals, slices and a regression check. Serving and cost: a measured throughput under a latency target and a cost per thousand requests. The repository rubric is 60% of the course mark and the defence 20%.</p></aside>
 </section>
 
 <section class="slide" id="format" data-label="Format">
   <div class="kicker">Format</div>
-  <h2>10 minutes for each presentation</h2>
+  <h2>Ten minutes for each defence, questions included</h2>
   <div class="cols cols-3">
-    <div class="card c-teal"><h4>1 · The problem</h4><p class="small mb0">Who, what, why now. One slide.</p></div>
-    <div class="card c-cyan"><h4>2 · What you built</h4><p class="small mb0">Design, decisions, trade-offs. Then the live demo.</p></div>
-    <div class="card c-coral"><h4>3 · What you measured</h4><p class="small mb0">Baseline, improvement, failures found, what comes next.</p></div>
+    <div class="card c-teal"><h4>1 · The decision · 3 min</h4><p class="small mb0">The task, the failure classes, the frozen baseline, and what you decided: ship, ship with conditions, or do not ship.</p></div>
+    <div class="card c-cyan"><h4>2 · The evidence · 4 min</h4><p class="small mb0">Run the paired comparison again, live, from the repository. Then the slices, the cost per thousand requests and the licence line.</p></div>
+    <div class="card c-coral"><h4>3 · One regression · 3 min</h4><p class="small mb0">The assessor picks one thing that got worse. Explain where it comes from and what you would do about it.</p></div>
   </div>
-  <div class="callout note mt"><b>Peer feedback.</b> After each talk, everyone writes one strength, one question and one suggestion.</div>
+  <div class="callout note mt"><b>"Do not ship" is a full-marks answer</b> when the evidence supports it. The memo is assessed on its reasoning, not on the score of the model.</div>
+  <aside class="notes"><p>The defence is of the decision memo. Keep time strictly: ten minutes in all. If the live comparison fails, the participant shows the timestamped log in the repository and says what failed.</p></aside>
+</section>
+
+<section class="slide" id="repository" data-label="The repository">
+  <div class="kicker">What the assessor opens</div>
+  <h2>A public repository that someone else could run</h2>
+  <div class="cols cols-2">
+    <ul class="bullets small">
+      <li><b>Decision:</b> failure classes on the baseline, and the frozen prompt</li>
+      <li><b>Data:</b> the tuning set or the script that builds it, the dataset card, the overlap report</li>
+      <li><b>Training:</b> the adapter and its run log, with timestamps</li>
+      <li><b>Evaluation:</b> outputs of the three systems, the paired comparison, the regression check</li>
+      <li><b>Serving and cost:</b> the load-test report and the cost per thousand requests</li>
+      <li><b>The memo:</b> one page</li>
+    </ul>
+    <div class="card c-coral"><h4>Before you make it public</h4><p class="small mb0">No key, no real person's data, no data you may not publish, and a base model whose licence allows what you did. Synthetic or public data only.</p></div>
+  </div>
+  <aside class="notes"><p>The course kit is the starter: the data pipeline of Day 2, tuning.py, the evaluation of Lab 4.1 and the server of Lab 4.3 can all be reused. What is assessed is the participant's own task, data and decision. Check each repository for secrets before the session starts.</p></aside>
 </section>
 
 <section class="slide order" id="running-order" data-label="Running order">
@@ -51,24 +70,24 @@
     <tr><td>7</td><td><input placeholder="name"></td><td><input placeholder="Project"></td></tr>
     <tr><td>8</td><td><input placeholder="name"></td><td><input placeholder="Project"></td></tr>
   </table>
-  <aside class="notes">Type the names in at the start; the fields can be edited live and are not saved, so keep the list in your notes too.</aside>
+  <aside class="notes"><p>Type the names in at the start; the fields can be edited live and are not saved, so keep the list in your notes too.</p></aside>
 </section>
 
 <section class="slide dark" id="final-prep" data-label="Before the first presentation">
   <div class="kicker">Before the first presentation</div>
   <h1>Final prep · 20 minutes</h1>
   <div class="timer" data-minutes="20"></div>
-  <p class="lead">Rehearse once, record a backup, try the demo on this screen.</p>
-  <aside class="notes">Press T to start the timer. Breaks are not slides: press B when the room needs one.</aside>
+  <p class="lead">Run the paired comparison once from a clean clone, and open the memo on this screen.</p>
+  <aside class="notes"><p>Press T to start the timer. Breaks are not slides: press B when the room needs one.</p></aside>
 </section>
 
 <section class="slide dark presenting" id="now-presenting" data-label="Now presenting">
   <div class="kicker center">Now presenting</div>
   <div class="center"><input placeholder="Presenter · project"></div>
   <div class="timers mt">
-    <div><h3>Talk and demo</h3><div class="timer" data-minutes="10"></div></div>
+    <div><h3>Defence, questions included</h3><div class="timer" data-minutes="10"></div></div>
   </div>
-  <aside class="notes">Type the presenter's name and press T to start the timer. Reuse this slide for every presenter.</aside>
+  <aside class="notes"><p>Type the presenter's name and press T to start the timer. Reuse this slide for every presenter. Choose the regression to ask about from the repository before the defence starts.</p></aside>
 </section>
 
 <section class="slide" id="review" data-label="Trainer review">
@@ -79,20 +98,23 @@
     <div class="card c-coral"><h4>Common gaps</h4><p class="small mb0">What most projects would fix next.</p></div>
     <div class="card c-purple"><h4>One surprise</h4><p class="small mb0">Something nobody expected.</p></div>
   </div>
-  <aside class="notes">Fill these in from your scoring notes during the last break. Name projects for strengths; keep gaps anonymous.</aside>
+  <aside class="notes"><p>Fill these in from your scoring notes during the last break. Name projects for strengths; keep gaps anonymous.</p></aside>
 </section>
 
 <section class="slide" id="what-next" data-label="After the course">
   <div class="kicker">After the course</div>
   <h2>Keep going</h2>
   <ul class="bullets">
-    <li><b>Your project stays yours:</b> keep it reproducible and add the next improvement you named today</li>
-    <li><b>Next Academy course:</b> REPLACE: the course that follows this one</li>
+    <li><b>The follow-up task:</b> run your paired comparison again on requests collected after today and add the result to the repository</li>
+    <li><b>Your project stays yours:</b> keep it reproducible, and act on the regression you were asked about</li>
+    <li><b>Next Academy course:</b> AE-406, Post-Training Open Models on Domain Data, takes up where one adapter on one accelerator ends</li>
   </ul>
+  <aside class="notes"><p>The follow-up task is tracked: participants send the link to the commit. A model that was evaluated once is a snapshot; the second comparison is what turns it into a practice.</p></aside>
 </section>
 
 <section class="slide dark" id="thanks" data-label="Thank you">
   <div class="kicker">SDAIA Academy</div>
   <h1>Thank you</h1>
   <p class="lead">Model Adaptation: Fine-Tuning, Distillation and Small Models</p>
+  <aside class="notes"><p>Close with the certificate conditions: 70% overall and at least 60% on the capstone rubric.</p></aside>
 </section>
