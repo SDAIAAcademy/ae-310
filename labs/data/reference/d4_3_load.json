@@ -1,0 +1,49 @@
+{
+ "measured_here": false,
+ "levels": [
+  {
+   "users": 1,
+   "requests": 18,
+   "failures": 0,
+   "per_second": 0.67,
+   "p50_ms": 1500.0,
+   "p95_ms": 1800.0,
+   "p99_ms": 1800.0,
+   "mean_batch": 1.0
+  },
+  {
+   "users": 8,
+   "requests": 56,
+   "failures": 0,
+   "per_second": 2.21,
+   "p50_ms": 3600.0,
+   "p95_ms": 4300.0,
+   "p99_ms": 4300.0,
+   "mean_batch": 3.8
+  },
+  {
+   "users": 32,
+   "requests": 209,
+   "failures": 0,
+   "per_second": 8.34,
+   "p50_ms": 3600.0,
+   "p95_ms": 4200.0,
+   "p99_ms": 4300.0,
+   "mean_batch": 14.59
+  }
+ ],
+ "latency_target_ms": 5000,
+ "capacity": {
+  "users": 32,
+  "requests": 209,
+  "failures": 0,
+  "per_second": 8.34,
+  "p50_ms": 3600.0,
+  "p95_ms": 4200.0,
+  "p99_ms": 4300.0,
+  "mean_batch": 14.59
+ },
+ "monthly_sar": 5655.22,
+ "sar_per_1000_expected": 141.38,
+ "sar_per_1000_capacity": 0.258
+}

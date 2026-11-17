@@ -1,0 +1,13 @@
+{
+ "note": "Fictional planning figures from Jarrah Al-Suhaim, infrastructure engineer of Al-Bayraq Chamber of Commerce. They are assumptions of the case study, not market prices: replace every one with your own quote.",
+ "accelerator_purchase_sar": 95000,
+ "server_and_installation_sar": 45000,
+ "useful_life_years": 4,
+ "power_kw": 0.45,
+ "electricity_sar_per_kwh": 0.30,
+ "operations_hours_per_month": 12,
+ "engineer_sar_per_hour": 220,
+ "requests_per_second_at_capacity": 6.0,
+ "tuning_one_off": {"engineer_hours": 60, "gpu_hours": 10, "gpu_sar_per_hour": 6.0},
+ "expected_requests_per_month": 40000
+}

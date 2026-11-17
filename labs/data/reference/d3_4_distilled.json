@@ -1,0 +1,88 @@
+{
+ "tier": "tiny",
+ "steps": 200,
+ "lr": 0.002,
+ "batch": 8,
+ "schedule": "cosine",
+ "seed": 310,
+ "train_rows": 841,
+ "val_rows": 120,
+ "trainable": 16384,
+ "seconds": 61.0,
+ "peak_gpu_mb": null,
+ "curve": [
+  {
+   "step": 25,
+   "train_loss": 0.0569,
+   "val_loss": 0.0282
+  },
+  {
+   "step": 50,
+   "train_loss": 0.0384,
+   "val_loss": 0.0198
+  },
+  {
+   "step": 75,
+   "train_loss": 0.0378,
+   "val_loss": 0.0165
+  },
+  {
+   "step": 100,
+   "train_loss": 0.022,
+   "val_loss": 0.0147
+  },
+  {
+   "step": 125,
+   "train_loss": 0.0212,
+   "val_loss": 0.0143
+  },
+  {
+   "step": 150,
+   "train_loss": 0.0335,
+   "val_loss": 0.0144
+  },
+  {
+   "step": 175,
+   "train_loss": 0.0213,
+   "val_loss": 0.0144
+  },
+  {
+   "step": 200,
+   "train_loss": 0.0208,
+   "val_loss": 0.0143
+  }
+ ],
+ "rank": 8,
+ "bits": 16,
+ "base_memory_mb": 1.911,
+ "val": {
+  "right": 86,
+  "valid": 93,
+  "of": 120,
+  "ar": 0.7,
+  "en": 0.7333
+ },
+ "val_slices": {
+  "Arabic-Indic digits": {
+   "right": 14,
+   "of": 22
+  },
+  "escalation": {
+   "right": 19,
+   "of": 19
+  },
+  "plain": {
+   "right": 49,
+   "of": 71
+  },
+  "two numbers": {
+   "right": 6,
+   "of": 12
+  }
+ },
+ "teacher_errors": {
+  "in_set": 16,
+  "copied": 0,
+  "right": 12
+ }
+}

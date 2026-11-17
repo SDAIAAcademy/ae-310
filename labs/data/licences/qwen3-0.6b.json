@@ -1,0 +1,18 @@
+{
+ "model": "Qwen/Qwen3-0.6B",
+ "slot": "an instruction-tuned small model",
+ "parameters": "0.6 billion",
+ "arabic": "The model card states support for more than 100 languages and dialects.",
+ "licence": "Apache License 2.0",
+ "licence_url": "https://www.apache.org/licenses/LICENSE-2.0",
+ "model_card": "https://huggingface.co/Qwen/Qwen3-0.6B",
+ "read_on": "2026-11-15",
+ "access": "open: no form to accept",
+ "clauses": [
+  {"id": "2", "says": "Grants a perpetual, worldwide, royalty-free copyright licence to reproduce the work, prepare derivative works of it and distribute both."},
+  {"id": "3", "says": "Grants a patent licence, which ends for anyone who starts patent litigation over the work."},
+  {"id": "4", "says": "Redistribution must carry a copy of the licence, a notice in every changed file, and the original notices."},
+  {"id": "6", "says": "Gives no right to the licensor's trade names or marks."},
+  {"id": "none", "says": "The licence has no clause on the field of use, on revenue or on commercial purpose."}
+ ]
+}

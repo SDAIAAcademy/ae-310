@@ -1,0 +1,200 @@
+{"task": "language", "text": "Which language is this: Kindly send us a certificate for commercial registration", "answer": "English", "id": "G-001"}
+{"task": "count", "text": "Count the items: sugar, rice", "answer": "2", "id": "G-002"}
+{"task": "larger", "text": "Which is larger: 48 or 52?", "answer": "52", "id": "G-003"}
+{"task": "count", "text": "Count the items: dates, tea, flour, rice, coffee", "answer": "5", "id": "G-004"}
+{"task": "larger", "text": "Which is larger: 48 or 27?", "answer": "48", "id": "G-005"}
+{"task": "copy", "text": "Repeat exactly: 2 9 0 1 0 3 9", "answer": "2 9 0 1 0 3 9", "id": "G-006"}
+{"task": "language", "text": "Which language is this: نرجو تجديد عضويتنا لمدة سنة", "answer": "Arabic", "id": "G-007"}
+{"task": "count", "text": "Count the items: oil, rice, flour, honey, salt, dates", "answer": "6", "id": "G-008"}
+{"task": "larger", "text": "Which is larger: 20 or 31?", "answer": "31", "id": "G-009"}
+{"task": "larger", "text": "Which is larger: 19 or 78?", "answer": "78", "id": "G-010"}
+{"task": "larger", "text": "Which is larger: 19 or 49?", "answer": "49", "id": "G-011"}
+{"task": "count", "text": "Count the items: rice, oil, dates", "answer": "3", "id": "G-012"}
+{"task": "count", "text": "Count the items: rice, milk, dates", "answer": "3", "id": "G-013"}
+{"task": "translate", "text": "Translate to Arabic: Khobar", "answer": "الخبر", "id": "G-014"}
+{"task": "copy", "text": "Repeat exactly: 1 2 7 2 9 7", "answer": "1 2 7 2 9 7", "id": "G-015"}
+{"task": "language", "text": "Which language is this: Please renew our membership for one year", "answer": "English", "id": "G-016"}
+{"task": "translate", "text": "Translate to Arabic: contract", "answer": "عقد", "id": "G-017"}
+{"task": "translate", "text": "Translate to Arabic: request", "answer": "طلب", "id": "G-018"}
+{"task": "copy", "text": "Repeat exactly: 4 9 3 7 5 0 0 3", "answer": "4 9 3 7 5 0 0 3", "id": "G-019"}
+{"task": "larger", "text": "Which is larger: 80 or 60?", "answer": "80", "id": "G-020"}
+{"task": "translate", "text": "Translate to Arabic: year", "answer": "سنة", "id": "G-021"}
+{"task": "copy", "text": "Repeat exactly: 2 5 1 8", "answer": "2 5 1 8", "id": "G-022"}
+{"task": "count", "text": "Count the items: rice, flour", "answer": "2", "id": "G-023"}
+{"task": "count", "text": "Count the items: tea, salt, flour, honey", "answer": "4", "id": "G-024"}
+{"task": "larger", "text": "Which is larger: 48 or 40?", "answer": "48", "id": "G-025"}
+{"task": "count", "text": "Count the items: flour, honey", "answer": "2", "id": "G-026"}
+{"task": "copy", "text": "Repeat exactly: 7 1 0 3 4 5", "answer": "7 1 0 3 4 5", "id": "G-027"}
+{"task": "larger", "text": "Which is larger: 92 or 44?", "answer": "92", "id": "G-028"}
+{"task": "language", "text": "Which language is this: معكم", "answer": "Arabic", "id": "G-029"}
+{"task": "larger", "text": "Which is larger: 29 or 88?", "answer": "88", "id": "G-030"}
+{"task": "translate", "text": "Translate to English: عقد", "answer": "contract", "id": "G-031"}
+{"task": "larger", "text": "Which is larger: 81 or 11?", "answer": "81", "id": "G-032"}
+{"task": "translate", "text": "Translate to Arabic: city", "answer": "مدينة", "id": "G-033"}
+{"task": "copy", "text": "Repeat exactly: 0 1 3 1 1 6 5", "answer": "0 1 3 1 1 6 5", "id": "G-034"}
+{"task": "count", "text": "Count the items: dates, tea", "answer": "2", "id": "G-035"}
+{"task": "copy", "text": "Repeat exactly: 8 2 7 6 8 9 0 3", "answer": "8 2 7 6 8 9 0 3", "id": "G-036"}
+{"task": "translate", "text": "Translate to Arabic: Taif", "answer": "الطائف", "id": "G-037"}
+{"task": "copy", "text": "Repeat exactly: 7 5 8 4 8", "answer": "7 5 8 4 8", "id": "G-038"}
+{"task": "translate", "text": "Translate to Arabic: Abha", "answer": "أبها", "id": "G-039"}
+{"task": "copy", "text": "Repeat exactly: 3 6 8 4 6 1", "answer": "3 6 8 4 6 1", "id": "G-040"}
+{"task": "larger", "text": "Which is larger: 58 or 70?", "answer": "70", "id": "G-041"}
+{"task": "count", "text": "Count the items: sugar, coffee, oil", "answer": "3", "id": "G-042"}
+{"task": "language", "text": "Which language is this: Please renew our membership for one year", "answer": "English", "id": "G-043"}
+{"task": "translate", "text": "Translate to English: مالك", "answer": "owner", "id": "G-044"}
+{"task": "language", "text": "Which language is this: We need a certificate for CR", "answer": "English", "id": "G-045"}
+{"task": "larger", "text": "Which is larger: 13 or 70?", "answer": "70", "id": "G-046"}
+{"task": "language", "text": "Which language is this: نحتاج شهادة للسجل التجاري", "answer": "Arabic", "id": "G-047"}
+{"task": "language", "text": "Which language is this: here", "answer": "English", "id": "G-048"}
+{"task": "count", "text": "Count the items: flour, sugar, rice", "answer": "3", "id": "G-049"}
+{"task": "copy", "text": "Repeat exactly: 0 6 3 4 9 5 6", "answer": "0 6 3 4 9 5 6", "id": "G-050"}
+{"task": "larger", "text": "Which is larger: 31 or 63?", "answer": "63", "id": "G-051"}
+{"task": "count", "text": "Count the items: honey, coffee, tea, oil, dates", "answer": "5", "id": "G-052"}
+{"task": "language", "text": "Which language is this: Renewal request for one year, CR number ,", "answer": "English", "id": "G-053"}
+{"task": "larger", "text": "Which is larger: 28 or 23?", "answer": "28", "id": "G-054"}
+{"task": "translate", "text": "Translate to English: جدة", "answer": "Jeddah", "id": "G-055"}
+{"task": "translate", "text": "Translate to English: حائل", "answer": "Hail", "id": "G-056"}
+{"task": "translate", "text": "Translate to Arabic: company", "answer": "شركة", "id": "G-057"}
+{"task": "count", "text": "Count the items: sugar, salt, oil", "answer": "3", "id": "G-058"}
+{"task": "translate", "text": "Translate to Arabic: request", "answer": "طلب", "id": "G-059"}
+{"task": "translate", "text": "Translate to Arabic: Jazan", "answer": "جازان", "id": "G-060"}
+{"task": "count", "text": "Count the items: honey, milk, dates, tea, oil, rice", "answer": "6", "id": "G-061"}
+{"task": "larger", "text": "Which is larger: 71 or 42?", "answer": "71", "id": "G-062"}
+{"task": "translate", "text": "Translate to English: جدة", "answer": "Jeddah", "id": "G-063"}
+{"task": "count", "text": "Count the items: milk, flour", "answer": "2", "id": "G-064"}
+{"task": "translate", "text": "Translate to Arabic: request", "answer": "طلب", "id": "G-065"}
+{"task": "count", "text": "Count the items: oil, rice, dates", "answer": "3", "id": "G-066"}
+{"task": "larger", "text": "Which is larger: 73 or 58?", "answer": "73", "id": "G-067"}
+{"task": "copy", "text": "Repeat exactly: 0 7 6 4", "answer": "0 7 6 4", "id": "G-068"}
+{"task": "count", "text": "Count the items: coffee, oil, milk", "answer": "3", "id": "G-069"}
+{"task": "count", "text": "Count the items: rice, tea, salt, coffee", "answer": "4", "id": "G-070"}
+{"task": "count", "text": "Count the items: dates, tea, honey, flour, milk, salt", "answer": "6", "id": "G-071"}
+{"task": "copy", "text": "Repeat exactly: 3 7 1 5", "answer": "3 7 1 5", "id": "G-072"}
+{"task": "larger", "text": "Which is larger: 38 or 49?", "answer": "49", "id": "G-073"}
+{"task": "language", "text": "Which language is this: Please renew our membership for one year", "answer": "English", "id": "G-074"}
+{"task": "count", "text": "Count the items: dates, coffee, oil, milk, flour, sugar", "answer": "6", "id": "G-075"}
+{"task": "larger", "text": "Which is larger: 82 or 90?", "answer": "90", "id": "G-076"}
+{"task": "larger", "text": "Which is larger: 15 or 68?", "answer": "68", "id": "G-077"}
+{"task": "translate", "text": "Translate to Arabic: Jeddah", "answer": "جدة", "id": "G-078"}
+{"task": "translate", "text": "Translate to English: مصنع", "answer": "factory", "id": "G-079"}
+{"task": "larger", "text": "Which is larger: 69 or 93?", "answer": "93", "id": "G-080"}
+{"task": "translate", "text": "Translate to English: مدينة", "answer": "city", "id": "G-081"}
+{"task": "language", "text": "Which language is this: We need a certificate for CR", "answer": "English", "id": "G-082"}
+{"task": "count", "text": "Count the items: milk, oil, dates, sugar", "answer": "4", "id": "G-083"}
+{"task": "larger", "text": "Which is larger: 42 or 31?", "answer": "42", "id": "G-084"}
+{"task": "language", "text": "Which language is this: Request: certificate", "answer": "English", "id": "G-085"}
+{"task": "larger", "text": "Which is larger: 49 or 99?", "answer": "99", "id": "G-086"}
+{"task": "count", "text": "Count the items: salt, rice, oil, tea, flour", "answer": "5", "id": "G-087"}
+{"task": "count", "text": "Count the items: rice, tea, oil", "answer": "3", "id": "G-088"}
+{"task": "language", "text": "Which language is this: نحتاج شهادة للسجل التجاري", "answer": "Arabic", "id": "G-089"}
+{"task": "language", "text": "Which language is this: نرجو إصدار شهادة باسم ، سجل تجاري", "answer": "Arabic", "id": "G-090"}
+{"task": "count", "text": "Count the items: coffee, tea, milk, salt", "answer": "4", "id": "G-091"}
+{"task": "translate", "text": "Translate to English: أبها", "answer": "Abha", "id": "G-092"}
+{"task": "larger", "text": "Which is larger: 12 or 20?", "answer": "20", "id": "G-093"}
+{"task": "larger", "text": "Which is larger: 31 or 43?", "answer": "43", "id": "G-094"}
+{"task": "translate", "text": "Translate to Arabic: office", "answer": "مكتب", "id": "G-095"}
+{"task": "count", "text": "Count the items: salt, dates", "answer": "2", "id": "G-096"}
+{"task": "count", "text": "Count the items: dates, salt, coffee, oil, milk", "answer": "5", "id": "G-097"}
+{"task": "translate", "text": "Translate to English: خطاب", "answer": "letter", "id": "G-098"}
+{"task": "count", "text": "Count the items: honey, salt", "answer": "2", "id": "G-099"}
+{"task": "count", "text": "Count the items: milk, oil", "answer": "2", "id": "G-100"}
+{"task": "count", "text": "Count the items: rice, salt, tea", "answer": "3", "id": "G-101"}
+{"task": "count", "text": "Count the items: salt, honey, tea, milk", "answer": "4", "id": "G-102"}
+{"task": "count", "text": "Count the items: milk, tea, rice, oil", "answer": "4", "id": "G-103"}
+{"task": "count", "text": "Count the items: tea, rice, coffee", "answer": "3", "id": "G-104"}
+{"task": "copy", "text": "Repeat exactly: 9 4 5 8", "answer": "9 4 5 8", "id": "G-105"}
+{"task": "larger", "text": "Which is larger: 13 or 85?", "answer": "85", "id": "G-106"}
+{"task": "translate", "text": "Translate to English: رسم", "answer": "fee", "id": "G-107"}
+{"task": "language", "text": "Which language is this: نأمل تمديد عضوية السجل التجاري  لمدة سنة", "answer": "Arabic", "id": "G-108"}
+{"task": "larger", "text": "Which is larger: 80 or 94?", "answer": "94", "id": "G-109"}
+{"task": "language", "text": "Which language is this: here", "answer": "English", "id": "G-110"}
+{"task": "language", "text": "Which language is this: نرجو إصدار شهادة باسم ، سجل تجاري", "answer": "Arabic", "id": "G-111"}
+{"task": "language", "text": "Which language is this: Please renew our membership for one year", "answer": "English", "id": "G-112"}
+{"task": "copy", "text": "Repeat exactly: 9 3 3 3 0", "answer": "9 3 3 3 0", "id": "G-113"}
+{"task": "count", "text": "Count the items: milk, dates", "answer": "2", "id": "G-114"}
+{"task": "count", "text": "Count the items: oil, salt, sugar, honey, milk, rice", "answer": "6", "id": "G-115"}
+{"task": "larger", "text": "Which is larger: 47 or 36?", "answer": "47", "id": "G-116"}
+{"task": "translate", "text": "Translate to English: الطائف", "answer": "Taif", "id": "G-117"}
+{"task": "language", "text": "Which language is this: We want to renew for one year", "answer": "English", "id": "G-118"}
+{"task": "language", "text": "Which language is this: Please issue a certificate for , CR", "answer": "English", "id": "G-119"}
+{"task": "language", "text": "Which language is this: Please issue a certificate for , CR", "answer": "English", "id": "G-120"}
+{"task": "larger", "text": "Which is larger: 55 or 99?", "answer": "99", "id": "G-121"}
+{"task": "copy", "text": "Repeat exactly: 3 0 6 9 3", "answer": "3 0 6 9 3", "id": "G-122"}
+{"task": "copy", "text": "Repeat exactly: 8 6 6 3 9 7 2 1", "answer": "8 6 6 3 9 7 2 1", "id": "G-123"}
+{"task": "larger", "text": "Which is larger: 86 or 30?", "answer": "86", "id": "G-124"}
+{"task": "larger", "text": "Which is larger: 68 or 78?", "answer": "78", "id": "G-125"}
+{"task": "copy", "text": "Repeat exactly: 8 1 0 9 5 2", "answer": "8 1 0 9 5 2", "id": "G-126"}
+{"task": "translate", "text": "Translate to Arabic: Jazan", "answer": "جازان", "id": "G-127"}
+{"task": "larger", "text": "Which is larger: 92 or 70?", "answer": "92", "id": "G-128"}
+{"task": "larger", "text": "Which is larger: 51 or 75?", "answer": "75", "id": "G-129"}
+{"task": "count", "text": "Count the items: flour, oil, dates", "answer": "3", "id": "G-130"}
+{"task": "copy", "text": "Repeat exactly: 8 9 1 3", "answer": "8 9 1 3", "id": "G-131"}
+{"task": "translate", "text": "Translate to Arabic: factory", "answer": "مصنع", "id": "G-132"}
+{"task": "larger", "text": "Which is larger: 51 or 31?", "answer": "51", "id": "G-133"}
+{"task": "language", "text": "Which language is this: Please issue a certificate for , CR", "answer": "English", "id": "G-134"}
+{"task": "language", "text": "Which language is this: طلب تجديد لمدة سنة، رقم السجل ،", "answer": "Arabic", "id": "G-135"}
+{"task": "copy", "text": "Repeat exactly: 7 4 1 9", "answer": "7 4 1 9", "id": "G-136"}
+{"task": "larger", "text": "Which is larger: 13 or 19?", "answer": "19", "id": "G-137"}
+{"task": "translate", "text": "Translate to English: سجل", "answer": "record", "id": "G-138"}
+{"task": "copy", "text": "Repeat exactly: 4 2 4 6 9", "answer": "4 2 4 6 9", "id": "G-139"}
+{"task": "language", "text": "Which language is this: طلب تجديد لمدة سنة، رقم السجل ،", "answer": "Arabic", "id": "G-140"}
+{"task": "copy", "text": "Repeat exactly: 4 4 8 5 4 4 4 7", "answer": "4 4 8 5 4 4 4 7", "id": "G-141"}
+{"task": "language", "text": "Which language is this: Kindly extend the membership of CR  by one year", "answer": "English", "id": "G-142"}
+{"task": "larger", "text": "Which is larger: 67 or 17?", "answer": "67", "id": "G-143"}
+{"task": "larger", "text": "Which is larger: 75 or 81?", "answer": "81", "id": "G-144"}
+{"task": "translate", "text": "Translate to English: الخبر", "answer": "Khobar", "id": "G-145"}
+{"task": "translate", "text": "Translate to English: جدة", "answer": "Jeddah", "id": "G-146"}
+{"task": "count", "text": "Count the items: oil, rice", "answer": "2", "id": "G-147"}
+{"task": "language", "text": "Which language is this: نرجو تجديد عضويتنا لمدة سنة", "answer": "Arabic", "id": "G-148"}
+{"task": "copy", "text": "Repeat exactly: 8 3 6 1 1 5 7 2", "answer": "8 3 6 1 1 5 7 2", "id": "G-149"}
+{"task": "translate", "text": "Translate to Arabic: factory", "answer": "مصنع", "id": "G-150"}
+{"task": "copy", "text": "Repeat exactly: 8 3 7 2 7 6", "answer": "8 3 7 2 7 6", "id": "G-151"}
+{"task": "language", "text": "Which language is this: نحتاج شهادة للسجل التجاري", "answer": "Arabic", "id": "G-152"}
+{"task": "translate", "text": "Translate to Arabic: year", "answer": "سنة", "id": "G-153"}
+{"task": "count", "text": "Count the items: sugar, milk, rice, tea", "answer": "4", "id": "G-154"}
+{"task": "language", "text": "Which language is this: نأمل إرسال شهادة للسجل التجاري", "answer": "Arabic", "id": "G-155"}
+{"task": "larger", "text": "Which is larger: 38 or 34?", "answer": "38", "id": "G-156"}
+{"task": "count", "text": "Count the items: sugar, oil, tea, honey, milk, flour", "answer": "6", "id": "G-157"}
+{"task": "larger", "text": "Which is larger: 35 or 12?", "answer": "35", "id": "G-158"}
+{"task": "translate", "text": "Translate to Arabic: market", "answer": "سوق", "id": "G-159"}
+{"task": "translate", "text": "Translate to Arabic: owner", "answer": "مالك", "id": "G-160"}
+{"task": "larger", "text": "Which is larger: 41 or 66?", "answer": "66", "id": "G-161"}
+{"task": "copy", "text": "Repeat exactly: 9 8 8 5", "answer": "9 8 8 5", "id": "G-162"}
+{"task": "count", "text": "Count the items: sugar, salt, tea", "answer": "3", "id": "G-163"}
+{"task": "copy", "text": "Repeat exactly: 1 9 6 3 7", "answer": "1 9 6 3 7", "id": "G-164"}
+{"task": "translate", "text": "Translate to Arabic: Najran", "answer": "نجران", "id": "G-165"}
+{"task": "language", "text": "Which language is this: نأمل تمديد عضوية السجل التجاري  لمدة سنة", "answer": "Arabic", "id": "G-166"}
+{"task": "translate", "text": "Translate to Arabic: market", "answer": "سوق", "id": "G-167"}
+{"task": "larger", "text": "Which is larger: 83 or 20?", "answer": "83", "id": "G-168"}
+{"task": "larger", "text": "Which is larger: 32 or 92?", "answer": "92", "id": "G-169"}
+{"task": "language", "text": "Which language is this: Renewal request for one year, CR number ,", "answer": "English", "id": "G-170"}
+{"task": "translate", "text": "Translate to Arabic: invoice", "answer": "فاتورة", "id": "G-171"}
+{"task": "translate", "text": "Translate to English: فاتورة", "answer": "invoice", "id": "G-172"}
+{"task": "copy", "text": "Repeat exactly: 7 7 7 1 8 3 3", "answer": "7 7 7 1 8 3 3", "id": "G-173"}
+{"task": "larger", "text": "Which is larger: 95 or 85?", "answer": "95", "id": "G-174"}
+{"task": "count", "text": "Count the items: rice, tea, sugar", "answer": "3", "id": "G-175"}
+{"task": "language", "text": "Which language is this: طلب: شهادة", "answer": "Arabic", "id": "G-176"}
+{"task": "translate", "text": "Translate to Arabic: Buraidah", "answer": "بريدة", "id": "G-177"}
+{"task": "larger", "text": "Which is larger: 40 or 66?", "answer": "66", "id": "G-178"}
+{"task": "translate", "text": "Translate to Arabic: branch", "answer": "فرع", "id": "G-179"}
+{"task": "count", "text": "Count the items: sugar, oil, rice, milk, honey, dates", "answer": "6", "id": "G-180"}
+{"task": "copy", "text": "Repeat exactly: 0 2 1 5", "answer": "0 2 1 5", "id": "G-181"}
+{"task": "count", "text": "Count the items: milk, flour", "answer": "2", "id": "G-182"}
+{"task": "larger", "text": "Which is larger: 62 or 39?", "answer": "62", "id": "G-183"}
+{"task": "larger", "text": "Which is larger: 10 or 60?", "answer": "60", "id": "G-184"}
+{"task": "copy", "text": "Repeat exactly: 1 9 8 1", "answer": "1 9 8 1", "id": "G-185"}
+{"task": "copy", "text": "Repeat exactly: 3 3 7 4 6", "answer": "3 3 7 4 6", "id": "G-186"}
+{"task": "language", "text": "Which language is this: Kindly extend the membership of CR  by one year", "answer": "English", "id": "G-187"}
+{"task": "larger", "text": "Which is larger: 23 or 66?", "answer": "66", "id": "G-188"}
+{"task": "copy", "text": "Repeat exactly: 6 4 8 3 1 4 7 1", "answer": "6 4 8 3 1 4 7 1", "id": "G-189"}
+{"task": "larger", "text": "Which is larger: 13 or 46?", "answer": "46", "id": "G-190"}
+{"task": "copy", "text": "Repeat exactly: 6 2 6 3 9", "answer": "6 2 6 3 9", "id": "G-191"}
+{"task": "larger", "text": "Which is larger: 74 or 35?", "answer": "74", "id": "G-192"}
+{"task": "larger", "text": "Which is larger: 31 or 67?", "answer": "67", "id": "G-193"}
+{"task": "larger", "text": "Which is larger: 15 or 51?", "answer": "51", "id": "G-194"}
+{"task": "copy", "text": "Repeat exactly: 7 5 4 6 5 1 6 3", "answer": "7 5 4 6 5 1 6 3", "id": "G-195"}
+{"task": "translate", "text": "Translate to English: فاتورة", "answer": "invoice", "id": "G-196"}
+{"task": "larger", "text": "Which is larger: 83 or 72?", "answer": "83", "id": "G-197"}
+{"task": "copy", "text": "Repeat exactly: 9 0 6 8 9 4 4", "answer": "9 0 6 8 9 4 4", "id": "G-198"}
+{"task": "language", "text": "Which language is this: معكم", "answer": "Arabic", "id": "G-199"}
+{"task": "copy", "text": "Repeat exactly: 8 9 3 9 9", "answer": "8 9 3 9 9", "id": "G-200"}

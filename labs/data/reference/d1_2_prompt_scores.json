@@ -1,0 +1,66 @@
+{
+ "v0": {
+  "correct": 27,
+  "n": 100,
+  "accuracy": 0.27,
+  "interval": [
+   0.193,
+   0.364
+  ],
+  "knowledge": 10,
+  "format": 37,
+  "behaviour": 26
+ },
+ "v1": {
+  "correct": 35,
+  "n": 100,
+  "accuracy": 0.35,
+  "interval": [
+   0.264,
+   0.447
+  ],
+  "knowledge": 15,
+  "format": 17,
+  "behaviour": 33
+ },
+ "v2": {
+  "correct": 50,
+  "n": 100,
+  "accuracy": 0.5,
+  "interval": [
+   0.404,
+   0.596
+  ],
+  "knowledge": 0,
+  "format": 16,
+  "behaviour": 34
+ },
+ "v3": {
+  "correct": 52,
+  "n": 100,
+  "accuracy": 0.52,
+  "interval": [
+   0.423,
+   0.615
+  ],
+  "knowledge": 0,
+  "format": 16,
+  "behaviour": 32
+ },
+ "v4": {
+  "correct": 67,
+  "n": 100,
+  "accuracy": 0.67,
+  "interval": [
+   0.573,
+   0.754
+  ],
+  "knowledge": 0,
+  "format": 10,
+  "behaviour": 23
+ },
+ "larger_model_v4": {
+  "correct": 94,
+  "n": 100
+ }
+}

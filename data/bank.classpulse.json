@@ -1,0 +1,2807 @@
+{
+  "format": "classpulse-bank",
+  "version": 1,
+  "course": {
+    "name": "Model Adaptation: Fine-Tuning, Distillation and Small Models",
+    "los": [
+      {
+        "code": "LO1",
+        "description": "Analyse the failures of a prompted model and assign each failure class to prompting, retrieval, tuning or distillation, given 100 bilingual requests run through the small model and a larger reference model"
+      },
+      {
+        "code": "LO2",
+        "description": "Prepare a tuning dataset from traces, corrections and teacher outputs, with template rendering, verifier filtering, deduplication, decontamination and personal-data removal, given 500 synthetic traces, staff corrections and a teacher model"
+      },
+      {
+        "code": "LO3",
+        "description": "Configure and train low-rank adapters on a 16-bit and a 4-bit base model within the memory of one free-tier GPU, given a small open-weight model and the tuning set"
+      },
+      {
+        "code": "LO4",
+        "description": "Evaluate the adapted model against the base and a larger prompted model with paired statistics, language slices, regression and safety checks, given a held-out bilingual test set and a general-ability check"
+      },
+      {
+        "code": "LO5",
+        "description": "Deploy a quantised small model with several adapters and measure throughput, latency and cost per thousand requests, given one accelerator and a target request rate"
+      },
+      {
+        "code": "LO6",
+        "description": "Decide whether to ship the adapted model, weighing quality, cost, licence terms and data placement, given the evaluation and load-test results"
+      }
+    ]
+  },
+  "questions": [
+    {
+      "id": "check-failure-class-q1",
+      "type": "single",
+      "prompt": "Qayd writes valid calls, but for \"building materials\" it answers with activity code G-46. The larger model, with the same instructions, makes the same mistake. What do you try first?",
+      "options": [
+        "Tune the small model on examples that contain the codes",
+        "Replace the small model with a larger one",
+        "Put the chamber's code table in the context",
+        "Add a stricter output schema"
+      ],
+      "key": {
+        "indices": [
+          2
+        ]
+      },
+      "lo": [
+        "LO1"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "Both models fail, so capability is not the cause. The table is a fact the models were never given, and it changes: it belongs in the context.",
+      "misconceptions": [
+        "Treats a missing fact as a missing skill: no example set makes the model know a table that changes every year",
+        "Assumes capability is the problem, although the larger model fails in the same way",
+        "",
+        "Fixes the form of an answer whose form is already valid: the schema cannot supply the right code"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 14
+    },
+    {
+      "id": "check-baseline-q1",
+      "type": "single",
+      "prompt": "A colleague reports: \"Our adapter scores 84 on the 100 requests; the prompted model scored 27.\" The 27 is version 0. What does the report show?",
+      "options": [
+        "Less than it claims: the adapter must be compared with the frozen baseline, 67",
+        "That tuning gained 57 points",
+        "Nothing, because 100 requests are too few to measure anything",
+        "That the adapter should be compared with the larger model only"
+      ],
+      "key": {
+        "indices": [
+          0
+        ]
+      },
+      "lo": [
+        "LO1"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "The baseline is the best prompt on the same model. Against 67 the gain is 17 points, still to be tested as a paired difference on the test set.",
+      "misconceptions": [
+        "",
+        "Takes the largest available difference as the effect of tuning, although 40 of those points came from words",
+        "Rejects a valid measurement for the wrong reason: 100 requests give a wide interval, but the comparison is what is wrong",
+        "Confuses the instrument with the product: the larger model is not a deployable option for the chamber"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 25
+    },
+    {
+      "id": "check-licence-q1",
+      "type": "single",
+      "prompt": "A model's licence allows commercial use only to organisations with annual revenue under USD 10 million. The chamber's revenue is above that, and its registration service charges fees. What goes in the \"deploy\" column?",
+      "options": [
+        "Yes: the weights are open, so use is free",
+        "Yes: a chamber is a non-profit body, so the limit cannot apply",
+        "Yes, once the model is fine-tuned, because the adapter is ours",
+        "Ask: counsel must decide whether a fee-charging service is commercial use"
+      ],
+      "key": {
+        "indices": [
+          3
+        ]
+      },
+      "lo": [
+        "LO6"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "The clause depends on a fact (above the threshold) and on a judgement (is the use commercial?). The engineer records both; counsel answers.",
+      "misconceptions": [
+        "Reads the download as the permission: the weights are public, the right to use them commercially is conditional",
+        "Assumes a non-profit body can never make commercial use, which the licence's own definition does not say",
+        "Moves the problem instead of answering it: tuning makes a derivative work under the same licence",
+        ""
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 34
+    },
+    {
+      "id": "check-cost-q1",
+      "type": "single",
+      "prompt": "The chamber's requests double to 80,000 a month. The accelerator still has spare capacity. What happens to the cost per thousand requests?",
+      "options": [
+        "Both options stay the same",
+        "Hosted stays the same; the owned accelerator's halves",
+        "Hosted halves; the owned accelerator's stays the same",
+        "Both double"
+      ],
+      "key": {
+        "indices": [
+          1
+        ]
+      },
+      "lo": [
+        "LO6"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "A per-token price does not depend on volume. A fixed monthly cost divided by twice the requests is half the cost per request.",
+      "misconceptions": [
+        "Applies the shape of a per-token price to a machine whose cost is fixed",
+        "",
+        "Assumes a volume discount that a published per-token price does not contain",
+        "Treats a fixed monthly cost as if it grew with use"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 42
+    },
+    {
+      "id": "review-day1-q1",
+      "type": "single",
+      "prompt": "With the frozen instructions, Qayd still takes a partner company's registration number in some requests. The code table and the schema are in the prompt. Which examples must today's tuning set contain?",
+      "options": [
+        "More rows of the activity code table",
+        "Requests with two registration numbers, labelled with the applicant's own",
+        "More requests that Qayd already answers correctly",
+        "Examples of well-formed JSON"
+      ],
+      "key": {
+        "indices": [
+          1
+        ]
+      },
+      "lo": [
+        "LO1"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "A behaviour failure is fixed by examples of the right decision in the situation where the model decides wrongly. Data for tuning is chosen by failure class.",
+      "misconceptions": [
+        "Adds knowledge the prompt already holds: the failure is a decision, not a missing fact",
+        "",
+        "Repeats what the model already does right, which teaches the format again and the decision never",
+        "Fixes the form of a call whose form is already valid"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 3
+    },
+    {
+      "id": "check-traces-q1",
+      "type": "single",
+      "prompt": "A corrected trace has the desk's call {\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4031582699\", \"field\": \"city\", \"value\": \"الدمام\"}}. The interface lists cities in English. What do you do with it?",
+      "options": [
+        "Keep it: a human correction is always right",
+        "Change the value to \"Dammam\" and keep it as a correction",
+        "Drop it and count it, or send it back to the desk",
+        "Replace it with Qayd's original output"
+      ],
+      "key": {
+        "indices": [
+          2
+        ]
+      },
+      "lo": [
+        "LO2"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "The registry would reject the call, so it is not a usable label. Whatever you do with it must be visible in the counts.",
+      "misconceptions": [
+        "Trusts a person's label over the tool it must call: the model would learn a value the registry refuses",
+        "Puts your own guess into the set under the desk's name, with no record of the change",
+        "",
+        "Uses the model's wrong answer as a training target"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 13
+    },
+    {
+      "id": "check-verifier-q1",
+      "type": "single",
+      "prompt": "A teacher labelled 1,000 requests. Schema and rule checks kept 960. Nobody has read any of them. What can you state about the 960?",
+      "options": [
+        "They are 96% accurate",
+        "They contain no errors, because the bad ones were rejected",
+        "They cannot be used until every one is read by staff",
+        "They are valid and consistent with their requests; their error rate is unknown until a sample is audited"
+      ],
+      "key": {
+        "indices": [
+          3
+        ]
+      },
+      "lo": [
+        "LO2"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "A verifier removes what it can detect. The rate of what it cannot detect is measured by people, on a sample, with an interval.",
+      "misconceptions": [
+        "Reads yield as accuracy: passing the checks says the labels are well-formed and consistent, not right",
+        "Assumes the checks see every error, although a valid, consistent call can be the wrong decision",
+        "Discards labels that are mostly right for lack of a measurement that an audit can supply",
+        ""
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 22
+    },
+    {
+      "id": "check-template-q1",
+      "type": "single",
+      "prompt": "A freshly tuned adapter produces the correct tool call and then continues with more calls and stray text until the token limit. The base model never did this. Where do you look first?",
+      "options": [
+        "The rendered training text: is there an end-of-turn token after the assistant's answer?",
+        "The learning rate: it was too high",
+        "The server: raise the stop-token limit",
+        "The tuning set: it needs more examples"
+      ],
+      "key": {
+        "indices": [
+          0
+        ]
+      },
+      "lo": [
+        "LO2"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "A model stops because it was shown stopping. If the training text never ends the turn, no setting teaches it to.",
+      "misconceptions": [
+        "",
+        "Treats a formatting fault as an optimisation problem: a lower rate would learn the same wrong text more slowly",
+        "Hides the symptom at serving time and pays for the extra tokens on every request",
+        "Blames quantity for a fault that every example shares"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 32
+    },
+    {
+      "id": "check-overlap-q1",
+      "type": "single",
+      "prompt": "Your overlap check flags a tuning row: \"We want to renew for two years. Thank you.\" The same sentence is in the test set. Neither names a company or a number. What goes in the report?",
+      "options": [
+        "A leak: remove it, and remove every row like it",
+        "A template collision: keep it, and report how many there are",
+        "Nothing: generic sentences need no mention",
+        "Remove the sentence from the test set instead"
+      ],
+      "key": {
+        "indices": [
+          1
+        ]
+      },
+      "lo": [
+        "LO2"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "The row carries no member's content and is how members really write. It stays, and the count goes in the report so that the reader can judge the test.",
+      "misconceptions": [
+        "Treats any shared text as a leak and would delete every short, common request from training",
+        "",
+        "Hides a fact that a reader of the report needs to judge the test",
+        "Changes the test set after the fact, which breaks every comparison already made on it"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 43
+    },
+    {
+      "id": "review-day2-q1",
+      "type": "single",
+      "prompt": "You are about to train on 661 examples. Which check from yesterday can no longer be made once the run has finished and the loss has fallen?",
+      "options": [
+        "That the tuned model beats the base on the test set",
+        "That the validation loss fell",
+        "That the rendered text ends the turn and matches the model's template",
+        "That the adapter has the intended rank"
+      ],
+      "key": {
+        "indices": [
+          2
+        ]
+      },
+      "lo": [
+        "LO2"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "A wrong rendering trains without complaint: the loss falls on whatever text it is given. It can be checked afterwards, but by then the run has been paid for.",
+      "misconceptions": [
+        "Can still be made afterwards: the test set is opened on Day 4",
+        "A property of the run, read from its log after it ends",
+        "",
+        "Read from the adapter's configuration at any time"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 3
+    },
+    {
+      "id": "check-adapter-q1",
+      "type": "single",
+      "prompt": "A base has 24 layers. You put a rank-8 adapter on the query and value projections of each layer; each is a 1,024 × 1,024 matrix. How many parameters train?",
+      "options": [
+        "16,384",
+        "32,768",
+        "786,432",
+        "50,331,648"
+      ],
+      "key": {
+        "indices": [
+          2
+        ]
+      },
+      "lo": [
+        "LO3"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "Each adapted matrix adds r × (d_in + d_out) = 8 × 2,048 = 16,384. There are 2 × 24 = 48 of them: 48 × 16,384 = 786,432.",
+      "misconceptions": [
+        "Counts one matrix of one layer: 8 × (1,024 + 1,024)",
+        "Counts both matrices of a layer but forgets there are 24 layers",
+        "",
+        "Counts the full matrices, which are frozen: 48 × 1,024 × 1,024"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 14
+    },
+    {
+      "id": "check-memory-q1",
+      "type": "single",
+      "prompt": "An accelerator has 16 GB of memory. You want to train an adapter on a base with 7 billion parameters. What does the arithmetic say?",
+      "options": [
+        "Load it in 16 bits: 13 GB of weights fit in 16 GB",
+        "Load it in 4 bits: about 3.5 GB of weights, leaving room for activations",
+        "Either: only the adapter needs memory, and it is tiny",
+        "It cannot be done on this accelerator"
+      ],
+      "key": {
+        "indices": [
+          1
+        ]
+      },
+      "lo": [
+        "LO3"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "Weights are the floor. Training needs headroom for activations, which grow with batch size and sequence length; 4 bits leaves it, 16 bits does not.",
+      "misconceptions": [
+        "13 GB of weights leave about 3 GB for activations of every token in the batch: too little for training",
+        "",
+        "Confuses the adapter's size with the base's: the base must still be in memory to compute anything",
+        "Ignores quantisation: 3.5 GB of weights is well inside 16 GB"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 22
+    },
+    {
+      "id": "check-sweep-q1",
+      "type": "single",
+      "prompt": "On 120 validation requests: rank 8 scores 101, rank 32 scores 102, rank 64 scores 100. Each is one run. Which do you choose, and on what ground?",
+      "options": [
+        "Rank 8: the three cannot be told apart, and it is the cheapest",
+        "Rank 32: it has the highest score",
+        "Rank 64: more capacity is safer",
+        "Whichever scores best on the test set"
+      ],
+      "key": {
+        "indices": [
+          0
+        ]
+      },
+      "lo": [
+        "LO3"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "Differences of one or two requests are inside the noise of a single run. Among runs that cannot be told apart, take the cheapest, and say so.",
+      "misconceptions": [
+        "",
+        "Reads a difference of one request in 120 as real, and pays four times the parameters for it",
+        "Assumes capacity is quality, against the scores in front of you",
+        "Uses the test set to choose, which spends it"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 31
+    },
+    {
+      "id": "check-distil-q1",
+      "type": "single",
+      "prompt": "A distilled student takes the partner company's registration number in requests that name two. An audit shows the teacher does the same in about one such request in five. What do you change first?",
+      "options": [
+        "Train the student for more steps",
+        "Raise the adapter's rank",
+        "Lower the sampling temperature of the student",
+        "The data: correct or remove those teacher labels, or add staff corrections for that kind of request"
+      ],
+      "key": {
+        "indices": [
+          3
+        ]
+      },
+      "lo": [
+        "LO3"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "The student learnt what it was shown. A systematic error in the labels is fixed in the labels; no training setting removes it.",
+      "misconceptions": [
+        "Fits the same wrong labels more closely",
+        "Adds capacity to learn the same wrong labels",
+        "Changes how the student writes, not what it was taught to decide",
+        ""
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 40
+    },
+    {
+      "id": "review-day3-q1",
+      "type": "single",
+      "prompt": "Yesterday you chose a rank and a learning rate. A colleague suggests checking the three best settings on the test set this morning and shipping the winner. What is wrong with that?",
+      "options": [
+        "The test set is too small to compare three settings",
+        "The winner's test score would then be a score it was selected on, not an estimate for new requests",
+        "Evaluating three adapters changes their weights",
+        "It takes too long"
+      ],
+      "key": {
+        "indices": [
+          1
+        ]
+      },
+      "lo": [
+        "LO3"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "Choosing is fitting. The setting was chosen on validation requests; the test set is opened once, to report the model that was already chosen.",
+      "misconceptions": [
+        "The size of the test set is not the problem: 400 requests is more than validation had",
+        "",
+        "Nothing in the adapters changes by being evaluated",
+        "Speed is not the issue; the meaning of the result is"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 3
+    },
+    {
+      "id": "check-paired-q1",
+      "type": "single",
+      "prompt": "On 400 held-out requests a tuned model scores 352 and a larger prompted model 360. The tuned model alone is right on 18 requests, the larger alone on 26. The paired interval for the difference is −5.3 to +1.3 points. What do you write?",
+      "options": [
+        "The larger model is better by 2 points",
+        "The two models are equally good",
+        "No difference is shown on this test set; the interval runs from 5.3 points worse to 1.3 better",
+        "The test is inconclusive and should not be reported"
+      ],
+      "key": {
+        "indices": [
+          2
+        ]
+      },
+      "lo": [
+        "LO4"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "An interval that contains zero supports no ranking. It does bound how much worse the tuned model can be: the owner needs that bound.",
+      "misconceptions": [
+        "Reads the two totals without the interval, which contains zero",
+        "Turns 'no difference shown' into 'no difference exists': the interval allows up to 5 points",
+        "",
+        "Discards a useful bound on the difference"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 11
+    },
+    {
+      "id": "check-regression-q1",
+      "type": "single",
+      "prompt": "A tuned model gains 30 points on its task. On a general check it holds its score on four tasks and falls from 40 of 40 to 12 of 40 on translation. The overall general score falls by 14%. What goes in the model card?",
+      "options": [
+        "The regression by task: translation fell from 40 to 12 of 40; the other four held",
+        "\"General abilities: −14%\"",
+        "Only the task gain: the model is for the task",
+        "\"No other abilities were affected\""
+      ],
+      "key": {
+        "indices": [
+          0
+        ]
+      },
+      "lo": [
+        "LO4"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "A reader who depends on translation needs that line. An average is true and useless here; \"no other abilities\" claims more than was measured.",
+      "misconceptions": [
+        "",
+        "Hides one collapsed ability behind an average of five",
+        "Leaves out a finding a user of the model needs, because the task score is good",
+        "Draws a conclusion the check cannot support: untested abilities are unmeasured"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 20
+    },
+    {
+      "id": "check-serving-q1",
+      "type": "single",
+      "prompt": "A load test gives: 4 in flight, 20 requests/s, p95 300 ms; 16 in flight, 55 requests/s, p95 900 ms; 64 in flight, 70 requests/s, p95 3,400 ms. The service must answer 95% of requests within one second. What capacity do you plan with?",
+      "options": [
+        "70 requests a second",
+        "55 requests a second",
+        "20 requests a second",
+        "About 48 requests a second, the mean of the three"
+      ],
+      "key": {
+        "indices": [
+          1
+        ]
+      },
+      "lo": [
+        "LO5"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "Capacity is the highest throughput whose latency still meets the target: 16 in flight, 55 a second, p95 of 900 ms.",
+      "misconceptions": [
+        "Takes the highest throughput and ignores that one answer in twenty then takes over three seconds",
+        "",
+        "Takes the lowest latency although a higher level still meets the target",
+        "Averages levels that are separate measurements"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 29
+    },
+    {
+      "id": "check-memo-q1",
+      "type": "single",
+      "prompt": "A tuned small model is 3 points below a hosted larger model (interval −6 to 0). Its licence allows the use. The requests are Restricted and may not leave the organisation. Tuning removed a refusal behaviour; a replay adapter restores it at no measured cost.",
+      "options": [
+        "Use the hosted model: it is better and cheaper",
+        "Ship the tuned model as it is: 3 points is small",
+        "Ship the replay adapter, gate releases on the refusal check, state the premium paid for placement",
+        "Do not ship until it matches the larger model"
+      ],
+      "key": {
+        "indices": [
+          2
+        ]
+      },
+      "lo": [
+        "LO6"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "Placement rules the hosted model out; the regression has a measured remedy; the gap is a price the owner accepts or refuses.",
+      "misconceptions": [
+        "Ignores a requirement the hosted model does not meet",
+        "Ships a known regression with a tested remedy",
+        "",
+        "Stops a project whose open issue has a measured fix"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 38
+    },
+    {
+      "id": "q-levers-01",
+      "type": "single",
+      "prompt": "A prompted model answers customers politely and in the right format, but quotes a renewal fee that was correct last year. Which change addresses the cause?",
+      "options": [
+        "Fine-tune it on this year's conversations",
+        "Give it the current fee table in the context",
+        "Lower the sampling temperature until the fee is stable",
+        "Distil a larger model's answers into it"
+      ],
+      "key": {
+        "indices": [
+          1
+        ]
+      },
+      "lo": [
+        "LO1"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "The fee is a fact that changes; a fact belongs in the context, where it can be updated and dated.",
+      "misconceptions": [
+        "Puts a changing fact into weights, where it will be wrong again next year",
+        "",
+        "Treats a wrong fact as randomness in generation",
+        "Copies the larger model's behaviour, which does not contain this year's fee either"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 8
+    },
+    {
+      "id": "q-levers-02",
+      "type": "single",
+      "prompt": "On 100 requests a small model makes 30 behaviour failures and a larger model, with the same instructions, makes 4. What does the pair of counts support?",
+      "options": [
+        "Tuning or distillation can teach it to the small model",
+        "The requests are too hard for any model",
+        "The small model lacks a fact that must be retrieved each time",
+        "The grading code is wrong for the small model"
+      ],
+      "key": {
+        "indices": [
+          0
+        ]
+      },
+      "lo": [
+        "LO1"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "The larger model shows that the right behaviour exists for these requests; the gap is what tuning or distillation can aim at.",
+      "misconceptions": [
+        "",
+        "Ignores that the larger model handles the same requests",
+        "Confuses a wrong decision with a missing fact: a missing fact would fail on both models",
+        "Blames the instrument without evidence: both models were graded by the same code"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 13
+    },
+    {
+      "id": "q-levers-03",
+      "type": "single",
+      "prompt": "A model's answer is the correct tool call, written inside a Markdown code fence instead of the required tags, and the parser rejects it. Which failure class is it?",
+      "options": [
+        "Not a failure, because the decision is right",
+        "Knowledge",
+        "Behaviour",
+        "Format"
+      ],
+      "key": {
+        "indices": [
+          3
+        ]
+      },
+      "lo": [
+        "LO1"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "The decision is right and its wrapping is wrong: a schema hint, an example or tuning on the format fixes it.",
+      "misconceptions": [
+        "Forgets that the registry only accepts what parses",
+        "Sees a rejected call and assumes a missing fact",
+        "Calls every wrong answer a wrong decision, although the tool and arguments are right",
+        ""
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 11
+    },
+    {
+      "id": "q-levers-04",
+      "type": "single",
+      "prompt": "Which task is the best candidate for a tuned small model on one accelerator?",
+      "options": [
+        "Planning a company's tax filing across several systems",
+        "Answering any question about commercial law",
+        "Extracting the same eight fields from thousands of similar forms",
+        "Reviewing rare contracts that each need a lawyer's judgement"
+      ],
+      "key": {
+        "indices": [
+          2
+        ]
+      },
+      "lo": [
+        "LO1"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "One input, one structured output that a program can check, at volume: the narrow shape a small tuned model suits.",
+      "misconceptions": [
+        "Chooses multi-step work that depends on intermediate results",
+        "Chooses an open-ended knowledge task, which tuning teaches badly",
+        "",
+        "Chooses rare inputs that each need judgement nobody can label at volume"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 9
+    },
+    {
+      "id": "q-baseline-01",
+      "type": "single",
+      "prompt": "A team reports that fine-tuning raised accuracy from 31% to 82%. The 31% used a one-sentence prompt. What should a reviewer ask for first?",
+      "options": [
+        "A comparison with a model twice the size, tuned alike",
+        "The score of the best prompt on the same model",
+        "A larger training set",
+        "The training loss curve"
+      ],
+      "key": {
+        "indices": [
+          1
+        ]
+      },
+      "lo": [
+        "LO1"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "Until the untuned model has been given a strong prompt, nobody knows how much of the gain needed training.",
+      "misconceptions": [
+        "Changes the question from \"did tuning help this model\" to \"which model is bigger\"",
+        "",
+        "Asks for more of the thing whose effect is not yet established",
+        "Checks that training ran, not what it should be compared with"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 17
+    },
+    {
+      "id": "q-baseline-02",
+      "type": "single",
+      "prompt": "Two prompt versions score 50 and 52 right out of the same 100 requests. Which statement is supported?",
+      "options": [
+        "The versions cannot be told apart on this evidence",
+        "Version two would score 52% on any hundred requests",
+        "One hundred requests prove nothing about either",
+        "Version two is better by two points"
+      ],
+      "key": {
+        "indices": [
+          0
+        ]
+      },
+      "lo": [
+        "LO1"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "A difference of two requests in 100 is far inside the sampling noise of each score.",
+      "misconceptions": [
+        "",
+        "Treats a sample score as a property of the model",
+        "Throws away a measurement that does bound each score to about ten points either way",
+        "Reads a difference without asking how large the noise is"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 22
+    },
+    {
+      "id": "q-baseline-03",
+      "type": "single",
+      "prompt": "After the baseline was frozen, an engineer improves one sentence of the instructions and keeps quoting the old score. What is wrong?",
+      "options": [
+        "The set must be changed as well",
+        "The score should be averaged with the new one, weighted by date",
+        "Nothing: one sentence cannot change a score",
+        "The old score belongs to a text no longer in use"
+      ],
+      "key": {
+        "indices": [
+          3
+        ]
+      },
+      "lo": [
+        "LO1"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "A baseline is a text, a set and a score together; when the text changes, the pairing is broken.",
+      "misconceptions": [
+        "Changes the second fixed element too, losing every earlier comparison",
+        "Mixes two different systems into one number",
+        "Assumes small edits have no effect, which is exactly what scoring is for",
+        ""
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 23
+    },
+    {
+      "id": "q-licence-01",
+      "type": "single",
+      "prompt": "A licence allows anyone to fine-tune a model for research, and allows use in a product only under a separate agreement. A company fine-tunes it and now wants to put it in its paid service. What is its position?",
+      "options": [
+        "It may: the fine-tuned model is its own work",
+        "It may: research use includes testing with paying customers",
+        "It may not: adapting was licensed, this deployment is not",
+        "It may, if it does not distribute the weights"
+      ],
+      "key": {
+        "indices": [
+          2
+        ]
+      },
+      "lo": [
+        "LO6"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "Adapting and deploying are separate permissions; the adapted model is a derivative under the same terms.",
+      "misconceptions": [
+        "Believes tuning creates a new work free of the original licence",
+        "Stretches \"research\" to cover a paid service",
+        "",
+        "Mixes up distribution with commercial use: not sharing the weights does not license the use"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 29
+    },
+    {
+      "id": "q-licence-02",
+      "type": "single",
+      "prompt": "A model card shows the licence tag \"other\". What is the next step before choosing the model?",
+      "options": [
+        "Assume it is permissive, since the weights are public",
+        "Open the licence file, read it and record the date",
+        "Ask in a forum what \"other\" usually means",
+        "Train first and check the licence before deployment"
+      ],
+      "key": {
+        "indices": [
+          1
+        ]
+      },
+      "lo": [
+        "LO6"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "The tag is a label; the file is the licence, and it can change with a later release.",
+      "misconceptions": [
+        "Reads availability as permission",
+        "",
+        "Replaces the text with someone's opinion of it",
+        "Spends the training budget before knowing whether the result can be used"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 32
+    },
+    {
+      "id": "q-licence-03",
+      "type": "single",
+      "prompt": "A licence grants commercial use only to organisations under a revenue threshold. Which pair of facts must the licence table record for an organisation that wants to deploy?",
+      "options": [
+        "Its annual revenue and whether the intended use is commercial under the licence's definition",
+        "The model's size and its benchmark scores",
+        "The size of the fine-tuning set and the number of adapters served",
+        "Its number of employees and its country"
+      ],
+      "key": {
+        "indices": [
+          0
+        ]
+      },
+      "lo": [
+        "LO6"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "The clause turns on revenue against the threshold and on the purpose of the use; both are facts about the organisation.",
+      "misconceptions": [
+        "",
+        "Describes the model, not the licensee",
+        "Describes the project, which the clause does not depend on",
+        "Records facts the clause does not mention"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 31
+    },
+    {
+      "id": "q-cost-01",
+      "type": "single",
+      "prompt": "An owned accelerator costs SAR 6,000 a month in total and serves 30,000 requests a month. What is the cost per thousand requests?",
+      "options": [
+        "SAR 180",
+        "SAR 2",
+        "SAR 20",
+        "SAR 200"
+      ],
+      "key": {
+        "indices": [
+          3
+        ]
+      },
+      "lo": [
+        "LO6"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "6,000 divided by 30 thousands of requests is SAR 200 per thousand.",
+      "misconceptions": [
+        "Multiplies the monthly cost by the volume in tens of thousands instead of dividing",
+        "Divides by 3,000 thousands: a slip of two decimal places",
+        "Divides by 300 thousands: a slip of one decimal place",
+        ""
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 37
+    },
+    {
+      "id": "q-cost-02",
+      "type": "single",
+      "prompt": "A hosted model costs SAR 0.50 per thousand requests and a tuned small model on the organisation's own servers costs SAR 140. The requests are classified Restricted and must stay on the organisation's servers. What should the decision memo say?",
+      "options": [
+        "The small model is the cheaper option",
+        "The hosted model is chosen, because cost decides",
+        "The small model is chosen for placement, at a stated premium",
+        "Cost cannot be compared, because the two options are different"
+      ],
+      "key": {
+        "indices": [
+          2
+        ]
+      },
+      "lo": [
+        "LO6"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "The requirement rules the hosted option out; the memo states the premium honestly and why it is paid.",
+      "misconceptions": [
+        "States the opposite of the measured numbers",
+        "Ignores a requirement that the cheaper option does not meet",
+        "",
+        "Avoids a comparison that the same unit makes possible"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 40
+    },
+    {
+      "id": "q-cost-03",
+      "type": "single",
+      "prompt": "A prompted request carries 600 tokens of instructions and examples and 30 tokens of request. After tuning, the instructions are no longer sent. What happens to the input cost per request on a per-token price?",
+      "options": [
+        "It falls by 30 tokens",
+        "It falls to about a twentieth",
+        "It stays the same, because the output is unchanged",
+        "It doubles, because adapters add tokens"
+      ],
+      "key": {
+        "indices": [
+          1
+        ]
+      },
+      "lo": [
+        "LO6"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "Input falls from about 630 tokens to about 30: the tuned model reads only the request.",
+      "misconceptions": [
+        "Subtracts the request instead of the instructions",
+        "",
+        "Confuses input and output tokens",
+        "Believes an adapter adds tokens: it adds weights, not text"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 38
+    },
+    {
+      "id": "q-data-01",
+      "type": "single",
+      "prompt": "A tuning set is built only from traces that staff accepted without change. What is the model most likely to learn from it?",
+      "options": [
+        "To repeat what it already does",
+        "To fix the failures staff corrected most often",
+        "To handle the hardest requests, which staff reviewed with most care",
+        "Nothing, because accepted traces carry no label"
+      ],
+      "key": {
+        "indices": [
+          0
+        ]
+      },
+      "lo": [
+        "LO2"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "An accepted trace is labelled by the model's own output, so the set repeats current behaviour.",
+      "misconceptions": [
+        "",
+        "Expects corrections to be present in a set that left them out",
+        "Assumes acceptance means careful review; the hardest requests are the ones staff abandoned or corrected",
+        "Forgets that the accepted output is itself the label"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 7
+    },
+    {
+      "id": "q-data-02",
+      "type": "single",
+      "prompt": "A staff correction gives a registration number of nine digits; the tool requires ten. The intended number can be guessed from the request. What is the sound handling?",
+      "options": [
+        "Use the model's original answer as the label instead",
+        "Add the missing digit and keep the row as a staff correction",
+        "Keep the row as typed, because staff labels outrank the schema",
+        "Drop the row and report it in the counts"
+      ],
+      "key": {
+        "indices": [
+          3
+        ]
+      },
+      "lo": [
+        "LO2"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "The tool would refuse the call, so it is not a usable label; dropping it visibly keeps every label traceable to its source.",
+      "misconceptions": [
+        "Uses the answer that staff rejected as a training target",
+        "Enters the engineer's guess under the desk's name, with no record of the change",
+        "Trains the model to produce a call the tool refuses",
+        ""
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 9
+    },
+    {
+      "id": "q-data-03",
+      "type": "single",
+      "prompt": "A verifier keeps 97% of a teacher model's labels. A colleague writes \"label accuracy: 97%\" in the dataset card. What is wrong with the sentence?",
+      "options": [
+        "A card should not contain numbers that can change over time",
+        "Nothing: the verifier measured it",
+        "Yield counts what passed the checks, not what is right",
+        "The figure should be 3%, the share rejected"
+      ],
+      "key": {
+        "indices": [
+          2
+        ]
+      },
+      "lo": [
+        "LO2"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "Passing schema and rule checks shows a label is well-formed and consistent with its request; whether it is right needs an audit.",
+      "misconceptions": [
+        "Removes the evidence a reader needs instead of correcting it",
+        "Treats passing a check as being correct",
+        "",
+        "Reports the rejected share as if it were the error rate of what was kept"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 21
+    },
+    {
+      "id": "q-data-04",
+      "type": "single",
+      "prompt": "A request names two registration numbers: the applicant's and a partner's. The teacher's call uses the partner's. Which check catches the error?",
+      "options": [
+        "A rule that the number in the call must appear in the request",
+        "An audit by a person who reads the request",
+        "A check that the call parses as JSON",
+        "The schema check, because the number is invalid"
+      ],
+      "key": {
+        "indices": [
+          1
+        ]
+      },
+      "lo": [
+        "LO2"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "The call is valid and its number is in the request; only someone who makes the decision again can see that it is the wrong number.",
+      "misconceptions": [
+        "Overlooks that the partner's number does appear in the request",
+        "",
+        "Checks the form of a call whose form is fine",
+        "Assumes a wrong number is a malformed one: it has ten digits and passes"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 20
+    },
+    {
+      "id": "q-data-05",
+      "type": "single",
+      "prompt": "Staff audit 30 kept teacher labels and find no error. Which statement belongs in the dataset card?",
+      "options": [
+        "No error in 30, which allows a true rate up to about 11%",
+        "The audit was too small to report",
+        "The kept labels contain no errors",
+        "The error rate of the kept labels is below 1%, as the audit shows"
+      ],
+      "key": {
+        "indices": [
+          0
+        ]
+      },
+      "lo": [
+        "LO2"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "Zero in 30 bounds the rate; it does not show it is zero. The 95% upper bound is about 11%.",
+      "misconceptions": [
+        "",
+        "Hides a measurement that, with its bound, is useful to the reader",
+        "Reads \"none found\" as \"none exist\"",
+        "States a precision that a sample of 30 cannot give"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 21
+    },
+    {
+      "id": "q-data-06",
+      "type": "single",
+      "prompt": "After tuning, a model writes the correct tool call and then continues generating until the token limit. The training loss fell normally. What is the most likely cause?",
+      "options": [
+        "The learning rate was too low",
+        "The adapter rank was too small to learn where an answer stops",
+        "The tuning set held too few examples",
+        "The training text had no end-of-turn token after the answer"
+      ],
+      "key": {
+        "indices": [
+          3
+        ]
+      },
+      "lo": [
+        "LO2"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "A model stops because it was shown stopping; if the rendered text never closes the turn, no setting teaches it to.",
+      "misconceptions": [
+        "Looks for an optimisation fault although the loss behaved normally",
+        "Treats a missing token in the data as a capacity limit",
+        "Blames quantity for a fault every example shares",
+        ""
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 29
+    },
+    {
+      "id": "q-data-07",
+      "type": "single",
+      "prompt": "In a tuning example the user's request is 26 tokens and the assistant's answer 56. With a correct label mask, on how many tokens is the loss taken?",
+      "options": [
+        "30",
+        "26",
+        "56",
+        "82"
+      ],
+      "key": {
+        "indices": [
+          2
+        ]
+      },
+      "lo": [
+        "LO2"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "The prompt is masked with the ignore index; the loss is taken on the assistant's turn only.",
+      "misconceptions": [
+        "Subtracts the two counts instead of masking one of them",
+        "Supervises the request and ignores the answer: the mask reversed",
+        "",
+        "Takes the loss on the whole conversation, which trains the model to predict requests"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 30
+    },
+    {
+      "id": "q-data-08",
+      "type": "single",
+      "prompt": "A team renders its tuning set with a hand-written format and serves the adapter behind a server that applies the base model's chat template. What should they expect?",
+      "options": [
+        "No effect, because the words of each example are the same",
+        "Lower quality in service than in their own evaluation",
+        "Slower training only",
+        "An error when the adapter loads"
+      ],
+      "key": {
+        "indices": [
+          1
+        ]
+      },
+      "lo": [
+        "LO2"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "The adapter learnt one string format and is sent another; their own evaluation used the hand-written format and hides the gap.",
+      "misconceptions": [
+        "Ignores that role markers and special tokens are part of what the model reads",
+        "",
+        "Expects a cost in speed where the cost is in what was learnt",
+        "Expects a loud failure: a format mismatch raises no error"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 26
+    },
+    {
+      "id": "q-data-09",
+      "type": "single",
+      "prompt": "A tuning row nearly copies a test request and names the same company registration number. How is it handled?",
+      "options": [
+        "Removed from the tuning set and counted as a leak",
+        "Kept, and the test request is deleted instead",
+        "Kept, because the label may differ",
+        "Kept, because near-copies are not exact copies"
+      ],
+      "key": {
+        "indices": [
+          0
+        ]
+      },
+      "lo": [
+        "LO2"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "It is a test case inside the training data: every later score would be too high by an unknown amount.",
+      "misconceptions": [
+        "",
+        "Changes the test set after results exist, which breaks earlier comparisons",
+        "Looks at the label although the leak is in the request the model is examined on",
+        "Applies an exact-match standard that a greeting defeats"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 38
+    },
+    {
+      "id": "q-data-10",
+      "type": "single",
+      "prompt": "A near-duplicate rule at a lower threshold removes 82 rows; at a higher one, 67. What should decide between them?",
+      "options": [
+        "The threshold used in a published paper",
+        "The lower threshold, because a smaller set trains faster",
+        "The higher threshold, because more data is always better",
+        "Reading a sample of the pairs each one removes"
+      ],
+      "key": {
+        "indices": [
+          3
+        ]
+      },
+      "lo": [
+        "LO2"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "A threshold is right when what it removes are duplicates; only reading the removed pairs shows whether different requests were merged.",
+      "misconceptions": [
+        "Borrows a number tuned on other data, with other text lengths",
+        "Chooses by training time, not by whether the removed rows were duplicates",
+        "Keeps rows without asking whether they are repeats",
+        ""
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 37
+    },
+    {
+      "id": "q-data-11",
+      "type": "single",
+      "prompt": "After masking, a scan for phone numbers, identity numbers, e-mail addresses and names from the member registry finds nothing. Which claim can the dataset card make?",
+      "options": [
+        "The set may be published",
+        "The set contains no personal data",
+        "The scan found none of four kinds, with names taken from one list",
+        "Personal data was removed in line with the law, so no further review is needed"
+      ],
+      "key": {
+        "indices": [
+          2
+        ]
+      },
+      "lo": [
+        "LO2"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "A scan reports on what it looks for: a name outside the list, or a kind it does not know, passes.",
+      "misconceptions": [
+        "Draws a release decision from a scan that covers four kinds",
+        "Turns \"none found by this scan\" into \"none exists\"",
+        "",
+        "Turns one technical step into a legal conclusion"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 39
+    },
+    {
+      "id": "q-data-12",
+      "type": "single",
+      "prompt": "Personal data is masked in the tuning set with placeholders such as [PHONE]. In service, requests reach the model unmasked. What is the main consequence?",
+      "options": [
+        "None: the model ignores digits",
+        "Inputs unlike the training data, and personal data in the logs",
+        "Training must be repeated with a larger rank to absorb the digits",
+        "The adapter no longer loads on the base model"
+      ],
+      "key": {
+        "indices": [
+          1
+        ]
+      },
+      "lo": [
+        "LO2"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "The same masking function must run in front of the model in service, so that training and service inputs match.",
+      "misconceptions": [
+        "Assumes a tuned model is indifferent to tokens it never saw in that position",
+        "",
+        "Answers a data mismatch with a capacity setting",
+        "Expects a loading error from a difference in input text"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 40
+    },
+    {
+      "id": "q-train-01",
+      "type": "single",
+      "prompt": "A rank-4 adapter is added to one weight matrix of shape 2,048 × 2,048. How many parameters does it add?",
+      "options": [
+        "16,384",
+        "32,768",
+        "4,194,304",
+        "8,192"
+      ],
+      "key": {
+        "indices": [
+          0
+        ]
+      },
+      "lo": [
+        "LO3"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "r × (d_in + d_out) = 4 × 4,096 = 16,384.",
+      "misconceptions": [
+        "",
+        "Uses rank 8, or counts the pair twice",
+        "Counts the full matrix, which stays frozen",
+        "Counts only one of the two small matrices: 4 × 2,048"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 8
+    },
+    {
+      "id": "q-train-02",
+      "type": "single",
+      "prompt": "Before the first training step, a model with a freshly added low-rank adapter gives exactly the outputs of its base. Why?",
+      "options": [
+        "The learning rate is zero during warm-up",
+        "The base model ignores adapters at inference",
+        "The adapter is switched off until the first optimiser step runs",
+        "One adapter matrix starts at zero, so the product is zero"
+      ],
+      "key": {
+        "indices": [
+          3
+        ]
+      },
+      "lo": [
+        "LO3"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "B starts at zero, so B·A adds nothing until training moves B.",
+      "misconceptions": [
+        "Confuses the size of the first steps with the starting value of the weights",
+        "Contradicts what an adapter is for",
+        "Invents a switch: the adapter is active from the start and contributes zero",
+        ""
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 8
+    },
+    {
+      "id": "q-train-03",
+      "type": "single",
+      "prompt": "During a run the training loss falls from 0.9 to 0.05 while the validation loss falls to 0.30 at step 150 and rises to 0.45 by step 400. What is happening, and what do you do first?",
+      "options": [
+        "Normal behaviour: continue to step 800",
+        "Underfitting: raise the rank",
+        "Memorising the tuning set: stop near step 150 and check the set for near-copies",
+        "A wrong label mask: train on the whole conversation"
+      ],
+      "key": {
+        "indices": [
+          2
+        ]
+      },
+      "lo": [
+        "LO3"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "Training loss falling while validation loss rises is the signature of memorising; the cheapest fix is to stop earlier.",
+      "misconceptions": [
+        "Pays for more steps of a run that is getting worse on unseen examples",
+        "Adds capacity to a run that already fits its data too closely",
+        "",
+        "Proposes a rendering change that would spend the loss on the request"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 11
+    },
+    {
+      "id": "q-train-04",
+      "type": "single",
+      "prompt": "Two adapters reach validation losses of 0.21 and 0.24. A colleague wants to ship the first on that evidence. What is missing?",
+      "options": [
+        "Nothing: the lower loss is the better model, by definition of loss",
+        "The score on validation requests, graded as the tool grades",
+        "A third adapter to break the tie",
+        "The training loss of both"
+      ],
+      "key": {
+        "indices": [
+          1
+        ]
+      },
+      "lo": [
+        "LO3"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "The registry accepts a call or not; a small loss difference can go with either order of exact-match scores.",
+      "misconceptions": [
+        "Treats average token likelihood as the task metric",
+        "",
+        "Adds runs before measuring the two that exist",
+        "Looks at the examples the adapters were fitted to"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 12
+    },
+    {
+      "id": "q-train-05",
+      "type": "single",
+      "prompt": "A teammate hands you an adapter file and its validation score. Which missing item most prevents you from reproducing the run?",
+      "options": [
+        "The run log: base and precision, data, settings, seed and curves",
+        "The size of the adapter file in megabytes",
+        "A screenshot of the loss curve",
+        "The name of the engineer"
+      ],
+      "key": {
+        "indices": [
+          0
+        ]
+      },
+      "lo": [
+        "LO3"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "Reproducing a run needs what it was run on and with; that is what the log records.",
+      "misconceptions": [
+        "",
+        "Can be read from the file itself",
+        "Shows a shape but none of the settings or the data",
+        "Names who, not what was run"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 13
+    },
+    {
+      "id": "q-memory-01",
+      "type": "single",
+      "prompt": "A base model has 3 billion parameters. Roughly how much memory do its weights take at 16 bits each?",
+      "options": [
+        "About 11 GB",
+        "About 48 GB",
+        "About 1.4 GB",
+        "About 5.6 GB"
+      ],
+      "key": {
+        "indices": [
+          3
+        ]
+      },
+      "lo": [
+        "LO3"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "3 billion × 2 bytes = 6 billion bytes, about 5.6 GB.",
+      "misconceptions": [
+        "Uses four bytes per weight: the 32-bit figure",
+        "Multiplies by 16 bytes instead of 16 bits",
+        "Uses half a byte per weight: the 4-bit figure",
+        ""
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 17
+    },
+    {
+      "id": "q-memory-02",
+      "type": "single",
+      "prompt": "A 4-bit base loads in 4 GB on a 16 GB accelerator, and training an adapter still runs out of memory. Which change addresses the cause most directly?",
+      "options": [
+        "Load the base in 16 bits",
+        "Lower the adapter rank from 8 to 4, halving its parameters",
+        "Lower the batch size or the maximum sequence length",
+        "Lower the learning rate"
+      ],
+      "key": {
+        "indices": [
+          2
+        ]
+      },
+      "lo": [
+        "LO3"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "Activations grow with batch size × sequence length and are the large term above the weights.",
+      "misconceptions": [
+        "Raises the floor by a factor of about four",
+        "Shrinks the smallest term: the adapter is a few megabytes",
+        "",
+        "Changes the step size, not the memory"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 18
+    },
+    {
+      "id": "q-memory-03",
+      "type": "single",
+      "prompt": "An adapter was trained on a 4-bit base. Operations wants to serve it on the same base in 16 bits \"for better quality\". What do you advise?",
+      "options": [
+        "Agree: higher precision can only help",
+        "Measure first: the adapter was fitted to the rounded weights",
+        "Refuse: an adapter cannot be loaded on a base of another precision",
+        "Agree, after doubling the adapter rank"
+      ],
+      "key": {
+        "indices": [
+          1
+        ]
+      },
+      "lo": [
+        "LO3"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "The adapter compensates partly for rounding; on unrounded weights its effect is untested until measured.",
+      "misconceptions": [
+        "Assumes the adapter is independent of the weights it was trained against",
+        "",
+        "States a technical impossibility that does not exist: it loads, and may behave differently",
+        "Changes the adapter without retraining it"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 20
+    },
+    {
+      "id": "q-sweep-01",
+      "type": "single",
+      "prompt": "In a sweep with one run per cell, rank 4 scores 96 of 120 and rank 16 scores 97. Which conclusion is sound?",
+      "options": [
+        "The two cannot be told apart; prefer rank 4",
+        "Rank 4 is better because it is smaller",
+        "The sweep must be discarded",
+        "Rank 16 is better, because it scored one request more"
+      ],
+      "key": {
+        "indices": [
+          0
+        ]
+      },
+      "lo": [
+        "LO3"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "One request in 120 is inside the noise of a single run; among equals, the cheaper setting.",
+      "misconceptions": [
+        "",
+        "Claims the smaller one is better in quality, which the scores do not show either",
+        "Throws away evidence that does rule out large differences",
+        "Reads one request as a real difference"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 27
+    },
+    {
+      "id": "q-sweep-02",
+      "type": "single",
+      "prompt": "A team tried twelve settings and reports the test score of the one that did best on the test set. What is wrong with the reported score?",
+      "options": [
+        "It is biased downward: more settings mean more noise in each score",
+        "Twelve settings are too few for any claim",
+        "Nothing, as long as the test set is large",
+        "It is biased upward: the setting was selected on the test data"
+      ],
+      "key": {
+        "indices": [
+          3
+        ]
+      },
+      "lo": [
+        "LO3"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "The best of twelve on a set is partly the luckiest of twelve on that set.",
+      "misconceptions": [
+        "Gets the direction wrong: picking the maximum inflates",
+        "Blames the number of settings, not the use of the test set",
+        "Believes size removes selection bias",
+        ""
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 28
+    },
+    {
+      "id": "q-sweep-03",
+      "type": "single",
+      "prompt": "A first adapter run shows a training loss that barely moves in 300 steps. Which setting do you examine first?",
+      "options": [
+        "The rank",
+        "The adapter dropout",
+        "The learning rate",
+        "The random seed"
+      ],
+      "key": {
+        "indices": [
+          2
+        ]
+      },
+      "lo": [
+        "LO3"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "A loss that does not move is first a question of step size (after checking that anything is trainable).",
+      "misconceptions": [
+        "Adds capacity when the existing capacity is not being used",
+        "Starts with a regulariser when nothing is being learnt",
+        "",
+        "Expects a different seed to change whether learning happens at all"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 25
+    },
+    {
+      "id": "q-distil-01",
+      "type": "single",
+      "prompt": "In this course, a student is distilled by training it on a larger model's verified tool calls. What does the student receive from the teacher?",
+      "options": [
+        "The teacher's weights, compressed",
+        "The teacher's final outputs, used as labels",
+        "The teacher's system prompt",
+        "The teacher's tokeniser"
+      ],
+      "key": {
+        "indices": [
+          1
+        ]
+      },
+      "lo": [
+        "LO3"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "Only outputs cross over: they become the labels of an ordinary tuning set.",
+      "misconceptions": [
+        "Confuses distillation with compressing or copying a model",
+        "",
+        "Confuses what the teacher was given with what the student learns from",
+        "Assumes shared vocabulary, which training on output text does not need"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 34
+    },
+    {
+      "id": "q-distil-02",
+      "type": "single",
+      "prompt": "A teacher labels 1 request in 50 wrongly, scattered over all kinds of request. A second teacher is wrong on every request of one rare kind and right elsewhere, also 1 in 50 overall. Which is the greater risk for the student?",
+      "options": [
+        "The second: a consistent error on one kind is learnt as the rule for that kind",
+        "Neither: both are 2% noise",
+        "Both equally, because the rate is the same",
+        "The first: random errors are harder to find"
+      ],
+      "key": {
+        "indices": [
+          0
+        ]
+      },
+      "lo": [
+        "LO3"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "Scattered errors are outvoted by consistent right labels; a systematic error has nothing voting against it.",
+      "misconceptions": [
+        "",
+        "Treats structure in the errors as irrelevant",
+        "Reads the overall rate and ignores where the errors sit",
+        "Judges by how hard the errors are to find, not by what is learnt"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 38
+    },
+    {
+      "id": "q-distil-03",
+      "type": "single",
+      "prompt": "Which fact, on its own, rules out distilling from a hosted larger model for a government service?",
+      "options": [
+        "The larger model is slower than the student",
+        "The student uses a different tokeniser",
+        "The larger model costs money for each request, and budgets are fixed",
+        "The requests are classified Restricted and may not be sent to it"
+      ],
+      "key": {
+        "indices": [
+          3
+        ]
+      },
+      "lo": [
+        "LO3"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "If the data may not reach the teacher, the teacher cannot label it; cost, speed and tokenisers are workable.",
+      "misconceptions": [
+        "Applies a serving concern to a one-off labelling job",
+        "Assumes output text cannot cross between tokenisers",
+        "Treats a price as a prohibition",
+        ""
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 39
+    },
+    {
+      "id": "q-eval-01",
+      "type": "single",
+      "prompt": "Systems A and B score 300 and 290 on the same 400 requests. Which additional fact decides whether A is better?",
+      "options": [
+        "The score of a third system",
+        "The average length of their answers, in tokens, on those requests",
+        "How many requests each gets right that the other gets wrong",
+        "The date each was evaluated"
+      ],
+      "key": {
+        "indices": [
+          2
+        ]
+      },
+      "lo": [
+        "LO4"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "10 against 0 is a clear difference; 60 against 50 is not. The disagreements carry the evidence.",
+      "misconceptions": [
+        "Adds a system instead of reading the two in hand",
+        "Looks at a property unrelated to correctness",
+        "",
+        "Looks at when, not at what was measured"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 6
+    },
+    {
+      "id": "q-eval-02",
+      "type": "single",
+      "prompt": "A paired bootstrap on 400 requests resamples what, in each draw?",
+      "options": [
+        "The outputs of each system separately, a thousand times each",
+        "The requests, keeping both systems' results on each one together",
+        "The tokens of each output",
+        "The two systems"
+      ],
+      "key": {
+        "indices": [
+          1
+        ]
+      },
+      "lo": [
+        "LO4"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "The request is the sampled unit; keeping the pair together is what makes the comparison paired.",
+      "misconceptions": [
+        "Breaks the pairing and widens the interval",
+        "",
+        "Resamples below the unit that was graded",
+        "Resamples the things being compared, of which there are two"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 7
+    },
+    {
+      "id": "q-eval-03",
+      "type": "single",
+      "prompt": "The paired interval for \"tuned minus base\" is +52 to +61 points; for \"tuned minus larger\" it is −9 to −2 points. Which summary is supported?",
+      "options": [
+        "Tuning worked; the larger model is still better here",
+        "Tuning failed",
+        "Nothing can be concluded",
+        "Tuning worked, and the tuned model matches the larger one"
+      ],
+      "key": {
+        "indices": [
+          0
+        ]
+      },
+      "lo": [
+        "LO4"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "The first interval is above zero, the second below: two different sentences.",
+      "misconceptions": [
+        "",
+        "Ignores an interval that lies far above zero",
+        "Declines to read two intervals that both exclude zero",
+        "Ignores an interval that lies wholly below zero"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 10
+    },
+    {
+      "id": "q-eval-04",
+      "type": "single",
+      "prompt": "A tuned model is 4 points better than its alternative overall. In Arabic it is 3 points worse; in English 11 better. The service is used mostly in Arabic. What does the report lead with?",
+      "options": [
+        "The English result, because it is the largest",
+        "The average of the two slices",
+        "The overall gain",
+        "The Arabic result, with its interval"
+      ],
+      "key": {
+        "indices": [
+          3
+        ]
+      },
+      "lo": [
+        "LO4"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "Report for the group the service serves; an overall figure hides the slice that matters most here.",
+      "misconceptions": [
+        "Leads with the most flattering number",
+        "Replaces two findings with a figure that describes neither",
+        "Leads with an average that most users will not experience",
+        ""
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 9
+    },
+    {
+      "id": "q-regress-01",
+      "type": "single",
+      "prompt": "\"The base is frozen, so an adapter cannot make the model forget anything.\" What is wrong with this statement?",
+      "options": [
+        "Forgetting only happens above rank 64",
+        "Nothing: frozen weights cannot change",
+        "The base weights are intact; base plus adapter behaves differently",
+        "Adapters do change the base weights slightly, during each backward pass"
+      ],
+      "key": {
+        "indices": [
+          2
+        ]
+      },
+      "lo": [
+        "LO4"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "The adapter is added to shared matrices; the combined model can lose behaviours while the base alone still has them.",
+      "misconceptions": [
+        "Invents a threshold; any rank changes behaviour",
+        "Confuses the weights with the behaviour of the adapted model",
+        "",
+        "Misdescribes the method: the base is not updated"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 17
+    },
+    {
+      "id": "q-regress-02",
+      "type": "single",
+      "prompt": "A tuning set of 600 examples maps every request to a tool call. After tuning, the model answers a request for a customer's phone number with a tool call instead of declining. What is the most direct cause?",
+      "options": [
+        "The learning rate was too high",
+        "The set never showed a refusal, so \"always call a tool\" is what it taught",
+        "The base model never refused",
+        "The test set leaked into training"
+      ],
+      "key": {
+        "indices": [
+          1
+        ]
+      },
+      "lo": [
+        "LO4"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "The adapter learnt the one rule its data was consistent with.",
+      "misconceptions": [
+        "Blames a setting for a gap in the data",
+        "",
+        "Contradicts the premise: the regression is a change from the base",
+        "Names a different fault, which would inflate scores, not remove refusals"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 16
+    },
+    {
+      "id": "q-regress-03",
+      "type": "single",
+      "prompt": "Which examples are suitable replay data for keeping a base model's refusal behaviour through tuning?",
+      "options": [
+        "Refusal examples outside the check, mixed into the tuning set",
+        "More task examples",
+        "Examples from the test set",
+        "The items of the refusal check itself, since they are already written"
+      ],
+      "key": {
+        "indices": [
+          0
+        ]
+      },
+      "lo": [
+        "LO4"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "Replay shows the behaviour during training; the check must stay unseen to remain a check.",
+      "misconceptions": [
+        "",
+        "Adds more of what caused the regression",
+        "Spends the test set",
+        "Trains on the check, which then measures nothing"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 18
+    },
+    {
+      "id": "q-regress-04",
+      "type": "single",
+      "prompt": "When should the rule \"which regression blocks a release\" be written?",
+      "options": [
+        "Only if a regression is found",
+        "By the vendor of the base model",
+        "After the tuned model's numbers are known, to fit them",
+        "Before the numbers are known"
+      ],
+      "key": {
+        "indices": [
+          3
+        ]
+      },
+      "lo": [
+        "LO4"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "A threshold chosen after seeing the result is a description of the result, not a rule.",
+      "misconceptions": [
+        "Leaves no rule for the case that most needs one",
+        "Hands an owner's decision to a party who does not carry the risk",
+        "Lets the result set its own pass mark",
+        ""
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 19
+    },
+    {
+      "id": "q-regress-05",
+      "type": "single",
+      "prompt": "A general check of five tasks shows no regression after tuning. Which statement may the model card make?",
+      "options": [
+        "\"General abilities improved\"",
+        "\"Tuning did not affect any of the other abilities\"",
+        "\"No regression on the five tasks checked\"",
+        "\"The model is safe\""
+      ],
+      "key": {
+        "indices": [
+          2
+        ]
+      },
+      "lo": [
+        "LO4"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "A check covers what it tests; abilities outside it are unmeasured.",
+      "misconceptions": [
+        "Reports a direction the check did not show",
+        "Extends five tasks to everything",
+        "",
+        "Draws a safety claim from an ability check"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 15
+    },
+    {
+      "id": "q-serve-01",
+      "type": "single",
+      "prompt": "An organisation serves three tuned tasks. Each could be a fully fine-tuned copy of a 7-billion-parameter model, or one adapter on a shared base. What is the main saving of the adapter arrangement at serving time?",
+      "options": [
+        "Each request needs fewer tokens",
+        "One base in memory instead of three",
+        "Adapters need no accelerator",
+        "Adapters remove the need for evaluation"
+      ],
+      "key": {
+        "indices": [
+          1
+        ]
+      },
+      "lo": [
+        "LO5"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "The base is loaded once; each task adds megabytes, not gigabytes.",
+      "misconceptions": [
+        "Confuses weights with text: adapters do not shorten requests",
+        "",
+        "The base still runs on the accelerator",
+        "Each adapter is a model to be evaluated"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 23
+    },
+    {
+      "id": "q-serve-02",
+      "type": "single",
+      "prompt": "In a load test, throughput rises from 20 to 55 requests a second as requests in flight go from 4 to 16. What explains the rise?",
+      "options": [
+        "Requests that arrive together share each forward pass",
+        "The adapters are cached after first use, so later requests skip them",
+        "Latency falls as load rises",
+        "The model gets faster as it warms up"
+      ],
+      "key": {
+        "indices": [
+          0
+        ]
+      },
+      "lo": [
+        "LO5"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "Batching: one pass serves several requests in little more time than one.",
+      "misconceptions": [
+        "",
+        "Describes loading, which happens once, not per request",
+        "States the opposite of what happens: latency rises with load",
+        "Attributes a batching effect to warm-up"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 25
+    },
+    {
+      "id": "q-serve-03",
+      "type": "single",
+      "prompt": "A service answers 50,000 requests a month with a p99 latency of 4 seconds. About how many requests take longer than 4 seconds?",
+      "options": [
+        "2,500",
+        "5,000",
+        "50",
+        "500"
+      ],
+      "key": {
+        "indices": [
+          3
+        ]
+      },
+      "lo": [
+        "LO5"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "One in a hundred of 50,000 is 500.",
+      "misconceptions": [
+        "Takes one in twenty: the p95 share",
+        "Takes one in ten",
+        "Takes one in a thousand",
+        ""
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 27
+    },
+    {
+      "id": "q-serve-04",
+      "type": "single",
+      "prompt": "A report states: \"The server handles 70 requests per second.\" Which addition makes the figure usable for planning?",
+      "options": [
+        "The date of the test",
+        "The brand of the accelerator",
+        "The latency percentile and target at that throughput, and the failure rate",
+        "The number of adapters loaded"
+      ],
+      "key": {
+        "indices": [
+          2
+        ]
+      },
+      "lo": [
+        "LO5"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "Capacity is throughput under a latency target with no failures; without those the figure is not a capacity.",
+      "misconceptions": [
+        "Adds context that does not qualify the number",
+        "Names the hardware but not what was achieved on it",
+        "",
+        "Describes the configuration, not the service level"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 27
+    },
+    {
+      "id": "q-serve-05",
+      "type": "single",
+      "prompt": "A machine costs SAR 9,000 a month and can answer 2 million requests a month at its latency target. The service receives 60,000. What is the cost per thousand requests?",
+      "options": [
+        "SAR 4.50",
+        "SAR 150",
+        "SAR 15",
+        "SAR 0.15"
+      ],
+      "key": {
+        "indices": [
+          1
+        ]
+      },
+      "lo": [
+        "LO5"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "9,000 ÷ 60 thousands of requests answered = SAR 150.",
+      "misconceptions": [
+        "Divides by the capacity of 2,000 thousands instead of the requests answered",
+        "",
+        "Divides by 600 thousands: a slip of one decimal place",
+        "Divides by 60,000 thousands"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 28
+    },
+    {
+      "id": "q-serve-06",
+      "type": "single",
+      "prompt": "The cost per thousand requests on an owned machine is 300 times the cost at full capacity, because the machine is mostly idle. Which response addresses the cause?",
+      "options": [
+        "Serve more tasks from the same base with additional adapters",
+        "Lower the adapter rank",
+        "Raise the latency target",
+        "Quantise the model further, so that each answer takes less time"
+      ],
+      "key": {
+        "indices": [
+          0
+        ]
+      },
+      "lo": [
+        "LO5"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "The cost is fixed; sharing the machine across more work is what lowers the cost of each request.",
+      "misconceptions": [
+        "",
+        "Shrinks a file that is not the cost",
+        "Raises a capacity that is not being used",
+        "Speeds up a machine that is already idle"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 28
+    },
+    {
+      "id": "q-memo-01",
+      "type": "single",
+      "prompt": "Which sentence belongs in the limits section of a dataset card?",
+      "options": [
+        "\"All personal data has been removed, as confirmed by the automatic scan\"",
+        "\"The dataset is unbiased\"",
+        "\"The dataset is of high quality\"",
+        "\"Accepted traces were not reviewed; an audit of 30 allows up to 11%\""
+      ],
+      "key": {
+        "indices": [
+          3
+        ]
+      },
+      "lo": [
+        "LO6"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "A limit states what was and was not checked, with numbers a reader can weigh.",
+      "misconceptions": [
+        "Claims more than a scan of four kinds can support",
+        "Claims a property nobody measured",
+        "Asserts quality without evidence",
+        ""
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 33
+    },
+    {
+      "id": "q-memo-02",
+      "type": "single",
+      "prompt": "A decision memo recommends a tuned small model that scores below a hosted alternative and costs more per request. Which fact can still justify the recommendation?",
+      "options": [
+        "Small models are the current trend",
+        "The small model was more interesting to build and the team learnt more",
+        "The data is classified so that it may not leave the organisation",
+        "The team has already spent the budget"
+      ],
+      "key": {
+        "indices": [
+          2
+        ]
+      },
+      "lo": [
+        "LO6"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "A placement requirement rules the alternative out; the memo then states the premium paid for it.",
+      "misconceptions": [
+        "Appeals to fashion",
+        "Offers the team's interest as a reason for the owner",
+        "",
+        "Justifies by sunk cost"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 35
+    },
+    {
+      "id": "q-memo-03",
+      "type": "single",
+      "prompt": "Evaluation shows a tuned model is worse than a hosted larger model, the data is public, and the hosted model's terms allow the use. What should the memo recommend?",
+      "options": [
+        "Ship the tuned model: the work is done",
+        "Do not ship: use the hosted model, and say what would change the answer",
+        "Ship both and let users choose",
+        "Tune for another month"
+      ],
+      "key": {
+        "indices": [
+          1
+        ]
+      },
+      "lo": [
+        "LO6"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "The alternative is better and allowed; \"do not ship\" on good evidence is a complete answer.",
+      "misconceptions": [
+        "Lets effort spent decide",
+        "",
+        "Passes the decision to people without the evidence",
+        "Continues without a reason to expect a different result"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 36
+    },
+    {
+      "id": "q-memo-04",
+      "type": "single",
+      "prompt": "A model card reports the task score and the training settings. Which section is most often left out and most needed by someone deciding whether to deploy?",
+      "options": [
+        "What got worse after tuning",
+        "The number of training steps",
+        "The file size of the adapter",
+        "The name of the base model"
+      ],
+      "key": {
+        "indices": [
+          0
+        ]
+      },
+      "lo": [
+        "LO6"
+      ],
+      "weight": 1,
+      "scored": true,
+      "timer": 30,
+      "displayMode": "full",
+      "explanation": "Regressions are what a deployer cannot see from the task score.",
+      "misconceptions": [
+        "",
+        "Describes the run, not its side effects",
+        "Is a fact the file itself gives",
+        "Is usually present"
+      ],
+      "liveContext": false,
+      "basis": "best",
+      "confidence": true,
+      "createdAt": 1794915542000,
+      "updatedAt": 1794915542000,
+      "slide": 34
+    }
+  ]
+}

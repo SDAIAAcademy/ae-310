@@ -1,0 +1,400 @@
+{"id": "T-0001", "output": "CALL renew_membership cr_number=4045006031 years=2"}
+{"id": "T-0002", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0003", "output": "CALL update_record cr_number=4064749760 field=city value=Abha"}
+{"id": "T-0004", "output": "CALL renew_membership cr_number=4050522687 years=3"}
+{"id": "T-0005", "output": "CALL issue_certificate cr_number=4017074259 kind=membership"}
+{"id": "T-0006", "output": "CALL renew_membership cr_number=4050522687 years=2"}
+{"id": "T-0007", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0008", "output": "CALL create_membership company_name=مؤسسة الريف للتوريدات cr_number=4047835209 city=Jeddah activity_code=BR-720"}
+{"id": "T-0009", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0010", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0011", "output": "CALL create_membership company_name=Al-Thiqa Services Group cr_number=4030387230 city=Dammam activity_code=BR-102"}
+{"id": "T-0012", "output": "CALL update_record cr_number=4006372515 field=city value=Taif"}
+{"id": "T-0013", "output": "CALL renew_membership cr_number=4027390432 years=1"}
+{"id": "T-0014", "output": "CALL update_record cr_number=4063224627 field=activity_code value=BR-520"}
+{"id": "T-0015", "output": "CALL create_membership company_name=Al-Salam Trading Group cr_number=4076504277 city=Jazan activity_code=BR-210"}
+{"id": "T-0016", "output": "CALL update_record cr_number=4085833243 field=city value=Jeddah"}
+{"id": "T-0017", "output": "CALL renew_membership cr_number=4052961073 years=1"}
+{"id": "T-0018", "output": "CALL update_record cr_number=4006372515 field=activity_code value=BR-320"}
+{"id": "T-0019", "output": "CALL create_membership company_name=Al-Itqan Supplies Est. cr_number=4005923404 city=Tabuk activity_code=BR-530"}
+{"id": "T-0020", "output": "CALL update_record cr_number=4046562668 field=city value=Buraidah"}
+{"id": "T-0021", "output": "CALL create_membership company_name=Al-Safwa Solutions Group cr_number=4031874764 city=Yanbu activity_code=BR-810"}
+{"id": "T-0022", "output": "CALL update_record cr_number=4044451264 field=city value=Tabuk"}
+{"id": "T-0023", "output": "CALL create_membership company_name=Al-Tawfiq Services Est. cr_number=4050822162 city=Najran activity_code=BR-330"}
+{"id": "T-0024", "output": "CALL update_record cr_number=4035426650 field=city value=Yanbu"}
+{"id": "T-0025", "output": "CALL issue_certificate cr_number=4034444039 kind=membership"}
+{"id": "T-0026", "output": "CALL update_record cr_number=4059207810 field=city value=Najran"}
+{"id": "T-0027", "output": "CALL update_record cr_number=4082444583 field=activity_code value=BR-410"}
+{"id": "T-0028", "output": "CALL update_record cr_number=4097294451 field=activity_code value=BR-215"}
+{"id": "T-0029", "output": "CALL create_membership company_name=Al-Salam Trading Group cr_number=4076504277 city=Taif activity_code=BR-720"}
+{"id": "T-0030", "output": "CALL update_record cr_number=4075234538 field=city value=Khobar"}
+{"id": "T-0031", "output": "CALL issue_certificate cr_number=4034867213 kind=membership"}
+{"id": "T-0032", "output": "CALL update_record cr_number=4020751326 field=city value=Jazan"}
+{"id": "T-0033", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0034", "output": "CALL create_membership company_name=شركة الصفوة للتجارة cr_number=4009338070 city=Jazan activity_code=BR-410"}
+{"id": "T-0035", "output": "CALL renew_membership cr_number=4064749760 years=3"}
+{"id": "T-0036", "output": "CALL create_membership company_name=شركة الدانة للتجارة cr_number=4050918443 city=Abha activity_code=BR-102"}
+{"id": "T-0037", "output": "CALL renew_membership cr_number=4085864693 years=1"}
+{"id": "T-0038", "output": "CALL issue_certificate cr_number=4097128328 kind=origin"}
+{"id": "T-0039", "output": "CALL update_record cr_number=4027078703 field=activity_code value=BR-320"}
+{"id": "T-0040", "output": "CALL renew_membership cr_number=4047379101 years=3"}
+{"id": "T-0041", "output": "CALL create_membership company_name=Al-Sahil Solutions Group cr_number=4035426650 city=Khobar activity_code=BR-101"}
+{"id": "T-0042", "output": "CALL update_record cr_number=4012417511 field=activity_code value=BR-101"}
+{"id": "T-0043", "output": "CALL update_record cr_number=4066290466 field=city value=Khobar"}
+{"id": "T-0044", "output": "CALL issue_certificate cr_number=4001995900 kind=origin"}
+{"id": "T-0045", "output": "CALL renew_membership cr_number=4078138638 years=2"}
+{"id": "T-0046", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0047", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0048", "output": "CALL update_record cr_number=4085864693 field=city value=Hail"}
+{"id": "T-0049", "output": "CALL update_record cr_number=4057169694 field=activity_code value=BR-320"}
+{"id": "T-0050", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4011275545\", \"kind\": \"origin\"}}\n</tool_call>"}
+{"id": "T-0051", "output": "CALL create_membership company_name=Al-Thiqa Solutions Est. cr_number=4046260084 city=Jeddah activity_code=BR-320"}
+{"id": "T-0052", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0053", "output": "CALL renew_membership cr_number=4050522687 years=2"}
+{"id": "T-0054", "output": "CALL create_membership company_name=مجموعة المفتاح للتجارة cr_number=4014801759 city=Taif activity_code=BR-320"}
+{"id": "T-0055", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0056", "output": "CALL update_record cr_number=4082485089 field=activity_code value=BR-520"}
+{"id": "T-0057", "output": "CALL issue_certificate cr_number=4035808431 kind=origin"}
+{"id": "T-0058", "output": "CALL update_record cr_number=4087922011 field=activity_code value=BR-810"}
+{"id": "T-0059", "output": "CALL update_record cr_number=4014801759 field=activity_code value=BR-320"}
+{"id": "T-0060", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0061", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0062", "output": "CALL update_record cr_number=4005923404 field=city value=Riyadh"}
+{"id": "T-0063", "output": "CALL update_record cr_number=4012417511 field=activity_code value=BR-320"}
+{"id": "T-0064", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0065", "output": "CALL create_membership company_name=Al-Fajr Services Est. cr_number=4089758140 city=Jeddah activity_code=BR-101"}
+{"id": "T-0066", "output": "CALL update_record cr_number=4015115979 field=activity_code value=BR-102"}
+{"id": "T-0067", "output": "CALL issue_certificate cr_number=4070574431 kind=origin"}
+{"id": "T-0068", "output": "CALL renew_membership cr_number=4050822162 years=2"}
+{"id": "T-0069", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0070", "output": "CALL create_membership company_name=شركة الصفوة للتجارة cr_number=4085864693 city=Abha activity_code=BR-410"}
+{"id": "T-0071", "output": "CALL create_membership company_name=Al-Yusr Trading Co. cr_number=4085833243 city=Yanbu activity_code=BR-330"}
+{"id": "T-0072", "output": "CALL renew_membership cr_number=4020405569 years=2"}
+{"id": "T-0073", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0074", "output": "CALL renew_membership cr_number=4030387230 years=3"}
+{"id": "T-0075", "output": "CALL create_membership company_name=Al-Rayah Industries Est. cr_number=4050522687 city=Jazan activity_code=BR-210"}
+{"id": "T-0076", "output": "CALL issue_certificate cr_number=4050522687 kind=membership"}
+{"id": "T-0077", "output": "CALL issue_certificate cr_number=4034444039 kind=membership"}
+{"id": "T-0078", "output": "CALL issue_certificate cr_number=4066696758 kind=membership"}
+{"id": "T-0079", "output": "CALL update_record cr_number=4021385114 field=activity_code value=BR-530"}
+{"id": "T-0080", "output": "CALL create_membership company_name=شركة الجوهرة للتجارة cr_number=4035274449 city=Jeddah activity_code=BR-720"}
+{"id": "T-0081", "output": "CALL create_membership company_name=Al-Wafa Marketing Est. cr_number=4097294451 city=Taif activity_code=BR-101"}
+{"id": "T-0082", "output": "CALL issue_certificate cr_number=4050822162 kind=origin"}
+{"id": "T-0083", "output": "CALL issue_certificate cr_number=4018036219 kind=membership"}
+{"id": "T-0084", "output": "CALL issue_certificate cr_number=4064518245 kind=origin"}
+{"id": "T-0085", "output": "CALL issue_certificate cr_number=4030387230 kind=membership"}
+{"id": "T-0086", "output": "CALL issue_certificate cr_number=4093671653 kind=membership"}
+{"id": "T-0087", "output": "CALL renew_membership cr_number=4035886494 years=1"}
+{"id": "T-0088", "output": "CALL issue_certificate cr_number=4035808431 kind=origin"}
+{"id": "T-0089", "output": "CALL renew_membership cr_number=4043382309 years=1"}
+{"id": "T-0090", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0091", "output": "CALL renew_membership cr_number=4043673373 years=2"}
+{"id": "T-0092", "output": "CALL create_membership company_name=مجموعة الساحل للاستثمار cr_number=4066290466 city=Taif activity_code=BR-102"}
+{"id": "T-0093", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0094", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0095", "output": "CALL create_membership company_name=Al-Marfa Projects Co. cr_number=4047853276 city=Dammam activity_code=BR-102"}
+{"id": "T-0096", "output": "CALL issue_certificate cr_number=4034444039 kind=origin"}
+{"id": "T-0097", "output": "CALL issue_certificate cr_number=4013186455 kind=origin"}
+{"id": "T-0098", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0099", "output": "CALL update_record cr_number=4064749760 field=city value=Taif"}
+{"id": "T-0100", "output": "CALL update_record cr_number=4091990805 field=activity_code value=BR-520"}
+{"id": "T-0101", "output": "CALL issue_certificate cr_number=4012417511 kind=origin"}
+{"id": "T-0102", "output": "CALL create_membership company_name=مؤسسة الديار للتسويق cr_number=4020400569 city=Dammam activity_code=BR-101"}
+{"id": "T-0103", "output": "CALL renew_membership cr_number=4016792138 years=2"}
+{"id": "T-0104", "output": "CALL create_membership company_name=مؤسسة التميز للخدمات cr_number=4088792042 city=Tabuk activity_code=BR-102"}
+{"id": "T-0105", "output": "CALL issue_certificate cr_number=4063224627 kind=origin"}
+{"id": "T-0106", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0107", "output": "CALL create_membership company_name=Al-Bustan Trading Co. cr_number=4044551294 city=Riyadh activity_code=BR-102"}
+{"id": "T-0108", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0109", "output": "CALL update_record cr_number=4026106549 field=activity_code value=BR-320"}
+{"id": "T-0110", "output": "CALL create_membership company_name=مؤسسة الإتقان للتجارة cr_number=4005923404 city=Yanbu activity_code=BR-810"}
+{"id": "T-0111", "output": "CALL update_record cr_number=4066906453 field=city value=Tabuk"}
+{"id": "T-0112", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0113", "output": "CALL renew_membership cr_number=4035886494 years=2"}
+{"id": "T-0114", "output": "CALL update_record cr_number=4023752182 field=city value=Abha"}
+{"id": "T-0115", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0116", "output": "CALL issue_certificate cr_number=4067086031 kind=membership"}
+{"id": "T-0117", "output": "CALL create_membership company_name=Al-Wadi Solutions Co. cr_number=4035886494 city=Dammam activity_code=BR-215"}
+{"id": "T-0118", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0119", "output": "CALL renew_membership cr_number=4027390432 years=1"}
+{"id": "T-0120", "output": "CALL renew_membership cr_number=4009871156 years=1"}
+{"id": "T-0121", "output": "CALL renew_membership cr_number=4015383964 years=1"}
+{"id": "T-0122", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0123", "output": "CALL create_membership company_name=Al-Manara Trading Group cr_number=4050575256 city=Tabuk activity_code=BR-720"}
+{"id": "T-0124", "output": "CALL issue_certificate cr_number=4042498557 kind=origin"}
+{"id": "T-0125", "output": "CALL renew_membership cr_number=4034444039 years=1"}
+{"id": "T-0126", "output": "CALL create_membership company_name=مؤسسة الرواد للتسويق cr_number=4003989817 city=Jazan activity_code=BR-610"}
+{"id": "T-0127", "output": "CALL renew_membership cr_number=4050420385 years=2"}
+{"id": "T-0128", "output": "CALL renew_membership cr_number=4005763272 years=3"}
+{"id": "T-0129", "output": "CALL renew_membership cr_number=4045006031 years=2"}
+{"id": "T-0130", "output": "CALL update_record cr_number=4017074259 field=activity_code value=BR-330"}
+{"id": "T-0131", "output": "CALL renew_membership cr_number=4082444583 years=2"}
+{"id": "T-0132", "output": "CALL issue_certificate cr_number=4009330452 kind=origin"}
+{"id": "T-0133", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0134", "output": "CALL update_record cr_number=4020400566 field=activity_code value=BR-530"}
+{"id": "T-0135", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0136", "output": "CALL issue_certificate cr_number=4013186455 kind=membership"}
+{"id": "T-0137", "output": "CALL issue_certificate cr_number=4045006031 kind=origin"}
+{"id": "T-0138", "output": "CALL renew_membership cr_number=4022654222 years=2"}
+{"id": "T-0139", "output": "CALL create_membership company_name=Al-Fajr Services Est. cr_number=4089758140 city=Taif activity_code=BR-330"}
+{"id": "T-0140", "output": "CALL update_record cr_number=4042498557 field=city value=Yanbu"}
+{"id": "T-0141", "output": "CALL issue_certificate cr_number=4018036219 kind=origin"}
+{"id": "T-0142", "output": "CALL issue_certificate cr_number=4052493260 kind=origin"}
+{"id": "T-0143", "output": "CALL issue_certificate cr_number=4046562668 kind=membership"}
+{"id": "T-0144", "output": "CALL create_membership company_name=شركة الجوهرة للصناعة cr_number=4063630842 city=Khobar activity_code=BR-320"}
+{"id": "T-0145", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0146", "output": "CALL renew_membership cr_number=4026106549 years=2"}
+{"id": "T-0147", "output": "CALL renew_membership cr_number=4082444583 years=2"}
+{"id": "T-0148", "output": "CALL update_record cr_number=4035426650 field=activity_code value=BR-810"}
+{"id": "T-0149", "output": "CALL create_membership company_name=Al-Dana Logistics Group cr_number=4066696758 city=Jazan activity_code=BR-610"}
+{"id": "T-0150", "output": "CALL renew_membership cr_number=4086620739 years=3"}
+{"id": "T-0151", "output": "CALL update_record cr_number=4027390432 field=city value=Abha"}
+{"id": "T-0152", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0153", "output": "CALL create_membership company_name=Al-Salam Supplies Est. cr_number=4001995900 city=Dammam activity_code=BR-410"}
+{"id": "T-0154", "output": "CALL issue_certificate cr_number=4089758140 kind=membership"}
+{"id": "T-0155", "output": "CALL update_record cr_number=4065420657 field=activity_code value=BR-610"}
+{"id": "T-0156", "output": "CALL issue_certificate cr_number=4009330452 kind=origin"}
+{"id": "T-0157", "output": "CALL renew_membership cr_number=4005436703 years=3"}
+{"id": "T-0158", "output": "CALL update_record cr_number=4042498557 field=activity_code value=BR-210"}
+{"id": "T-0159", "output": "CALL issue_certificate cr_number=4089512865 kind=membership"}
+{"id": "T-0160", "output": "CALL renew_membership cr_number=4001995900 years=1"}
+{"id": "T-0161", "output": "CALL update_record cr_number=4066290466 field=city value=Jeddah"}
+{"id": "T-0162", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0163", "output": "CALL renew_membership cr_number=4062266424 years=3"}
+{"id": "T-0164", "output": "CALL renew_membership cr_number=4016774054 years=1"}
+{"id": "T-0165", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0166", "output": "CALL create_membership company_name=مؤسسة المورد للتطوير cr_number=4045006031 city=Jeddah activity_code=BR-210"}
+{"id": "T-0167", "output": "CALL issue_certificate cr_number=4087570821 kind=origin"}
+{"id": "T-0168", "output": "CALL renew_membership cr_number=4035886494 years=2"}
+{"id": "T-0169", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0170", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0171", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0172", "output": "CALL update_record cr_number=4015115997 field=activity_code value=BR-320"}
+{"id": "T-0173", "output": "CALL renew_membership cr_number=4034867213 years=2"}
+{"id": "T-0174", "output": "CALL renew_membership cr_number=4027390432 years=2"}
+{"id": "T-0175", "output": "CALL renew_membership cr_number=4027390432 years=2"}
+{"id": "T-0176", "output": "CALL update_record cr_number=4027562255 field=city value=Jazan"}
+{"id": "T-0177", "output": "CALL create_membership company_name=Al-Tamayuz Marketing Group cr_number=4032150649 city=Khobar activity_code=BR-102"}
+{"id": "T-0178", "output": "CALL create_membership company_name=شركة الروابي للخدمات cr_number=4065420657 city=Khobar activity_code=BR-320"}
+{"id": "T-0179", "output": "CALL issue_certificate cr_number=4019107623 kind=origin"}
+{"id": "T-0180", "output": "CALL update_record cr_number=4088792042 field=activity_code value=BR-210"}
+{"id": "T-0181", "output": "CALL update_record cr_number=4009330452 field=activity_code value=BR-330"}
+{"id": "T-0182", "output": "CALL create_membership company_name=مؤسسة السلام للتجارة cr_number=4043375436 city=Buraidah activity_code=BR-410"}
+{"id": "T-0183", "output": "CALL renew_membership cr_number=4076504277 years=2"}
+{"id": "T-0184", "output": "CALL update_record cr_number=4052493260 field=activity_code value=BR-720"}
+{"id": "T-0185", "output": "CALL create_membership company_name=Al-Ghadeer Services Est. cr_number=4056019857 city=Khobar activity_code=BR-810"}
+{"id": "T-0186", "output": "CALL issue_certificate cr_number=4040363177 kind=origin"}
+{"id": "T-0187", "output": "CALL update_record cr_number=4034444039 field=activity_code value=BR-410"}
+{"id": "T-0188", "output": "CALL update_record cr_number=4026106549 field=city value=Hail"}
+{"id": "T-0189", "output": "CALL create_membership company_name=Al-Rayah Supplies Est. cr_number=4063224627 city=Yanbu activity_code=BR-720"}
+{"id": "T-0190", "output": "CALL create_membership company_name=شركة الهلال للإمداد cr_number=4009338070 city=Abha activity_code=BR-520"}
+{"id": "T-0191", "output": "CALL renew_membership cr_number=4093671653 years=2"}
+{"id": "T-0192", "output": "CALL update_record cr_number=4043673373 field=activity_code value=BR-610"}
+{"id": "T-0193", "output": "CALL update_record cr_number=4078623919 field=city value=Riyadh"}
+{"id": "T-0194", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0195", "output": "CALL renew_membership cr_number=4054698436 years=2"}
+{"id": "T-0196", "output": "CALL renew_membership cr_number=4005515491 years=3"}
+{"id": "T-0197", "output": "CALL update_record cr_number=4031874764 field=activity_code value=BR-610"}
+{"id": "T-0198", "output": "CALL create_membership company_name=مجموعة الرمال للتجارة cr_number=4092705104 city=Taif activity_code=BR-330"}
+{"id": "T-0199", "output": "CALL issue_certificate cr_number=4054698436 kind=membership"}
+{"id": "T-0200", "output": "CALL renew_membership cr_number=4015115997 years=2"}
+{"id": "T-0201", "output": "CALL issue_certificate cr_number=4040363177 kind=membership"}
+{"id": "T-0202", "output": "CALL issue_certificate cr_number=4092705104 kind=membership"}
+{"id": "T-0203", "output": "CALL issue_certificate cr_number=4035808431 kind=origin"}
+{"id": "T-0204", "output": "CALL renew_membership cr_number=4003939426 years=3"}
+{"id": "T-0205", "output": "CALL renew_membership cr_number=4047379101 years=2"}
+{"id": "T-0206", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0207", "output": "CALL update_record cr_number=4078623919 field=activity_code value=BR-610"}
+{"id": "T-0208", "output": "CALL issue_certificate cr_number=4014377706 kind=origin"}
+{"id": "T-0209", "output": "CALL issue_certificate cr_number=4057169694 kind=membership"}
+{"id": "T-0210", "output": "CALL create_membership company_name=شركة الجوهرة للخدمات cr_number=4009871156 city=Jeddah activity_code=BR-330"}
+{"id": "T-0211", "output": "CALL create_membership company_name=Al-Miftah Services Group cr_number=4087922011 city=Jazan activity_code=BR-330"}
+{"id": "T-0212", "output": "CALL update_record cr_number=4016120224 field=city value=Jazan"}
+{"id": "T-0213", "output": "CALL renew_membership cr_number=4044451294 years=2"}
+{"id": "T-0214", "output": "CALL update_record cr_number=4009338070 field=activity_code value=BR-520"}
+{"id": "T-0215", "output": "CALL renew_membership cr_number=4023752182 years=2"}
+{"id": "T-0216", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0217", "output": "CALL create_membership company_name=Al-Thiqa Solutions Est. cr_number=4046260084 city=Tabuk activity_code=BR-610"}
+{"id": "T-0218", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0219", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0220", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0221", "output": "CALL renew_membership cr_number=4005436703 years=1"}
+{"id": "T-0222", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0223", "output": "CALL create_membership company_name=Al-Wadi Logistics Co. cr_number=4092242190 city=Abha activity_code=BR-520"}
+{"id": "T-0224", "output": "CALL issue_certificate cr_number=4065420657 kind=membership"}
+{"id": "T-0225", "output": "CALL update_record cr_number=4068950860 field=city value=Taif"}
+{"id": "T-0226", "output": "CALL create_membership company_name=مؤسسة الدانة للتجارة cr_number=4064749760 city=Jazan activity_code=BR-101"}
+{"id": "T-0227", "output": "CALL issue_certificate cr_number=4071411500 kind=membership"}
+{"id": "T-0228", "output": "CALL issue_certificate cr_number=4070574431 kind=origin"}
+{"id": "T-0229", "output": "CALL create_membership company_name=Al-Thiqa Services Group cr_number=4030387230 city=Buraidah activity_code=BR-530"}
+{"id": "T-0230", "output": "CALL update_record cr_number=4009871156 field=city value=Yanbu"}
+{"id": "T-0231", "output": "CALL renew_membership cr_number=4061582922 years=1"}
+{"id": "T-0232", "output": "CALL create_membership company_name=شركة اليسر للصناعة cr_number=4040663177 city=Dammam activity_code=BR-410"}
+{"id": "T-0233", "output": "CALL update_record cr_number=4089512865 field=activity_code value=BR-320"}
+{"id": "T-0234", "output": "CALL create_membership company_name=شركة الجوهرة للحلول cr_number=4026106549 city=Najran activity_code=BR-101"}
+{"id": "T-0235", "output": "CALL create_membership company_name=Al-Wafa Marketing Est. cr_number=4097294451 city=Jazan activity_code=BR-810"}
+{"id": "T-0236", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0237", "output": "CALL renew_membership cr_number=4019107623 years=3"}
+{"id": "T-0238", "output": "CALL renew_membership cr_number=4062266424 years=3"}
+{"id": "T-0239", "output": "CALL issue_certificate cr_number=4050822162 kind=membership"}
+{"id": "T-0240", "output": "CALL update_record cr_number=4056019857 field=activity_code value=BR-320"}
+{"id": "T-0241", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0242", "output": "CALL issue_certificate cr_number=4089512865 kind=membership"}
+{"id": "T-0243", "output": "CALL update_record cr_number=4003939426 field=city value=Khobar"}
+{"id": "T-0244", "output": "CALL update_record cr_number=4083252503 field=activity_code value=BR-410"}
+{"id": "T-0245", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0246", "output": "CALL update_record cr_number=4003939426 field=activity_code value=BR-101"}
+{"id": "T-0247", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0248", "output": "CALL update_record cr_number=4029437293 field=city value=Riyadh"}
+{"id": "T-0249", "output": "CALL renew_membership cr_number=4017074259 years=2"}
+{"id": "T-0250", "output": "CALL renew_membership cr_number=4071411500 years=3"}
+{"id": "T-0251", "output": "CALL issue_certificate cr_number=4014377706 kind=origin"}
+{"id": "T-0252", "output": "CALL update_record cr_number=4066290466 field=city value=Najran"}
+{"id": "T-0253", "output": "CALL issue_certificate cr_number=4036617604 kind=membership"}
+{"id": "T-0254", "output": "CALL update_record cr_number=4016792138 field=city value=Riyadh"}
+{"id": "T-0255", "output": "CALL update_record cr_number=4012417511 field=city value=Taif"}
+{"id": "T-0256", "output": "CALL create_membership company_name=مجموعة الرمال للتجارة cr_number=4088149475 city=Tabuk activity_code=BR-610"}
+{"id": "T-0257", "output": "CALL update_record cr_number=4071411500 field=city value=Abha"}
+{"id": "T-0258", "output": "CALL create_membership company_name=مجموعة الجسر للصناعة cr_number=4078138638 city=Riyadh activity_code=BR-330"}
+{"id": "T-0259", "output": "CALL renew_membership cr_number=4043382309 years=3"}
+{"id": "T-0260", "output": "CALL create_membership company_name=مؤسسة الرمال للخدمات cr_number=4023642290 city=Abha activity_code=BR-320"}
+{"id": "T-0261", "output": "CALL issue_certificate cr_number=4029437293 kind=membership"}
+{"id": "T-0262", "output": "CALL issue_certificate cr_number=4083252503 kind=membership"}
+{"id": "T-0263", "output": "CALL renew_membership cr_number=4050575256 years=1"}
+{"id": "T-0264", "output": "CALL renew_membership cr_number=4057169694 years=2"}
+{"id": "T-0265", "output": "CALL update_record cr_number=4047379101 field=activity_code value=BR-720"}
+{"id": "T-0266", "output": "CALL renew_membership cr_number=4027390432 years=2"}
+{"id": "T-0267", "output": "CALL update_record cr_number=4011275545 field=city value=Tabuk"}
+{"id": "T-0268", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0269", "output": "CALL create_membership company_name=Al-Mawrid Logistics Est. cr_number=4045006031 city=Dammam activity_code=BR-810"}
+{"id": "T-0270", "output": "CALL renew_membership cr_number=4036617604 years=2"}
+{"id": "T-0271", "output": "CALL create_membership company_name=Al-Bustan Solutions Est. cr_number=4087570821 city=Dammam activity_code=BR-810"}
+{"id": "T-0272", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0273", "output": "CALL update_record cr_number=4027562255 field=city value=Najran"}
+{"id": "T-0274", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0275", "output": "CALL renew_membership cr_number=4018036219 years=1"}
+{"id": "T-0276", "output": "CALL issue_certificate cr_number=4021385114 kind=origin"}
+{"id": "T-0277", "output": "CALL renew_membership cr_number=4050822162 years=3"}
+{"id": "T-0278", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0279", "output": "CALL create_membership company_name=Al-Yusr Investment Group cr_number=4082485089 city=Abha activity_code=BR-210"}
+{"id": "T-0280", "output": "CALL update_record cr_number=4021920686 field=activity_code value=BR-101"}
+{"id": "T-0281", "output": "CALL renew_membership cr_number=4050420385 years=1"}
+{"id": "T-0282", "output": "CALL issue_certificate cr_number=4097128238 kind=origin"}
+{"id": "T-0283", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0284", "output": "CALL create_membership company_name=شركة الراية للتجارة cr_number=4092023663 city=Hail activity_code=BR-215"}
+{"id": "T-0285", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0286", "output": "CALL update_record cr_number=4086620739 field=activity_code value=BR-810"}
+{"id": "T-0287", "output": "CALL issue_certificate cr_number=4064749760 kind=origin"}
+{"id": "T-0288", "output": "CALL issue_certificate cr_number=4043382309 kind=membership"}
+{"id": "T-0289", "output": "CALL create_membership company_name=Al-Ufuq Marketing Group cr_number=4001436870 city=Abha activity_code=BR-210"}
+{"id": "T-0290", "output": "CALL create_membership company_name=مؤسسة الأفق للحلول cr_number=4034279270 city=Tabuk activity_code=BR-320"}
+{"id": "T-0291", "output": "CALL create_membership company_name=Al-Rayah Services Est. cr_number=4063224627 city=Yanbu activity_code=BR-102"}
+{"id": "T-0292", "output": "CALL issue_certificate cr_number=4001995900 kind=origin"}
+{"id": "T-0293", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0294", "output": "CALL renew_membership cr_number=4054698436 years=3"}
+{"id": "T-0295", "output": "CALL issue_certificate cr_number=4082485089 kind=membership"}
+{"id": "T-0296", "output": "CALL renew_membership cr_number=4083252503 years=1"}
+{"id": "T-0297", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0298", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0299", "output": "CALL update_record cr_number=4064749760 field=city value=Khobar"}
+{"id": "T-0300", "output": "CALL create_membership company_name=شركة السلام للخدمات cr_number=4081482712 city=Khobar activity_code=BR-320"}
+{"id": "T-0301", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0302", "output": "CALL update_record cr_number=4016774054 field=city value=Jazan"}
+{"id": "T-0303", "output": "CALL renew_membership cr_number=4019107623 years=1"}
+{"id": "T-0304", "output": "CALL update_record cr_number=4081789795 field=activity_code value=BR-720"}
+{"id": "T-0305", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0306", "output": "CALL create_membership company_name=شركة الريف للتوريدات cr_number=4062266424 city=Hail activity_code=BR-810"}
+{"id": "T-0307", "output": "CALL renew_membership cr_number=4031874764 years=2"}
+{"id": "T-0308", "output": "CALL create_membership company_name=مجموعة المفتاح للتجارة cr_number=4005515491 city=Taif activity_code=BR-530"}
+{"id": "T-0309", "output": "CALL create_membership company_name=Al-Rimal Trading Group cr_number=4092705104 city=Jazan activity_code=BR-215"}
+{"id": "T-0310", "output": "CALL create_membership company_name=مؤسسة الإتقان للتجارة cr_number=4005923404 city=Najran activity_code=BR-810"}
+{"id": "T-0311", "output": "CALL create_membership company_name=Al-Reef Trading Group cr_number=4011275545 city=Khobar activity_code=BR-102"}
+{"id": "T-0312", "output": "CALL renew_membership cr_number=4065119755 years=1"}
+{"id": "T-0313", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0314", "output": "CALL renew_membership cr_number=4081789795 years=1"}
+{"id": "T-0315", "output": "CALL issue_certificate cr_number=4009330452 kind=origin"}
+{"id": "T-0316", "output": "CALL update_record cr_number=4085833243 field=activity_code value=BR-810"}
+{"id": "T-0317", "output": "CALL update_record cr_number=4097294545 field=activity_code value=BR-215"}
+{"id": "T-0318", "output": "CALL renew_membership cr_number=4014377706 years=2"}
+{"id": "T-0319", "output": "CALL update_record cr_number=4023752182 field=activity_code value=BR-215"}
+{"id": "T-0320", "output": "CALL create_membership company_name=مجموعة الإنجاز للتطوير cr_number=4066290466 city=Yanbu activity_code=BR-101"}
+{"id": "T-0321", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0322", "output": "CALL create_membership company_name=مؤسسة المورد للصناعة cr_number=4016774054 city=Buraidah activity_code=BR-410"}
+{"id": "T-0323", "output": "CALL issue_certificate cr_number=4001995900 kind=membership"}
+{"id": "T-0324", "output": "CALL renew_membership cr_number=4005515491 years=1"}
+{"id": "T-0325", "output": "CALL update_record cr_number=4063630842 field=activity_code value=BR-101"}
+{"id": "T-0326", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0327", "output": "CALL update_record cr_number=4043375436 field=city value=Dammam"}
+{"id": "T-0328", "output": "CALL create_membership company_name=مؤسسة اليسر للصناعة cr_number=4035808431 city=Buraidah activity_code=BR-720"}
+{"id": "T-0329", "output": "CALL issue_certificate cr_number=4035886494 kind=membership"}
+{"id": "T-0330", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0331", "output": "CALL update_record cr_number=4044451294 field=activity_code value=BR-720"}
+{"id": "T-0332", "output": "CALL update_record cr_number=4001995900 field=activity_code value=BR-320"}
+{"id": "T-0333", "output": "CALL renew_membership cr_number=4066696758 years=2"}
+{"id": "T-0334", "output": "CALL issue_certificate cr_number=4057169694 kind=origin"}
+{"id": "T-0335", "output": "CALL create_membership company_name=Al-Safwa Trading Co. cr_number=4085864693 city=Riyadh activity_code=BR-330"}
+{"id": "T-0336", "output": "CALL update_record cr_number=4035274449 field=activity_code value=BR-210"}
+{"id": "T-0337", "output": "CALL update_record cr_number=4082444583 field=activity_code value=BR-215"}
+{"id": "T-0338", "output": "CALL create_membership company_name=مجموعة النماء للتجارة cr_number=4088149475 city=Jazan activity_code=BR-520"}
+{"id": "T-0339", "output": "CALL update_record cr_number=4006177595 field=activity_code value=BR-720"}
+{"id": "T-0340", "output": "CALL renew_membership cr_number=4093671653 years=1"}
+{"id": "T-0341", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0342", "output": "CALL update_record cr_number=4081482712 field=activity_code value=BR-320"}
+{"id": "T-0343", "output": "CALL create_membership company_name=Al-Rawabi Marketing Est. cr_number=4021385114 city=Jeddah activity_code=BR-410"}
+{"id": "T-0344", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0345", "output": "CALL update_record cr_number=4036760730 field=city value=Hail"}
+{"id": "T-0346", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0347", "output": "CALL create_membership company_name=Al-Badr Trading Co. cr_number=4050918443 city=Taif activity_code=BR-330"}
+{"id": "T-0348", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0349", "output": "CALL create_membership company_name=Al-Tawfiq Services Est. cr_number=4050822162 city=Hail activity_code=BR-102"}
+{"id": "T-0350", "output": "CALL issue_certificate cr_number=4015100242 kind=membership"}
+{"id": "T-0351", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0352", "output": "CALL issue_certificate cr_number=4047853276 kind=origin"}
+{"id": "T-0353", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0354", "output": "CALL update_record cr_number=4046260084 field=activity_code value=BR-210"}
+{"id": "T-0355", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0356", "output": "CALL issue_certificate cr_number=4092242190 kind=membership"}
+{"id": "T-0357", "output": "CALL renew_membership cr_number=4020751326 years=2"}
+{"id": "T-0358", "output": "CALL update_record cr_number=4088792042 field=city value=Buraidah"}
+{"id": "T-0359", "output": "CALL create_membership company_name=Al-Salam Supplies Co. cr_number=4023752182 city=Abha activity_code=BR-720"}
+{"id": "T-0360", "output": "CALL issue_certificate cr_number=4001995900 kind=membership"}
+{"id": "T-0361", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0362", "output": "CALL renew_membership cr_number=4056019857 years=1"}
+{"id": "T-0363", "output": "CALL update_record cr_number=4050420385 field=city value=Khobar"}
+{"id": "T-0364", "output": "CALL create_membership company_name=مؤسسة الإتقان للتجارة cr_number=4005923404 city=Taif activity_code=BR-610"}
+{"id": "T-0365", "output": "CALL update_record cr_number=4050822162 field=city value=Jeddah"}
+{"id": "T-0366", "output": "CALL renew_membership cr_number=4047853276 years=3"}
+{"id": "T-0367", "output": "CALL renew_membership cr_number=4042498557 years=3"}
+{"id": "T-0368", "output": "<tool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4013186455\", \"kind\": \"membership\"}}\n</tool_call>"}
+{"id": "T-0369", "output": "CALL renew_membership cr_number=4075234538 years=1"}
+{"id": "T-0370", "output": "CALL renew_membership cr_number=4003989817 years=3"}
+{"id": "T-0371", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0372", "output": "CALL renew_membership cr_number=4042498557 years=3"}
+{"id": "T-0373", "output": "CALL create_membership company_name=Al-Ruwad Projects Est. cr_number=4003989817 city=Abha activity_code=BR-410"}
+{"id": "T-0374", "output": "CALL renew_membership cr_number=4045006031 years=3"}
+{"id": "T-0375", "output": "CALL issue_certificate cr_number=4034444039 kind=origin"}
+{"id": "T-0376", "output": "CALL update_record cr_number=4003939426 field=city value=Buraidah"}
+{"id": "T-0377", "output": "CALL update_record cr_number=4050522687 field=city value=Tabuk"}
+{"id": "T-0378", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0379", "output": "CALL create_membership company_name=Al-Asala Services Group cr_number=4095316273 city=Tabuk activity_code=BR-320"}
+{"id": "T-0380", "output": "CALL create_membership company_name=مؤسسة الديار للخدمات cr_number=4015100242 city=Hail activity_code=BR-410"}
+{"id": "T-0381", "output": "CALL issue_certificate cr_number=4043673373 kind=origin"}
+{"id": "T-0382", "output": "شكرا لرسالتكم. سترد الغرفة قريبا."}
+{"id": "T-0383", "output": "CALL issue_certificate cr_number=4027078038 kind=membership"}
+{"id": "T-0384", "output": "CALL update_record cr_number=4005923404 field=activity_code value=BR-101"}
+{"id": "T-0385", "output": "Thank you for your message. The chamber will reply soon."}
+{"id": "T-0386", "output": "CALL create_membership company_name=مجموعة الثقة للخدمات cr_number=4030387230 city=Abha activity_code=BR-320"}
+{"id": "T-0387", "output": "CALL update_record cr_number=4071411500 field=activity_code value=BR-720"}
+{"id": "T-0388", "output": "CALL create_membership company_name=مجموعة المورد للتجارة cr_number=4050575256 city=Riyadh activity_code=BR-320"}
+{"id": "T-0389", "output": "CALL renew_membership cr_number=4009338070 years=2"}
+{"id": "T-0390", "output": "CALL create_membership company_name=مؤسسة اليسر للإمداد cr_number=4034279270 city=Buraidah activity_code=BR-101"}
+{"id": "T-0391", "output": "CALL issue_certificate cr_number=4005515491 kind=membership"}
+{"id": "T-0392", "output": "CALL issue_certificate cr_number=4034444039 kind=origin"}
+{"id": "T-0393", "output": "CALL update_record cr_number=4047379101 field=city value=Dammam"}
+{"id": "T-0394", "output": "CALL issue_certificate cr_number=4026106549 kind=origin"}
+{"id": "T-0395", "output": "CALL create_membership company_name=Al-Qafila Services Est. cr_number=4042498557 city=Dammam activity_code=BR-102"}
+{"id": "T-0396", "output": "CALL issue_certificate cr_number=4075234538 kind=membership"}
+{"id": "T-0397", "output": "CALL issue_certificate cr_number=4047379101 kind=origin"}
+{"id": "T-0398", "output": "CALL create_membership company_name=مؤسسة الرمال للخدمات cr_number=4023642290 city=Yanbu activity_code=BR-102"}
+{"id": "T-0399", "output": "CALL renew_membership cr_number=4050575256 years=1"}
+{"id": "T-0400", "output": "CALL issue_certificate cr_number=4020751326 kind=origin"}

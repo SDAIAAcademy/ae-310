@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-ax="page" data-track="ai-engineering">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Model Adaptation: Fine-Tuning, Distillation and Small Models · SDAIA Academy</title>
+<meta name="generator" content="SDAIA Academy engine 1.0.0">
+<meta name="description" content="Decide when a small model is worth adapting, then tune, distil, evaluate and serve it with numbers you can defend">
+<link rel="icon" href="_engine/icon.svg">
+<link rel="alternate" type="text/markdown" href="index.md">
+<link rel="describedby" href="llms.txt">
+<link rel="stylesheet" href="_engine/academy.css">
+</head>
+<body>
+<header>
+<div class="wrap">
+<div class="top"><div class="logo" id="logo"></div><nav><a href="slides/day1.html">Slides</a><a href="practice.html">Practice</a><a href="index.md" type="text/markdown">Markdown</a></nav></div>
+<div class="kicker">AI Engineering Track · SDAIA Academy · AE-310</div>
+<h1>Model Adaptation: Fine-Tuning, Distillation and Small Models<span class="sub ar" lang="ar" dir="rtl">تكييف النماذج: الضبط الدقيق والتقطير والنماذج الصغيرة</span></h1>
+<p>Decide when a small model is worth adapting, then tune, distil, evaluate and serve it with numbers you can defend</p>
+<div class="meta"><span class="track">AI Engineering Track</span><span>4 teaching days + capstone day</span><span>26 hours</span><span>Level 300</span><span>AI Engineering · Associate badge</span></div>
+</div>
+</header>
+<main class="wrap">
+<h2>About the course</h2>
+<p>Participants decide when adapting a model is worth it and then do it well. For a fictional chamber of commerce whose bilingual registration requests must stay on its own servers, a prompted small open-weight model fails at field extraction and tool calls. They sort the failures, set a stronger prompted baseline, build a tuning set from traces, staff corrections and filtered teacher outputs, train low-rank adapters, distil a larger model's tool-call behaviour, evaluate against the base and a larger prompted model, and serve the result quantised with several adapters. AE-301 introduces adapters on an encoder; post-training at scale is AE-406.</p>
+<p><b>Who it is for:</b> Practitioners. Engineers who have completed the level 200 set or can show equivalent work: a deployed model or language model application they built and can explain.</p>
+<p><b>Format:</b> Intensive: 4 teaching days of four sessions and a capstone day, with guided pre-work and a tracked follow-up task</p>
+<h2>The case study</h2>
+<div class="note info"><b>Al-Bayraq Chamber of Commerce.</b> Al-Bayraq Chamber of Commerce is a fictional regional chamber whose members send registration requests in Arabic and English: new memberships, renewals, record changes and certificates. The requests must stay on the chamber's own servers, and Qayd, its assistant on a small open-weight model, fails at field extraction and registry tool calls when it is only prompted. Participants sort the failures, freeze a prompted baseline, build a tuning set from 500 pilot traces, staff corrections and filtered teacher outputs, train low-rank adapters on 16-bit and 4-bit bases, distil a larger model's tool-call behaviour, evaluate with paired statistics by language, check for regressions, and serve two adapters on one quantised base under load. All data is synthetic and generated with a fixed seed.</div>
+<h2>The course</h2>
+<div class="day">
+<div class="day-head c-teal"><div><div class="t">Day 1 · 4 sessions · 4 labs</div><h3>Decide whether to adapt</h3></div><a class="btn" href="slides/day1.html">Open the slides</a></div>
+<div class="scroll"><table>
+<tr><th>Session</th><th>Topic</th><th>Lab</th></tr>
+<tr><td>1</td><td><b>Prompt, retrieve, tune or distil</b><br>Four ways to change what a model does, and which failures each one can fix<ul><li>Name what prompting, retrieval, tuning and distillation each change in a system</li><li>Sort the failures of a prompted model into knowledge, format and behaviour</li><li>Assign each failure class to an approach, with counts</li></ul></td><td><a href="labs/D1_1_failure_sort.ipynb">Lab 1.1 · Sort the failures</a> <span class="muted">(25 min)</span><br><a href="https://colab.research.google.com/github/SDAIAAcademy/ae-310/blob/main/labs/D1_1_failure_sort.ipynb">Open in Colab</a></td></tr>
+<tr><td>2</td><td><b>The baseline tuning must beat</b><br>A weak prompt flatters tuning: improve the prompt first, then freeze it with its score<ul><li>Improve a prompt with schema hints, context and examples, one change at a time</li><li>Report a score on 100 requests with an interval</li><li>Freeze a baseline: the prompt, the set and the score</li></ul></td><td><a href="labs/D1_2_prompt_baseline.ipynb">Lab 1.2 · Freeze the baseline</a> <span class="muted">(25 min)</span><br><a href="https://colab.research.google.com/github/SDAIAAcademy/ae-310/blob/main/labs/D1_2_prompt_baseline.ipynb">Open in Colab</a></td></tr>
+<tr><td>3</td><td><b>Licences and terms of open-weight models</b><br>Open weights are not one licence: what you may adapt, deploy and distribute depends on the text<ul><li>Distinguish permission to adapt, to deploy and to distribute in a model licence</li><li>Find conditions that depend on who deploys and for what</li><li>Record which candidate models the chamber may adapt and deploy</li></ul></td><td><a href="labs/D1_3_licences.ipynb">Lab 1.3 · Three licences</a> <span class="muted">(25 min)</span><br><a href="https://colab.research.google.com/github/SDAIAAcademy/ae-310/blob/main/labs/D1_3_licences.ipynb">Open in Colab</a></td></tr>
+<tr><td>4</td><td><b>Cost and placement of the options</b><br>What each option costs per thousand requests, and where the data is processed<ul><li>Estimate tokens and cost per request from measured requests</li><li>Compare a per-token price with an owned accelerator at a given volume</li><li>State where the data is processed under each option</li></ul></td><td><a href="labs/D1_4_cost_placement.ipynb">Lab 1.4 · Cost of two options</a> <span class="muted">(25 min)</span><br><a href="https://colab.research.google.com/github/SDAIAAcademy/ae-310/blob/main/labs/D1_4_cost_placement.ipynb">Open in Colab</a></td></tr>
+</table></div>
+</div>
+<div class="day">
+<div class="day-head c-cyan"><div><div class="t">Day 2 · 4 sessions · 4 labs</div><h3>Data for tuning</h3></div><a class="btn" href="slides/day2.html">Open the slides</a></div>
+<div class="scroll"><table>
+<tr><th>Session</th><th>Topic</th><th>Lab</th></tr>
+<tr><td>1</td><td><b>Tuning data from traces and corrections</b><br>Pilot traces and staff corrections are labels with errors: keep what can be trusted<ul><li>Read a trace and say which label, if any, it carries</li><li>Join staff corrections to traces and reject corrections the interface refuses</li><li>Write tuning examples in chat format with a tool call</li></ul></td><td><a href="labs/D2_1_traces_corrections.ipynb">Lab 2.1 · Traces to examples</a> <span class="muted">(25 min)</span><br><a href="https://colab.research.google.com/github/SDAIAAcademy/ae-310/blob/main/labs/D2_1_traces_corrections.ipynb">Open in Colab</a></td></tr>
+<tr><td>2</td><td><b>Teacher generation and verifier filtering</b><br>A larger model labels what staff never saw, and a verifier decides what enters the set<ul><li>Generate labels with a larger model under frozen instructions</li><li>Filter teacher outputs with schema checks and rule checks</li><li>Measure yield and estimate the errors a verifier lets through</li></ul></td><td><a href="labs/D2_2_teacher_filter.ipynb">Lab 2.2 · Teacher and verifier</a> <span class="muted">(25 min)</span><br><a href="https://colab.research.google.com/github/SDAIAAcademy/ae-310/blob/main/labs/D2_2_teacher_filter.ipynb">Open in Colab</a></td></tr>
+<tr><td>3</td><td><b>Chat templates and tool-call formats</b><br>The chat template is part of the model: train on the exact text the server will send<ul><li>Render a conversation with a model's own chat template</li><li>Find formatting faults that harm training: a turn that never ends, a foreign tool-call format, unmasked labels</li><li>Check rendered examples token by token before training</li></ul></td><td><a href="labs/D2_3_chat_templates.ipynb">Lab 2.3 · Three formatting faults</a> <span class="muted">(25 min)</span><br><a href="https://colab.research.google.com/github/SDAIAAcademy/ae-310/blob/main/labs/D2_3_chat_templates.ipynb">Open in Colab</a></td></tr>
+<tr><td>4</td><td><b>Deduplication, decontamination and personal data</b><br>Duplicates inflate, leaks flatter and personal data does not belong in weights<ul><li>Remove near-duplicates with a stated rule and threshold</li><li>Report overlap with the test set, separating leaks from template collisions</li><li>Scan a tuning set for personal data and mask it</li></ul></td><td><a href="labs/D2_4_dedup_pii.ipynb">Lab 2.4 · Clean the set</a> <span class="muted">(25 min)</span><br><a href="https://colab.research.google.com/github/SDAIAAcademy/ae-310/blob/main/labs/D2_4_dedup_pii.ipynb">Open in Colab</a></td></tr>
+</table></div>
+</div>
+<div class="day">
+<div class="day-head c-coral"><div><div class="t">Day 3 · 4 sessions · 4 labs</div><h3>Train adapters and distil</h3></div><a class="btn" href="slides/day3.html">Open the slides</a></div>
+<div class="scroll"><table>
+<tr><th>Session</th><th>Topic</th><th>Lab</th></tr>
+<tr><td>1</td><td><b>Low-rank adapters</b><br>A library adapter on a decoder: what trains, what stays frozen and what the curves say<ul><li>Configure a low-rank adapter: rank, scaling and target modules</li><li>Train an adapter with a short schedule and log the run</li><li>Read training and validation loss curves and name what they show</li></ul></td><td><a href="labs/D3_1_lora_adapter.ipynb">Lab 3.1 · Train an adapter, read the curves</a> <span class="muted">(25 min)</span><br><a href="https://colab.research.google.com/github/SDAIAAcademy/ae-310/blob/main/labs/D3_1_lora_adapter.ipynb">Open in Colab</a></td></tr>
+<tr><td>2</td><td><b>Quantised adapters and memory</b><br>Where training memory goes, and what a 4-bit base under 16-bit adapters costs<ul><li>Estimate memory from parameter counts and precision</li><li>Train an adapter on a 4-bit base</li><li>Compare memory, time and score of a 16-bit and a 4-bit run</li></ul></td><td><a href="labs/D3_2_four_bit.ipynb">Lab 3.2 · The same adapter on a 4-bit base</a> <span class="muted">(25 min)</span><br><a href="https://colab.research.google.com/github/SDAIAAcademy/ae-310/blob/main/labs/D3_2_four_bit.ipynb">Open in Colab</a></td></tr>
+<tr><td>3</td><td><b>Settings that matter</b><br>Rank, scaling, learning rate and schedule: which settings move the score, read from a sweep<ul><li>Explain what rank, scaling, learning rate and schedule each control</li><li>Read a sweep and separate a real difference from noise</li><li>Choose a setting on the validation set, never on the test set</li></ul></td><td><a href="labs/D3_3_sweep.ipynb">Lab 3.3 · Read a sweep, add a run</a> <span class="muted">(25 min)</span><br><a href="https://colab.research.google.com/github/SDAIAAcademy/ae-310/blob/main/labs/D3_3_sweep.ipynb">Open in Colab</a></td></tr>
+<tr><td>4</td><td><b>Distilling a behaviour</b><br>A behaviour is a policy: teach the student what the larger model does, errors included<ul><li>Distinguish distilling outputs from distilling logits</li><li>Distil a larger model's tool-call behaviour into a small student</li><li>Compare a distilled adapter with a corrections-only adapter on behaviour slices</li></ul></td><td><a href="labs/D3_4_distil.ipynb">Lab 3.4 · Distil a behaviour</a> <span class="muted">(25 min)</span><br><a href="https://colab.research.google.com/github/SDAIAAcademy/ae-310/blob/main/labs/D3_4_distil.ipynb">Open in Colab</a></td></tr>
+</table></div>
+</div>
+<div class="day">
+<div class="day-head c-purple"><div><div class="t">Day 4 · 4 sessions · 4 labs</div><h3>Evaluate and serve</h3></div><a class="btn" href="slides/day4.html">Open the slides</a></div>
+<div class="scroll"><table>
+<tr><th>Session</th><th>Topic</th><th>Lab</th></tr>
+<tr><td>1</td><td><b>Paired evaluation against the base</b><br>Three systems on the same requests: paired differences, intervals and two languages<ul><li>Compare a tuned model with its base and with a larger prompted model on the same requests</li><li>Report paired differences with a bootstrap interval, overall and by language</li><li>State what an interval that includes zero allows you to claim</li></ul></td><td><a href="labs/D4_1_paired_eval.ipynb">Lab 4.1 · Three systems, two languages</a> <span class="muted">(25 min)</span><br><a href="https://colab.research.google.com/github/SDAIAAcademy/ae-310/blob/main/labs/D4_1_paired_eval.ipynb">Open in Colab</a></td></tr>
+<tr><td>2</td><td><b>Regressions and safety after tuning</b><br>Tuning for one task can cost another: forgetting and refusals are measured before release<ul><li>Measure forgetting with a general-ability check before and after tuning</li><li>Check refusal behaviour after tuning</li><li>List regressions and name a mitigation for each</li></ul></td><td><a href="labs/D4_2_regressions.ipynb">Lab 4.2 · What got worse</a> <span class="muted">(25 min)</span><br><a href="https://colab.research.google.com/github/SDAIAAcademy/ae-310/blob/main/labs/D4_2_regressions.ipynb">Open in Colab</a></td></tr>
+<tr><td>3</td><td><b>One base, several adapters</b><br>One quantised base in memory, an adapter chosen per request, and what it costs per thousand<ul><li>Serve one quantised base with several adapters chosen per request</li><li>Load-test a model server and read throughput and latency percentiles</li><li>Compute cost per thousand requests at a target rate</li></ul></td><td><a href="labs/D4_3_serve_adapters.ipynb">Lab 4.3 · Two adapters, one base, under load</a> <span class="muted">(25 min)</span><br><a href="https://colab.research.google.com/github/SDAIAAcademy/ae-310/blob/main/labs/D4_3_serve_adapters.ipynb">Open in Colab</a></td></tr>
+<tr><td>4</td><td><b>Cards and the decision memo</b><br>The evidence written down: a dataset card, a model card and a one-page decision<ul><li>Write a dataset card and a model card from measured results</li><li>Write a one-page decision memo that weighs quality, cost, licence terms and data placement</li><li>Choose a capstone task with a baseline and a test set</li></ul></td><td><a href="labs/D4_4_cards_memo.ipynb">Lab 4.4 · Cards, memo and capstone task</a> <span class="muted">(25 min)</span><br><a href="https://colab.research.google.com/github/SDAIAAcademy/ae-310/blob/main/labs/D4_4_cards_memo.ipynb">Open in Colab</a></td></tr>
+</table></div>
+</div>
+<div class="day">
+<div class="day-head c-amber"><div><div class="t">Capstone</div><h3>Capstone: an adapted small model and its defence</h3></div><a class="btn" href="slides/capstone.html">Open the slides</a></div>
+<div class="scroll"><table><tr><td>Ten minutes each: the decision memo, a live re-run of the paired comparison and one regression explained</td></tr></table></div>
+</div>
+<h2>Capstone</h2>
+<div class="two">
+<div><p>An adapted small model for a task of the participant's choice, submitted as a public repository with the dataset card, evaluation against the base and a larger prompted model, serving cost and decision memo, followed by a ten-minute defence</p><p><b>What you submit:</b> A public repository link. The repository holds the adaptation decision, the tuning data with its dataset card and overlap report, the training and evaluation run logs with timestamps, the adapter, the evaluation against the base and a larger prompted model, the load-test report with cost per thousand requests, and the one-page decision memo. In the ten-minute defence the participant re-runs the paired comparison and explains one regression the assessor selects.</p><p><b>Format:</b> 10 min talk and demo</p></div>
+<div><h3>Rubric</h3><div class="bar c-teal"><span>Adaptation decision<i style="--w:50%"></i></span><b>15%</b></div><div class="bar c-cyan"><span>Data quality<i style="--w:83%"></i></span><b>25%</b></div><div class="bar c-coral"><span>Training<i style="--w:50%"></i></span><b>15%</b></div><div class="bar c-purple"><span>Evaluation<i style="--w:100%"></i></span><b>30%</b></div><div class="bar c-amber"><span>Serving and cost<i style="--w:50%"></i></span><b>15%</b></div></div>
+</div>
+<h2>Outcomes</h2>
+<p>By the end of the course, participants can:</p>
+<div class="day"><div class="scroll"><table>
+<tr><th></th><th>Outcomes</th><th>Level</th><th>Evidence</th></tr>
+<tr><td><b>LO1</b></td><td>Analyse the failures of a prompted model and assign each failure class to prompting, retrieval, tuning or distillation, given 100 bilingual requests run through the small model and a larger reference model</td><td>Applied</td><td>a decision table with counts per failure class and the chosen approach</td></tr>
+<tr><td><b>LO2</b></td><td>Prepare a tuning dataset from traces, corrections and teacher outputs, with template rendering, verifier filtering, deduplication, decontamination and personal-data removal, given 500 synthetic traces, staff corrections and a teacher model</td><td>Applied</td><td>a dataset with its card and an overlap report against the test set</td></tr>
+<tr><td><b>LO3</b></td><td>Configure and train low-rank adapters on a 16-bit and a 4-bit base model within the memory of one free-tier GPU, given a small open-weight model and the tuning set</td><td>Applied</td><td>training logs, the adapter and a memory and time comparison</td></tr>
+<tr><td><b>LO4</b></td><td>Evaluate the adapted model against the base and a larger prompted model with paired statistics, language slices, regression and safety checks, given a held-out bilingual test set and a general-ability check</td><td>Performance</td><td>an evaluation report with intervals and the regressions found</td></tr>
+<tr><td><b>LO5</b></td><td>Deploy a quantised small model with several adapters and measure throughput, latency and cost per thousand requests, given one accelerator and a target request rate</td><td>Performance</td><td>a load-test report with the serving configuration</td></tr>
+<tr><td><b>LO6</b></td><td>Decide whether to ship the adapted model, weighing quality, cost, licence terms and data placement, given the evaluation and load-test results</td><td>Performance</td><td>a one-page decision memo defended live</td></tr>
+</table></div></div>
+<h2>Tools</h2>
+<div class="grid">
+<div class="card c-teal"><h3>Small open-weight models</h3><p>an instruction-tuned small model · a small model from a second family · an Arabic-capable open-weight model</p></div>
+<div class="card c-cyan"><h3>Fine-tuning libraries</h3><p>Transformers with PEFT and TRL · a plain PyTorch training loop</p></div>
+<div class="card c-coral"><h3>Model evaluation harness</h3><p>Inspect · lm-evaluation-harness</p></div>
+<div class="card c-purple"><h3>Inference server with adapter support</h3><p>vLLM · SGLang · llama.cpp</p></div>
+<div class="card c-green"><h3>Experiment tracking</h3><p>MLflow · a run log committed to the repository</p></div>
+<div class="card c-teal"><h3>Load testing</h3><p>Locust · k6</p></div>
+<div class="card c-cyan"><h3>Compute</h3><p>a free notebook GPU · Academy GPU hours</p></div>
+</div>
+<h2>Before you start</h2>
+<h3>Prerequisites</h3>
+<ul><li>AE-202 Deep Learning and Generative AI Fundamentals</li><li>AE-203 Building Applications on Language Models</li><li>Fine-tunes a pretrained model with a training loop or a training library</li><li>Compares two systems on an evaluation set with a paired test</li></ul>
+<div class="note tip">The labs are notebooks. Open each one in Google Colab from the table above, or clone the repository and run them locally.</div>
+<h2>Sources</h2>
+<h3>Adapters, quantisation and distillation</h3>
+<ul><li><a href="https://arxiv.org/abs/2106.09685">Hu et al.: LoRA: Low-Rank Adaptation of Large Language Models</a></li><li><a href="https://arxiv.org/abs/2305.14314">Dettmers et al.: QLoRA: Efficient Finetuning of Quantized LLMs</a></li><li><a href="https://arxiv.org/abs/1503.02531">Hinton, Vinyals and Dean: Distilling the Knowledge in a Neural Network</a></li><li><a href="https://arxiv.org/abs/2405.09673">Biderman et al.: LoRA Learns Less and Forgets Less</a></li><li><a href="https://arxiv.org/abs/2310.03693">Qi et al.: Fine-tuning Aligned Language Models Compromises Safety, Even When Users Do Not Intend To</a></li></ul>
+<h3>Libraries and servers</h3>
+<ul><li><a href="https://huggingface.co/docs/peft/developer_guides/lora">PEFT documentation: LoRA</a></li><li><a href="https://huggingface.co/docs/transformers/chat_templating">Transformers documentation: chat templates</a></li><li><a href="https://huggingface.co/docs/transformers/quantization/bitsandbytes">Transformers documentation: bitsandbytes quantisation</a></li><li><a href="https://huggingface.co/docs/trl/sft_trainer">TRL documentation: the supervised fine-tuning trainer</a></li><li><a href="https://docs.vllm.ai/en/latest/features/lora.html">vLLM documentation: LoRA adapters</a></li><li><a href="https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md">llama.cpp: the server and its options</a></li><li><a href="https://github.com/ggml-org/ggml/blob/master/docs/gguf.md">GGUF, the file format of llama.cpp</a></li><li><a href="https://docs.locust.io/en/stable/">Locust documentation</a></li><li><a href="https://inspect.aisi.org.uk/">Inspect, an evaluation framework</a></li><li><a href="https://github.com/EleutherAI/lm-evaluation-harness">lm-evaluation-harness</a></li><li><a href="https://mlflow.org/docs/latest/ml/tracking/">MLflow tracking</a></li><li><a href="https://research.google.com/colaboratory/faq.html">Google Colab: frequently asked questions</a></li></ul>
+<h3>Models and their licences</h3>
+<ul><li><a href="https://huggingface.co/Qwen/Qwen3-0.6B">Qwen3-0.6B model card (Apache License 2.0)</a></li><li><a href="https://huggingface.co/LiquidAI/LFM3-1.7B">LFM3-1.7B model card</a></li><li><a href="https://huggingface.co/LiquidAI/LFM3-1.7B/blob/main/LICENSE">LFM Open License v1.0</a></li><li><a href="https://huggingface.co/CohereLabs/c4ai-command-r7b-arabic-02-2025">Command R7B Arabic model page (CC BY-NC 4.0, gated)</a></li><li><a href="https://huggingface.co/humain-ai/ALLaM-7B-Instruct-preview">ALLaM-7B-Instruct-preview model card</a></li><li><a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a></li><li><a href="https://creativecommons.org/licenses/by-nc/4.0/legalcode.en">Creative Commons Attribution-NonCommercial 4.0: legal code</a></li><li><a href="https://openrouter.ai/models">OpenRouter: models and published prices</a></li></ul>
+<h3>Cards</h3>
+<ul><li><a href="https://arxiv.org/abs/1803.09010">Gebru et al.: Datasheets for Datasets</a></li><li><a href="https://arxiv.org/abs/1810.03993">Mitchell et al.: Model Cards for Model Reporting</a></li></ul>
+<h3>National references</h3>
+<ul><li><a href="https://sdaia.gov.sa/en/SDAIA/about/Documents/PersonalDataProtectionLaw.pdf">Personal Data Protection Law</a></li><li><a href="https://sdaia.gov.sa/en/SDAIA/about/Documents/ImplementingRegulationPersonalDataProtectionLaw.pdf">Implementing Regulation of the Personal Data Protection Law</a></li><li><a href="https://sdaia.gov.sa/en/SDAIA/about/Documents/DataClassificationPolicy.pdf">Data Classification Policy</a></li><li><a href="https://sdaia.gov.sa/en/SDAIA/about/Files/GenAIGuidelinesForGovernmentENCompressed.pdf">Generative AI Guideline for Government</a></li><li><a href="https://sdaia.gov.sa/en/SDAIA/about/Documents/ai-principles.pdf">Principles of AI Ethics</a></li></ul>
+<h2>Files and links</h2>
+<div class="files">
+<a href="practice.html"><b>practice.html</b><span>Practice questions with feedback</span></a>
+<a href="index.md"><b>index.md</b><span>This page as Markdown, for an AI assistant</span></a>
+<a href="llms.txt"><b>llms.txt</b><span>The course for AI assistants (llms.txt)</span></a>
+<a href="https://github.com/SDAIAAcademy/ae-310"><b>SDAIAAcademy/ae-310</b><span>The course repository</span></a>
+</div>
+</main>
+<footer><div class="wrap">SDAIA Academy · AI Engineering Track · Model Adaptation: Fine-Tuning, Distillation and Small Models<br><span class="muted">Course version 2027.1.0 · engine 1.0.0 · built 2026-11-17 · commit bacd51b</span></div></footer>
+<script type="application/json" id="academy-data">{"v":1,"engine":"1.0.0","build":{"at":"2026-11-17T11:39:02Z","version":"2027.1.0","commit":"bacd51b"},"course":{"id":"ae-310","code":"AE-310","title":"Model Adaptation: Fine-Tuning, Distillation and Small Models","track":"ai-engineering","lang":"en","dir":"ltr","url":"https://sdaiaacademy.github.io/ae-310/","repo":"SDAIAAcademy/ae-310","home":"index.html"},"ai":{"context":{"course":"context/course.md","courseJs":"context/course.js","day":null,"llms":"llms.txt"},"tasks":[],"tools":[]},"features":{},"strings":{}}</script>
+<script src="_engine/academy.js"></script>
+</body>
+</html>

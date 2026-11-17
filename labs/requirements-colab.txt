@@ -1,0 +1,9 @@
+# Colab already ships torch, transformers, numpy and matplotlib.
+peft>=0.17
+bitsandbytes>=0.46
+openai>=1.80
+python-dotenv>=1.1
+httpx>=0.28
+fastapi>=0.115
+uvicorn>=0.34
+locust>=2.37

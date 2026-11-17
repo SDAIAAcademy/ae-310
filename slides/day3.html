@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-ax="deck" data-track="ai-engineering">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 3 · Train adapters and distil · Model Adaptation: Fine-Tuning, Distillation and Small Models</title>
+<meta name="generator" content="SDAIA Academy engine 1.0.0">
+<link rel="icon" href="../_engine/icon.svg">
+<link rel="alternate" type="text/markdown" href="day3.md">
+<link rel="describedby" href="../llms.txt">
+<link rel="stylesheet" href="../_engine/academy.css">
+</head>
+<body>
+<div class="deck" data-course="Model Adaptation: Fine-Tuning, Distillation and Small Models" data-track="ai-engineering" data-day="Day 3">
+<section class="slide title" id="title" data-auto="title" data-label="Welcome" data-n="1">
+  <div class="kicker">SDAIA Academy · Model Adaptation: Fine-Tuning, Distillation and Small Models</div>
+  <h1>Train adapters and distil</h1>
+  <p class="lead mt">Day 3: Train low-rank adapters on 16-bit and 4-bit bases, choose settings on validation and distil a behaviour</p>
+  <div class="meta"><span class="track">AI Engineering Track</span><span>4 teaching days + capstone day</span><span>4 sessions · 4 labs</span><span>AE-310</span></div>
+  <aside class="notes"><p>Today the 661 examples meet a model. Four sessions, one question each: what trains, what fits, which settings matter, and what a student learns from a teacher. Every number on today's slides is from the course model on a processor; the room's own runs will differ by a few requests, and on the notebook GPU by more.</p></aside>
+</section>
+
+<section class="slide" id="agenda" data-auto="agenda" data-label="Agenda" data-n="2">
+  <div class="kicker">Today</div>
+  <h2>Train adapters and distil</h2>
+  <div class="agenda"><div class="item"><div><b>Session 1 · Low-rank adapters</b><small>A library adapter on a decoder: what trains, what stays frozen and what the curves say</small></div></div><div class="item"><div><b>Session 2 · Quantised adapters and memory</b><small>Where training memory goes, and what a 4-bit base under 16-bit adapters costs</small></div></div><div class="item"><div><b>Session 3 · Settings that matter</b><small>Rank, scaling, learning rate and schedule: which settings move the score, read from a sweep</small></div></div><div class="item"><div><b>Session 4 · Distilling a behaviour</b><small>A behaviour is a policy: teach the student what the larger model does, errors included</small></div></div></div>
+</section>
+
+<section class="slide" id="review-day2" data-lo="LO2" data-n="3">
+  <div class="kicker">Review of Day 2</div>
+  <h2>What must be true of the text before the first training step?</h2>
+  <div class="quiz" data-type="single" data-lo="LO2" data-id="review-day2-q1">
+    <p class="lead">You are about to train on 661 examples. Which check from yesterday can no longer be made once the run has finished and the loss has fallen?</p>
+    <div class="opts">
+      <div class="opt" data-why="Can still be made afterwards: the test set is opened on Day 4" data-k="A">That the tuned model beats the base on the test set</div>
+      <div class="opt" data-why="A property of the run, read from its log after it ends" data-k="B">That the validation loss fell</div>
+      <div class="opt" data-ok data-k="C">That the rendered text ends the turn and matches the model's template</div>
+      <div class="opt" data-why="Read from the adapter's configuration at any time" data-k="D">That the adapter has the intended rank</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> A wrong rendering trains without complaint: the loss falls on whatever text it is given. It can be checked afterwards, but by then the run has been paid for.</div>
+  </div>
+  <aside class="notes"><p>Answer: C. This is the bridge from Day 2: tuning.encode does what the fixed renderer of Lab 2.3 did, and every lab today relies on it.</p></aside>
+</section>
+
+<section class="slide" id="two-tiers" data-label="Two tiers" data-lo="LO3" data-n="4">
+  <div class="kicker">How today runs</div>
+  <h2>One code path, two base models</h2>
+  <div class="cols cols-2">
+    <div class="card c-teal"><h4>On a notebook GPU</h4><p class="small mb0">A small open-weight model from the Hub, Qwen3-0.6B, in 16 bits or in 4 bits. Downloaded into the notebook, not to your laptop. Free GPUs vary in type and limits.</p></div>
+    <div class="card c-purple"><h4>On a processor</h4><p class="small mb0">The course model in the repository: the same layout at about one million parameters, with its own tokeniser and template. A run takes a few minutes.</p></div>
+  </div>
+  <div class="callout note mt small"><b>The supplied runs and all numbers on the slides are the course model's.</b> It was pretrained by the course to stand where a small open-weight model stands in this case: able in general, refusing requests for personal data, and answering registration requests in an older text format.</div>
+  <aside class="notes"><p>Say plainly what the course model is and is not. It is a real decoder trained by gradient descent, so adapters, quantisation, sweeps and regressions behave as they do at scale. It is not a language model anyone would deploy. Participants with a GPU runtime should use it for Labs 3.1 to 3.4 and note their own numbers. No hub-tier reference numbers are supplied.</p></aside>
+</section>
+
+<!-- ======================= SESSION 1 ======================= -->
+<section class="slide section" id="s1" data-auto="section" data-session="1" data-n="5">
+  <div class="kicker">Session 1</div>
+  <h1>Low-rank adapters</h1>
+  <ul class="bullets outcomes"><li>Configure a low-rank adapter: rank, scaling and target modules</li><li>Train an adapter with a short schedule and log the run</li><li>Read training and validation loss curves and name what they show</li></ul>
+  <div class="sess-no">01</div>
+</section>
+
+<section class="slide" id="what-the-base-does" data-label="The base" data-lo="LO3" data-n="6" data-session="1">
+  <div class="kicker">Before any training</div>
+  <h2>The base knows the task and writes it in the wrong form</h2>
+  <div class="chat">
+    <div class="msg user"><span class="who">request</span>Request: certificate of membership. CR number 4042480051.</div>
+    <div class="msg ai bad"><span class="who">base</span>CALL issue_certificate cr_number=4042480051 kind=membership</div>
+    <div class="msg ai"><span class="who">wanted</span>&lt;tool_call&gt; {"name": "issue_certificate", "arguments": {"cr_number": "4042480051", "kind": "membership"}} &lt;/tool_call&gt;</div>
+  </div>
+  <p class="small mt">On the 120 validation requests the base produces <b>0 valid calls</b>. In its old format it has the content right on 85 of the 101 requests that need a registry call.</p>
+  <aside class="notes"><p>Use Day 1's vocabulary: this is a format failure on top of behaviour failures (the base answers a request with no number in polite prose instead of escalating). A format the base was trained out of is exactly what a few hundred examples can move. The base's ceiling on content is the adapter's starting point, not its limit.</p></aside>
+</section>
+
+<section class="slide" id="full-tuning-cost" data-label="Full tuning" data-lo="LO3" data-n="7" data-session="1">
+  <div class="kicker">Why not train everything?</div>
+  <h2>Full fine-tuning moves every weight, and keeps a copy per task</h2>
+  <div class="cols cols-2">
+    <ul class="bullets">
+      <li>Gradients and optimiser state for every parameter: several times the memory of the weights</li>
+      <li>One full copy of the model for each task you tune</li>
+      <li>Every weight can move, so everything the base knew can be disturbed</li>
+    </ul>
+    <div class="card c-teal"><h4>The adapter's bet</h4><p class="small mb0">The change a task needs is small and has structure. Freeze the base; learn only a low-rank correction to a few of its matrices.</p></div>
+  </div>
+  <aside class="notes"><p>AE-301 introduced low-rank adapters as an idea; today they are trained. The three costs on the left are memory, storage and forgetting. Adapters address the first two directly and the third only partly, as Day 4 will show.</p><p>Sources: Hu et al., LoRA: Low-Rank Adaptation of Large Language Models (2021).</p></aside>
+</section>
+
+<section class="slide" id="lora-idea" data-label="The idea" data-lo="LO3" data-n="8" data-session="1">
+  <div class="kicker">Low-rank adaptation</div>
+  <h2>W stays frozen; the adapter adds B·A beside it</h2>
+  <div class="flow">
+    <div class="step c-navy"><b>W</b>d_out × d_in, frozen</div>
+    <div class="arrow">+</div>
+    <div class="step c-teal"><b>B</b>d_out × r, starts at zero</div>
+    <div class="arrow">·</div>
+    <div class="step c-cyan"><b>A</b>r × d_in, starts random</div>
+    <div class="arrow">×</div>
+    <div class="step c-purple"><b>alpha / r</b>a fixed scale</div>
+  </div>
+  <ul class="bullets small mt">
+    <li>Parameters added to one matrix: <b>r × (d_in + d_out)</b></li>
+    <li>B starts at zero, so at step 0 the adapted model <b>is</b> the base</li>
+    <li>Which matrices get an adapter is a setting: today, the query and value projections of every attention layer</li>
+  </ul>
+  <aside class="notes"><p>Draw it once on the board with numbers: a 1024 by 1024 matrix has about a million weights; a rank-8 adapter on it has 8 × 2048 = 16,384. The zero start of B is why Lab 3.1 can score "the base" through the freshly wrapped model.</p><p>Sources: Hu et al., LoRA (2021).</p></aside>
+</section>
+
+<section class="slide" id="what-trains" data-label="What trains" data-lo="LO3" data-n="9" data-session="1">
+  <div class="kicker">Lab 3.1 · task 1</div>
+  <h2>1.6% of the parameters train</h2>
+  <div class="cols cols-3 mid">
+    <div class="stat center"><div class="big">1,001,728</div><div class="lbl">parameters in the course model, all frozen</div></div>
+    <div class="stat center"><div class="big">16,384</div><div class="lbl">in a rank-8 adapter on 8 matrices</div></div>
+    <div class="stat center"><div class="big">68 KB</div><div class="lbl">the adapter on disk: the only file you ship per task</div></div>
+  </div>
+  <div class="callout tip mt small"><b>Count before you train.</b> If the trainable share is not what you expect, the adapter is on the wrong modules, or the base is not frozen.</div>
+  <aside class="notes"><p>The lab has participants derive the count from the shapes and compare it with what the model reports. On a model of several hundred million parameters the same adapter is well under one percent; the share is larger here only because the base is tiny.</p></aside>
+</section>
+
+<section class="slide" id="training-loop" data-label="The loop" data-lo="LO3" data-n="10" data-session="1">
+  <div class="kicker">tuning.train, in essence</div>
+  <h2>The whole training loop fits on a slide</h2>
+  <pre class="code s" data-file="tuning.py"><code class="language-python">params = [p <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> model.parameters() <span class="hljs-keyword">if</span> p.requires_grad]      <span class="hljs-comment"># the adapter only</span>
+opt = torch.optim.AdamW(params, lr=lr)
+<span class="hljs-keyword">for</span> step <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(steps):
+    x, labels, mask = next_batch()               <span class="hljs-comment"># rendered with the template; labels masked on the prompt</span>
+    <span class="hljs-keyword">for</span> group <span class="hljs-keyword">in</span> opt.param_groups:
+        group[<span class="hljs-string">&quot;lr&quot;</span>] = lr * schedule(step)        <span class="hljs-comment"># warm-up, then cosine decay</span>
+    loss = model(input_ids=x, attention_mask=mask, labels=labels).loss
+    loss.backward()
+    torch.nn.utils.clip_grad_norm_(params, <span class="hljs-number">1.0</span>)
+    opt.step(); opt.zero_grad()
+    <span class="hljs-keyword">if</span> (step + <span class="hljs-number">1</span>) % <span class="hljs-number">25</span> == <span class="hljs-number">0</span>:
+        log(step, loss, loss_on(model, validation))</code></pre>
+  <aside class="notes"><p>A plain loop on purpose: nothing today is hidden in a trainer class. Libraries such as TRL wrap exactly this and add checkpointing, logging and mixed precision; use them in a project, and know what they wrap. Point at the two lines that come from Day 2: the template and the label mask live in next_batch.</p></aside>
+</section>
+
+<section class="slide" id="two-curves" data-label="Two curves" data-lo="LO3" data-n="11" data-session="1">
+  <div class="kicker">Lab 3.1 · task 4</div>
+  <h2>Two curves: one on what it trained on, one on what it did not</h2>
+  <div class="cols cols-2">
+    <table class="t small">
+      <tr><th class="num">Step</th><th class="num">Training loss</th><th class="num">Validation loss</th></tr>
+      <tr><td class="num">25</td><td class="num">0.070</td><td class="num">0.032</td></tr>
+      <tr><td class="num">50</td><td class="num">0.041</td><td class="num">0.020</td></tr>
+      <tr><td class="num">100</td><td class="num">0.044</td><td class="num">0.016</td></tr>
+      <tr><td class="num">150</td><td class="num">0.029</td><td class="num">0.014</td></tr>
+      <tr><td class="num">200</td><td class="num">0.031</td><td class="num">0.012</td></tr>
+      <tr><td class="num">250</td><td class="num">0.034</td><td class="num">0.013</td></tr>
+      <tr><td class="num">300</td><td class="num">0.028</td><td class="num">0.012</td></tr>
+    </table>
+    <ul class="bullets small">
+      <li><b>Both fall together:</b> the adapter is learning the task</li>
+      <li><b>Training falls, validation rises:</b> it is memorising the set. Stop earlier, or look for near-copies</li>
+      <li><b>Neither falls:</b> the learning rate, the label mask or the frozen flags</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>The course's run: 300 steps, learning rate 0.002, batch 8, 115 seconds on a processor. The validation set here is 120 examples the adapter never trains on. A validation loss measured on examples that leaked from training would fall for ever; yesterday's overlap report is what makes this column worth reading.</p></aside>
+</section>
+
+<section class="slide" id="loss-is-not-score" data-label="Loss and score" data-lo="LO3" data-n="12" data-session="1">
+  <div class="kicker">Lab 3.1 · task 5</div>
+  <h2>A loss is not a score: grade the calls</h2>
+  <div class="bars">
+    <div class="row"><span>Base, right</span><div class="bar c-coral" style="--w:1%"></div><span class="val">0 of 120</span></div>
+    <div class="row"><span>Adapter, valid calls</span><div class="bar c-cyan" style="--w:77%"></div><span class="val">92 of 120</span></div>
+    <div class="row"><span>Adapter, right</span><div class="bar c-teal" style="--w:71%"></div><span class="val">85 of 120</span></div>
+  </div>
+  <p class="small mt">The registry accepts a call or it does not. A lower loss means the right tokens became more likely on average; one wrong digit in a registration number is a small loss and a rejected call.</p>
+  <aside class="notes"><p>Exact match on the validation requests, the same grader as Day 1. The gap between valid and right is where to look next: these are well-formed calls with a wrong argument. Ask the room to guess which arguments before they open their own outputs.</p></aside>
+</section>
+
+<section class="slide" id="run-log" data-label="The run log" data-lo="LO3" data-n="13" data-session="1">
+  <div class="kicker">What a run leaves behind</div>
+  <h2>An adapter without its run log cannot be reproduced</h2>
+  <pre class="code s" data-file="adapters/registry-16bit/run_log.json"><code class="language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">&quot;tier&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;tiny&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;steps&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">300</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;lr&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.002</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;batch&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">8</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;schedule&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;cosine&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;seed&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">310</span><span class="hljs-punctuation">,</span>
+ <span class="hljs-attr">&quot;train_rows&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">661</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;val_rows&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">120</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;trainable&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">16384</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;seconds&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">115</span><span class="hljs-punctuation">,</span>
+ <span class="hljs-attr">&quot;curve&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">{</span><span class="hljs-attr">&quot;step&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">25</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;train_loss&quot;</span><span class="hljs-punctuation">:</span> …<span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;val_loss&quot;</span><span class="hljs-punctuation">:</span> …<span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span> …<span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+ <span class="hljs-attr">&quot;val&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">&quot;right&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">85</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;of&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">120</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">}</span></code></pre>
+  <ul class="bullets small mt">
+    <li>Beside it: the base and its precision, the tuning set (the dataset card), the code version</li>
+    <li>The capstone asks for run logs with timestamps in the repository</li>
+  </ul>
+  <aside class="notes"><p>The catalog's tools list offers an experiment tracker or a run log committed to the repository. The course uses the second: a JSON file beside the adapter. In a team, a tracker such as MLflow holds the same fields for many runs.</p></aside>
+</section>
+
+<section class="slide" id="check-adapter" data-lo="LO3" data-n="14" data-session="1">
+  <div class="kicker">Checkpoint</div>
+  <h2>How many parameters train?</h2>
+  <div class="quiz" data-type="single" data-lo="LO3" data-id="check-adapter-q1">
+    <p class="lead">A base has 24 layers. You put a rank-8 adapter on the query and value projections of each layer; each is a 1,024 × 1,024 matrix. How many parameters train?</p>
+    <div class="opts">
+      <div class="opt" data-why="Counts one matrix of one layer: 8 × (1,024 + 1,024)" data-k="A">16,384</div>
+      <div class="opt" data-why="Counts both matrices of a layer but forgets there are 24 layers" data-k="B">32,768</div>
+      <div class="opt" data-ok data-k="C">786,432</div>
+      <div class="opt" data-why="Counts the full matrices, which are frozen: 48 × 1,024 × 1,024" data-k="D">50,331,648</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> Each adapted matrix adds r × (d_in + d_out) = 8 × 2,048 = 16,384. There are 2 × 24 = 48 of them: 48 × 16,384 = 786,432.</div>
+  </div>
+  <aside class="notes"><p>Answer: C. Follow-up: what happens to the count if the rank doubles? It doubles. If you add the other attention projections and the feed-forward matrices? It grows several times: targets are a larger lever on capacity than rank.</p></aside>
+</section>
+
+<section class="slide lab top" id="lab-3-1" data-auto="lab" data-lab="3.1" data-label="Lab 3.1" data-n="15" data-session="1">
+  <div class="cols cols-2 mid"><div><div class="lab-tag">Lab 3.1 · 25 min</div><h2>Train an adapter, read the curves</h2><p class="lead small">Train a low-rank adapter on the supplied tuning set, read its training and validation loss, score it against the base on validation requests, and save the adapter with its run log.</p><a class="nb" href="../labs/D3_1_lora_adapter.ipynb">D3_1_lora_adapter.ipynb</a></div><ul class="checklist"><li>Load the base and count what trains <span class="min">4 min</span></li><li>Score the base on validation requests <span class="min">4 min</span></li><li>Train the adapter <span class="min">8 min</span></li><li>Read the two loss curves <span class="min">5 min</span></li><li>Score the adapter and save it with its log <span class="min">4 min</span></li><li class="stretch">✱ Stretch: Read the supplied log of a run that went wrong and name the setting</li></ul></div>
+  <aside class="notes"><p>On a processor the run takes a few minutes (115 seconds for the supplied run on a laptop); start it, then discuss task 4 while it runs. Typical problem on Colab: the runtime is not a GPU runtime, so the lab silently takes the course model; the banner and the first line say which tier is active. Supplied state: data/tuning/train.jsonl and val.jsonl. The stretch reads the log of a run with a learning rate of 0.1, no warm-up and no decay: 0 of 120.</p></aside>
+</section>
+
+<!-- ======================= SESSION 2 ======================= -->
+<section class="slide section" id="s2" data-auto="section" data-session="2" data-n="16">
+  <div class="kicker">Session 2</div>
+  <h1>Quantised adapters and memory</h1>
+  <ul class="bullets outcomes"><li>Estimate memory from parameter counts and precision</li><li>Train an adapter on a 4-bit base</li><li>Compare memory, time and score of a 16-bit and a 4-bit run</li></ul>
+  <div class="sess-no">02</div>
+</section>
+
+<section class="slide" id="memory-arithmetic" data-label="Arithmetic" data-lo="LO3" data-n="17" data-session="2">
+  <div class="kicker">Do this before you rent anything</div>
+  <h2>Whether a model fits is arithmetic: parameters times bits</h2>
+  <table class="t">
+    <tr><th>Parameters</th><th class="num">16 bits</th><th class="num">4 bits</th></tr>
+    <tr><td>0.6 billion</td><td class="num">1.1 GB</td><td class="num">0.3 GB</td></tr>
+    <tr><td>1.7 billion</td><td class="num">3.2 GB</td><td class="num">0.8 GB</td></tr>
+    <tr><td>7 billion</td><td class="num">13.0 GB</td><td class="num">3.5 GB</td></tr>
+    <tr><td>27 billion</td><td class="num">50.3 GB</td><td class="num">13.4 GB</td></tr>
+  </table>
+  <p class="small mt">Weights only. 16 bits is two bytes a weight. 4 bits is half a byte, plus here one 16-bit scale for every block of 64 weights.</p>
+  <aside class="notes"><p>Computed with the function participants write in Lab 3.2: n × bits ÷ 8 ÷ 2^30. The 4-bit column uses a simplified accounting of the per-block constants; real libraries compress those further. Ask: which of these can be loaded on the accelerator you have access to, and which only in 4 bits?</p></aside>
+</section>
+
+<section class="slide" id="weights-are-the-floor" data-label="The floor" data-lo="LO3" data-n="18" data-session="2">
+  <div class="kicker">Why "it fits" is not the end of it</div>
+  <h2>The weights are the floor; training adds three things on top</h2>
+  <div class="cols cols-3 gap-s">
+    <div class="card c-teal"><h4>Activations</h4><p class="small mb0">Kept for every token of every example in the batch, at every layer, for the backward pass. Grows with batch size × sequence length.</p></div>
+    <div class="card c-cyan"><h4>Adapter gradients</h4><p class="small mb0">Small: only A and B have them.</p></div>
+    <div class="card c-purple"><h4>Optimiser state</h4><p class="small mb0">Two more numbers for each trainable parameter with AdamW. Small for the same reason.</p></div>
+  </div>
+  <div class="callout tip mt"><b>Out of memory with weights that fit?</b> Lower the batch size or the maximum length first. Gradient accumulation keeps the effective batch.</div>
+  <aside class="notes"><p>This is why a base can be served on an accelerator on which it cannot be trained, and why the hub tier trims sequences to a maximum length. With an adapter, the base's own gradients are not stored, but activations still are: they are needed to reach the adapter in early layers.</p></aside>
+</section>
+
+<section class="slide" id="what-4-bit-means" data-label="4 bits" data-lo="LO3" data-n="19" data-session="2">
+  <div class="kicker">Lab 3.2 · task 1</div>
+  <h2>A 4-bit weight is one of 16 levels, times the scale of its block</h2>
+  <pre class="code s" data-file="Lab 3.2"><code class="language-python">scale   = block.<span class="hljs-built_in">abs</span>().<span class="hljs-built_in">max</span>()                          <span class="hljs-comment"># one number kept per block of 64 weights</span>
+nearest = (block / scale - levels).<span class="hljs-built_in">abs</span>().argmin()     <span class="hljs-comment"># index of the closest of 16 levels: 4 bits</span>
+rounded = levels[nearest] * scale                     <span class="hljs-comment"># what the model computes with</span></code></pre>
+  <ul class="bullets small mt">
+    <li>The 16 levels are not evenly spaced: they are denser near zero, where most weights of a trained network lie (the NF4 type)</li>
+    <li>Rounding is an error added to every weight. Whether it matters is an empirical question, per model and per task</li>
+  </ul>
+  <aside class="notes"><p>On a GPU, bitsandbytes stores the 4-bit indices packed and converts them back in every forward pass. On a processor the course rounds the weights to the same 16 levels and leaves them in ordinary tensors: the effect on quality is real, the memory figure is computed rather than measured. The lab says so in its output.</p><p>Sources: Dettmers et al., QLoRA: Efficient Finetuning of Quantized LLMs (2023).</p></aside>
+</section>
+
+<section class="slide" id="qlora-arrangement" data-label="The arrangement" data-lo="LO3" data-n="20" data-session="2">
+  <div class="kicker">Training on a quantised base</div>
+  <h2>The base is rounded and frozen; the adapter trains in full precision</h2>
+  <div class="flow">
+    <div class="step c-navy"><b>4-bit base</b>frozen, rounded</div>
+    <div class="arrow">+</div>
+    <div class="step c-teal"><b>Adapter</b>full precision, trainable</div>
+    <div class="arrow">→</div>
+    <div class="step c-coral"><b>Loss</b>on the assistant's turn</div>
+  </div>
+  <ul class="bullets small mt">
+    <li>Gradients pass through the rounded weights to the adapter; the rounded weights never change</li>
+    <li>The adapter learns the task <b>and</b> part of what rounding lost</li>
+    <li>So the adapter belongs to its base at that precision: serve it on the base it was trained on</li>
+  </ul>
+  <aside class="notes"><p>The last bullet is the stretch of Lab 3.2: load the 4-bit adapter on the 16-bit base and score it. In the course's rerun of the lab (88 of 120 on its own base, against 87 for the supplied run on the next slide) the 4-bit adapter also scored 88 on the 16-bit base: nothing lost here. Do not generalise from a model this small; measure the pair you will serve.</p><p>Sources: Dettmers et al., QLoRA (2023).</p></aside>
+</section>
+
+<section class="slide" id="sixteen-against-four" data-label="16 against 4" data-lo="LO3" data-n="21" data-session="2">
+  <div class="kicker">Lab 3.2 · task 4</div>
+  <h2>The same adapter on two bases</h2>
+  <table class="t">
+    <tr><th></th><th class="num">16-bit base</th><th class="num">4-bit base</th></tr>
+    <tr><td>Base weights (course model)</td><td class="num">1.91 MB</td><td class="num">0.85 MB</td></tr>
+    <tr><td>Untrained, valid calls of 120</td><td class="num">0</td><td class="num">0</td></tr>
+    <tr><td>Final validation loss</td><td class="num">0.0124</td><td class="num">0.0125</td></tr>
+    <tr><td>Validation requests right, of 120</td><td class="num">85</td><td class="num">87</td></tr>
+  </table>
+  <div class="callout note mt small"><b>Why not 4 to 1?</b> The embedding table stays at 16 bits, and in a model this small it is a large share. In a model of billions of parameters the linear layers dominate and the ratio approaches the arithmetic.</div>
+  <aside class="notes"><p>The supplied runs: 85 of 120 on the 16-bit base, 87 on the 4-bit base. One run each, one seed: a difference of a few requests in 120 is inside the noise of a run, and Day 4's paired comparison is the tool for deciding it. On a GPU a 4-bit base also trains somewhat slower, because the weights are converted in every forward pass; on a processor here nothing is packed, so time does not differ for that reason.</p></aside>
+</section>
+
+<section class="slide" id="check-memory" data-lo="LO3" data-n="22" data-session="2">
+  <div class="kicker">Checkpoint</div>
+  <h2>Will it fit?</h2>
+  <div class="quiz" data-type="single" data-lo="LO3" data-id="check-memory-q1">
+    <p class="lead">An accelerator has 16 GB of memory. You want to train an adapter on a base with 7 billion parameters. What does the arithmetic say?</p>
+    <div class="opts">
+      <div class="opt" data-why="13 GB of weights leave about 3 GB for activations of every token in the batch: too little for training" data-k="A">Load it in 16 bits: 13 GB of weights fit in 16 GB</div>
+      <div class="opt" data-ok data-k="B">Load it in 4 bits: about 3.5 GB of weights, leaving room for activations</div>
+      <div class="opt" data-why="Confuses the adapter's size with the base's: the base must still be in memory to compute anything" data-k="C">Either: only the adapter needs memory, and it is tiny</div>
+      <div class="opt" data-why="Ignores quantisation: 3.5 GB of weights is well inside 16 GB" data-k="D">It cannot be done on this accelerator</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> Weights are the floor. Training needs headroom for activations, which grow with batch size and sequence length; 4 bits leaves it, 16 bits does not.</div>
+  </div>
+  <aside class="notes"><p>Answer: B. This kind of item is in the supervised exit check: memory arithmetic without assistance. Have participants do one more by hand: 1.7 billion parameters at 16 bits.</p></aside>
+</section>
+
+<section class="slide lab top" id="lab-3-2" data-auto="lab" data-lab="3.2" data-label="Lab 3.2" data-n="23" data-session="2">
+  <div class="cols cols-2 mid"><div><div class="lab-tag">Lab 3.2 · 25 min</div><h2>The same adapter on a 4-bit base</h2><p class="lead small">Do the memory arithmetic for 16 and 4 bits, train the same adapter on a 4-bit base, and compare memory, time and score with the supplied 16-bit run.</p><a class="nb" href="../labs/D3_2_four_bit.ipynb">D3_2_four_bit.ipynb</a></div><ul class="checklist"><li>Memory arithmetic for 16 and 4 bits <span class="min">6 min</span></li><li>Load the 4-bit base and score it untrained <span class="min">4 min</span></li><li>Train the same adapter on it <span class="min">8 min</span></li><li>Compare memory, time and score with the 16-bit run <span class="min">7 min</span></li><li class="stretch">✱ Stretch: Load your 4-bit adapter on the 16-bit base and score it: does it transfer?</li></ul></div>
+  <aside class="notes"><p>Tasks 1 and 2 need no training; start the run of task 3 and discuss the arithmetic table while it trains. On the hub tier the 4-bit load needs bitsandbytes and a GPU; without one the lab takes the course model. Supplied state: the 16-bit run log and the untrained base at both precisions in data/reference.</p></aside>
+</section>
+
+<!-- ======================= SESSION 3 ======================= -->
+<section class="slide section" id="s3" data-auto="section" data-session="3" data-n="24">
+  <div class="kicker">Session 3</div>
+  <h1>Settings that matter</h1>
+  <ul class="bullets outcomes"><li>Explain what rank, scaling, learning rate and schedule each control</li><li>Read a sweep and separate a real difference from noise</li><li>Choose a setting on the validation set, never on the test set</li></ul>
+  <div class="sess-no">03</div>
+</section>
+
+<section class="slide" id="settings-ranked" data-label="Settings" data-lo="LO3" data-n="25" data-session="3">
+  <div class="kicker">Where to spend your runs</div>
+  <h2>A few settings decide the run; most can stay at a sensible value</h2>
+  <table class="t small">
+    <tr><th>Setting</th><th>What it does</th><th>Today</th></tr>
+    <tr><td><b>Learning rate</b></td><td>The size of each step. Too low: nothing moves. Too high: the loss jumps or diverges</td><td>swept</td></tr>
+    <tr><td><b>Steps</b></td><td>How long. Read from the validation curve, not guessed</td><td>fixed at 300</td></tr>
+    <tr><td><b>Rank</b></td><td>The capacity of the adapter, and its size</td><td>swept</td></tr>
+    <tr><td>Target modules</td><td>Which matrices get an adapter</td><td>query and value, fixed</td></tr>
+    <tr><td>Alpha</td><td>The scale of the update; tied to the rank</td><td>2 × rank</td></tr>
+    <tr><td>Batch, warm-up, schedule</td><td>Stability of the steps</td><td>8, 6%, cosine</td></tr>
+  </table>
+  <aside class="notes"><p>The order of the top three is the order to explore them in. Alpha and the learning rate do related jobs; change one at a time. Dropout on the adapter is left at zero in the course: with a few hundred examples and a short schedule, stopping in time does the regularising.</p></aside>
+</section>
+
+<section class="slide" id="sweep-table" data-label="The sweep" data-lo="LO3" data-n="26" data-session="3">
+  <div class="kicker">Lab 3.3 · task 1</div>
+  <h2>Eight supplied runs, one cell missing</h2>
+  <table class="t">
+    <tr><th>Validation right, of 120</th><th class="num">lr 0.0002</th><th class="num">lr 0.002</th><th class="num">lr 0.02</th><th class="num">Trainable</th></tr>
+    <tr><td>Rank 2</td><td class="num">1</td><td class="num">86</td><td class="num">83</td><td class="num">4,096</td></tr>
+    <tr><td>Rank 8</td><td class="num">21</td><td class="num">85</td><td class="num">86</td><td class="num">16,384</td></tr>
+    <tr><td>Rank 32</td><td class="num">85</td><td class="num"><b>?</b></td><td class="num">8</td><td class="num">65,536</td></tr>
+  </table>
+  <p class="small mt">Read it by column, then by row. Which setting moves the score more?</p>
+  <aside class="notes"><p>Each cell is one run of 300 steps on the course model, one seed. By column: at the lowest learning rate ranks 2 and 8 barely move in 300 steps (1 and 21 right) while rank 32 already reaches 85; at the highest, rank 32 breaks (8). By row: once the learning rate is in range, the ranks are within a few requests of each other. The learning rate moves the score far more than the rank, and the two interact: a higher rank gets by with a lower learning rate and breaks earlier at a high one. Participants predict the missing cell from its neighbours before running it; the course's run of that cell scored 88.</p></aside>
+</section>
+
+<section class="slide" id="noise-in-a-sweep" data-label="Noise" data-lo="LO3" data-n="27" data-session="3">
+  <div class="kicker">How much of the table is real?</div>
+  <h2>One run per cell, one seed: a few requests in 120 is not a difference</h2>
+  <div class="cols cols-2">
+    <ul class="bullets">
+      <li>The same setting and seed, run twice here: 85 and 89 of 120</li>
+      <li>A sweep read to the last digit chooses noise</li>
+      <li>The honest table has several seeds per cell, or an interval</li>
+    </ul>
+    <div class="card c-teal"><h4>The lab's rule</h4><p class="small mb0">The highest validation score; among runs within 4 requests of the best, the one with the fewest trainable parameters. Chosen: <b>rank 2 at 0.002</b>, 86 of 120.</p></div>
+  </div>
+  <aside class="notes"><p>The rule is written before the table is read; that is what makes it a rule. "Within 4" is a judgement about noise on 120 requests, taken from what was measured: rank 8 at 0.002 with seed 310 scored 85 in the supplied run and 89 when the solution notebook of Lab 3.1 ran it again on the same laptop, because the order of a processor's arithmetic is not fixed between runs. A participant may defend a different margin. What is not defensible is choosing a cell because it is one request ahead.</p></aside>
+</section>
+
+<section class="slide" id="choose-on-validation" data-label="Validation" data-lo="LO3" data-n="28" data-session="3">
+  <div class="kicker">The discipline</div>
+  <h2>Choose on validation requests; the test set stays closed until Day 4</h2>
+  <div class="flow">
+    <div class="step c-teal"><b>Tuning set</b>661 · the adapter learns from it</div>
+    <div class="arrow">→</div>
+    <div class="step c-cyan"><b>Validation</b>120 · you choose settings on it</div>
+    <div class="arrow">→</div>
+    <div class="step c-coral"><b>Test</b>400 · opened once, to report</div>
+  </div>
+  <div class="callout tip mt"><b>Choosing is fitting.</b> A test set used to pick a setting has been fitted to, by you. Its score no longer says how the chosen model does on new requests.</div>
+  <aside class="notes"><p>The three sets were split by company on Day 1's data preparation, so that no company's requests are on both sides; yesterday's overlap report checked the tuning set against the test set. Nine cells chosen on 120 validation requests already overfit validation a little, which is one more reason for the margin rule.</p></aside>
+</section>
+
+<section class="slide" id="rank-is-a-cost" data-label="Rank" data-lo="LO3" data-n="29" data-session="3">
+  <div class="kicker">Lab 3.3 · stretch</div>
+  <h2>Rank is a cost first, a quality setting second</h2>
+  <div class="bars">
+    <div class="row"><span>Rank 2 · 4,096 parameters</span><div class="bar c-teal" style="--w:72%"></div><span class="val">best 86 of 120</span></div>
+    <div class="row"><span>Rank 8 · 16,384 parameters</span><div class="bar c-cyan" style="--w:72%"></div><span class="val">best 86 of 120</span></div>
+    <div class="row"><span>Rank 32 · 65,536 parameters</span><div class="bar c-purple" style="--w:73%"></div><span class="val">best 88 of 120</span></div>
+  </div>
+  <p class="small mt">Best score of each rank over the learning rates, the missing cell included. From rank 2 to rank 32: sixteen times the parameters for 2 more requests of 120, which is inside the noise.</p>
+  <aside class="notes"><p>More rank means more memory in training, a larger file for each adapter and more to load for each task on a shared server. Buy it when the validation score pays for it, and say what it paid.</p></aside>
+</section>
+
+<section class="slide" id="budget-a-sweep" data-label="Budget" data-lo="LO3" data-n="30" data-session="3">
+  <div class="kicker">Before you launch one</div>
+  <h2>A sweep has a budget, and data usually beats it</h2>
+  <div class="cols cols-2">
+    <div class="stat center"><div class="big">15,625</div><div class="lbl">runs in a grid of six settings at five values each</div></div>
+    <ul class="bullets small">
+      <li>Fix what one small sweep and the literature already tell you: targets, schedule, batch</li>
+      <li>Sweep the learning rate first, then the rank</li>
+      <li>Then spend the remaining hours on the data: one more source of corrections moves more than a fourth learning rate</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>5 to the power 6. The point is proportion: yesterday was a full day on data, today's sweep is one session. In the capstone the rubric gives data quality 25 points and training 15.</p></aside>
+</section>
+
+<section class="slide" id="check-sweep" data-lo="LO3" data-n="31" data-session="3">
+  <div class="kicker">Checkpoint</div>
+  <h2>Which run do you ship?</h2>
+  <div class="quiz" data-type="single" data-lo="LO3" data-id="check-sweep-q1">
+    <p class="lead">On 120 validation requests: rank 8 scores 101, rank 32 scores 102, rank 64 scores 100. Each is one run. Which do you choose, and on what ground?</p>
+    <div class="opts">
+      <div class="opt" data-ok data-k="A">Rank 8: the three cannot be told apart, and it is the cheapest</div>
+      <div class="opt" data-why="Reads a difference of one request in 120 as real, and pays four times the parameters for it" data-k="B">Rank 32: it has the highest score</div>
+      <div class="opt" data-why="Assumes capacity is quality, against the scores in front of you" data-k="C">Rank 64: more capacity is safer</div>
+      <div class="opt" data-why="Uses the test set to choose, which spends it" data-k="D">Whichever scores best on the test set</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> Differences of one or two requests are inside the noise of a single run. Among runs that cannot be told apart, take the cheapest, and say so.</div>
+  </div>
+  <aside class="notes"><p>Answer: A. If someone argues for more seeds instead, they are right too: that is the better answer when there is time, and the same rule then applies to the means.</p></aside>
+</section>
+
+<section class="slide lab top" id="lab-3-3" data-auto="lab" data-lab="3.3" data-label="Lab 3.3" data-n="32" data-session="3">
+  <div class="cols cols-2 mid"><div><div class="lab-tag">Lab 3.3 · 25 min</div><h2>Read a sweep, add a run</h2><p class="lead small">Read the supplied sweep of rank and learning rate, predict and run the one setting it lacks, and choose a setting on the validation set with a reason.</p><a class="nb" href="../labs/D3_3_sweep.ipynb">D3_3_sweep.ipynb</a></div><ul class="checklist"><li>Read the supplied sweep <span class="min">6 min</span></li><li>Predict the missing setting <span class="min">3 min</span></li><li>Run it <span class="min">9 min</span></li><li>Choose on the validation set and say why <span class="min">7 min</span></li><li class="stretch">✱ Stretch: Plot validation accuracy against trainable parameters</li></ul></div>
+  <aside class="notes"><p>The supplied sweep is the course model's on every tier. Task 2 has no code: insist on a written prediction before the run starts. On the hub tier the missing setting is run on the participant's base and compared with their own Lab 3.1 run, not with the supplied table. Supplied state: data/reference/d3_3_sweep.json.</p></aside>
+</section>
+
+<!-- ======================= SESSION 4 ======================= -->
+<section class="slide section" id="s4" data-auto="section" data-session="4" data-n="33">
+  <div class="kicker">Session 4</div>
+  <h1>Distilling a behaviour</h1>
+  <ul class="bullets outcomes"><li>Distinguish distilling outputs from distilling logits</li><li>Distil a larger model's tool-call behaviour into a small student</li><li>Compare a distilled adapter with a corrections-only adapter on behaviour slices</li></ul>
+  <div class="sess-no">04</div>
+</section>
+
+<section class="slide" id="what-distillation-is" data-label="Distillation" data-lo="LO3" data-n="34" data-session="4">
+  <div class="kicker">The fourth lever of Day 1</div>
+  <h2>Distillation: the student learns from the teacher's answers</h2>
+  <div class="flow">
+    <div class="step c-purple"><b>Teacher</b>a larger model, prompted</div>
+    <div class="arrow">→</div>
+    <div class="step c-cyan"><b>Verifier</b>schema and rules (Lab 2.2)</div>
+    <div class="arrow">→</div>
+    <div class="step c-teal"><b>Filtered calls</b>841 examples</div>
+    <div class="arrow">→</div>
+    <div class="step c-navy"><b>Student</b>the small model with an adapter</div>
+  </div>
+  <ul class="bullets small mt">
+    <li>Here the student sees only the teacher's final outputs: the same training as any other tuning set</li>
+    <li>What is distilled is one <b>behaviour</b>, on one kind of request; the student does not become the teacher</li>
+  </ul>
+  <aside class="notes"><p>The classic form of distillation trains the student on the teacher's output probabilities; that needs access to them and the same vocabulary. With hosted teachers and tool calls, training on verified outputs is the practical form, and the only difference from Day 2's other sources is who wrote the label.</p><p>Sources: Hinton, Vinyals and Dean, Distilling the Knowledge in a Neural Network (2015).</p></aside>
+</section>
+
+<section class="slide" id="two-sets-compared" data-label="Two sets" data-lo="LO3" data-n="35" data-session="4">
+  <div class="kicker">Lab 3.4 · task 1</div>
+  <h2>Few labels from people, or many from a model</h2>
+  <table class="t small">
+    <tr><th></th><th class="num">Staff corrections</th><th class="num">Teacher, filtered</th></tr>
+    <tr><td>Examples</td><td class="num">92</td><td class="num">841</td></tr>
+    <tr><td>Plain requests</td><td class="num">28</td><td class="num">523</td></tr>
+    <tr><td>Escalations</td><td class="num">27</td><td class="num">107</td></tr>
+    <tr><td>Two registration numbers</td><td class="num">21</td><td class="num">109</td></tr>
+    <tr><td>Arabic-Indic digits</td><td class="num">17</td><td class="num">129</td></tr>
+    <tr><td>Wrong labels (answer key)</td><td class="num">0</td><td class="num">16</td></tr>
+  </table>
+  <p class="small mt">The corrections sit where Qayd failed, because that is why the desk corrected them. The teacher's set has the mix of real requests.</p>
+  <aside class="notes"><p>A request can be in more than one slice. The corrections are the 92 that survived yesterday's cleaning. The wrong teacher labels are the ones the verifier could not see: valid, consistent with the request, and wrong.</p></aside>
+</section>
+
+<section class="slide" id="short-schedule" data-label="Short schedule" data-lo="LO3" data-n="36" data-session="4">
+  <div class="kicker">Lab 3.4 · task 2</div>
+  <h2>A short schedule is enough for one consistent behaviour</h2>
+  <div class="cols cols-2 mid">
+    <div class="stat center"><div class="big">200 steps</div><div class="lbl">on 841 teacher calls: validation loss 0.0282 → 0.0143 in 61 s</div></div>
+    <ul class="bullets small">
+      <li>Many consistent examples of the same decision: the student needs few passes</li>
+      <li>Longer schedules buy memorisation of individual labels, the wrong ones included</li>
+      <li>The course's promise holds: a short run on a free runtime</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>Same adapter, same learning rate as the morning; only the data and the number of steps changed. If a participant's run is still improving at the last point of the curve, let them say so rather than extend it: the comparison in task 3 is made at this budget.</p></aside>
+</section>
+
+<section class="slide" id="slices-compared" data-label="By slice" data-lo="LO3" data-n="37" data-session="4">
+  <div class="kicker">Lab 3.4 · task 3</div>
+  <h2>Compare by slice, and count the requests in each slice first</h2>
+  <table class="t small">
+    <tr><th>Validation slice</th><th class="num">Requests</th><th class="num">Corrections only</th><th class="num">Distilled</th></tr>
+    <tr><td>Plain</td><td class="num">71</td><td class="num">46</td><td class="num">49</td></tr>
+    <tr><td>Escalation</td><td class="num">19</td><td class="num">18</td><td class="num">19</td></tr>
+    <tr><td>Two registration numbers</td><td class="num">12</td><td class="num">4</td><td class="num">6</td></tr>
+    <tr><td>Arabic-Indic digits</td><td class="num">22</td><td class="num">14</td><td class="num">14</td></tr>
+    <tr class="hl"><td>All</td><td class="num">120</td><td class="num">81</td><td class="num">86</td></tr>
+  </table>
+  <div class="callout note mt small"><b>A slice of 12 requests moves by 8 points for each request.</b> The table says where to look, not how large a difference is.</div>
+  <aside class="notes"><p>In the course's runs the 841 teacher calls beat the 92 corrections by 5 requests of 120 (86 against 81), a few requests in each slice: no single slice decides it. Both adapters learn to escalate; both stay weak on requests with two registration numbers (4 and 6 of 12). The corrections-only adapter was trained for 300 steps on 92 examples.</p></aside>
+</section>
+
+<section class="slide" id="student-copies" data-label="Copied errors" data-lo="LO3" data-n="38" data-session="4">
+  <div class="kicker">Lab 3.4 · task 4</div>
+  <h2>What the verifier let through, the student can learn</h2>
+  <div class="cols cols-3 mid">
+    <div class="stat center"><div class="big">16</div><div class="lbl">wrong labels among the 841 kept (1.9%)</div></div>
+    <div class="stat center"><div class="big">0</div><div class="lbl">of those requests the student answers with the teacher's wrong call</div></div>
+    <div class="stat center"><div class="big">12</div><div class="lbl">it answers correctly although its label was wrong</div></div>
+  </div>
+  <div class="callout warn mt"><b>A scattered error is outvoted. A systematic one is the lesson.</b> If the teacher is wrong every time on one kind of request, the student learns exactly that.</div>
+  <aside class="notes"><p>In the course's run the student repeats none of the 16 wrong calls and answers 12 of those requests correctly: the errors are scattered over kinds of request, and the other 825 labels outvote them. The remaining 4 it gets wrong in its own way. In a real project there is no answer key: the equivalent check is to audit the student's errors on validation requests and ask, for each, whether the teacher makes the same one.</p></aside>
+</section>
+
+<section class="slide" id="when-not-to-distil" data-label="When not" data-lo="LO3" data-n="39" data-session="4">
+  <div class="kicker">Three questions before you distil</div>
+  <h2>Distillation needs a better teacher, usable outputs and data that may be sent</h2>
+  <div class="cols cols-3 gap-s">
+    <div class="card c-teal"><h4>Is the teacher better?</h4><p class="small mb0">On this behaviour, measured on the same requests (Lab 1.1). A teacher that fails the same way has nothing to teach.</p></div>
+    <div class="card c-coral"><h4>May its outputs train a model?</h4><p class="small mb0">The licence of an open-weight teacher, or the terms of a hosted one. Read them as you read the student's licence on Day 1.</p></div>
+    <div class="card c-purple"><h4>May the requests reach it?</h4><p class="small mb0">Restricted requests may not go to a hosted teacher. Run the teacher on your own servers, or label synthetic and masked requests.</p></div>
+  </div>
+  <aside class="notes"><p>The third card is the chamber's case: the requirement that made it choose a small model also limits how it may build the tuning set. The generative AI guideline for government asks that information classified Restricted or higher is kept out of prompts to public tools.</p><p>Sources: SDAIA, Generative AI Guidelines for Government; NDMO, Data Classification Policy.</p></aside>
+</section>
+
+<section class="slide" id="check-distil" data-lo="LO3" data-n="40" data-session="4">
+  <div class="kicker">Checkpoint</div>
+  <h2>Where do you fix it?</h2>
+  <div class="quiz" data-type="single" data-lo="LO3" data-id="check-distil-q1">
+    <p class="lead">A distilled student takes the partner company's registration number in requests that name two. An audit shows the teacher does the same in about one such request in five. What do you change first?</p>
+    <div class="opts">
+      <div class="opt" data-why="Fits the same wrong labels more closely" data-k="A">Train the student for more steps</div>
+      <div class="opt" data-why="Adds capacity to learn the same wrong labels" data-k="B">Raise the adapter's rank</div>
+      <div class="opt" data-why="Changes how the student writes, not what it was taught to decide" data-k="C">Lower the sampling temperature of the student</div>
+      <div class="opt" data-ok data-k="D">The data: correct or remove those teacher labels, or add staff corrections for that kind of request</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> The student learnt what it was shown. A systematic error in the labels is fixed in the labels; no training setting removes it.</div>
+  </div>
+  <aside class="notes"><p>Answer: D. One more option worth naming aloud: a rule in the verifier, if the error can be stated as a rule. Here it cannot, because both numbers are in the request.</p></aside>
+</section>
+
+<section class="slide lab top" id="lab-3-4" data-auto="lab" data-lab="3.4" data-label="Lab 3.4" data-n="41" data-session="4">
+  <div class="cols cols-2 mid"><div><div class="lab-tag">Lab 3.4 · 25 min</div><h2>Distil a behaviour</h2><p class="lead small">Train the student on the larger model's filtered tool calls with a short schedule and compare it, slice by slice, with the supplied adapter trained on staff corrections alone.</p><a class="nb" href="../labs/D3_4_distil.ipynb">D3_4_distil.ipynb</a></div><ul class="checklist"><li>Compare the two tuning sets <span class="min">4 min</span></li><li>Train the student on the teacher's filtered calls <span class="min">9 min</span></li><li>Score both adapters on the behaviour slices <span class="min">7 min</span></li><li>Find a teacher error the student copied <span class="min">5 min</span></li><li class="stretch">✱ Stretch: Train on corrections and teacher calls together and compare</li></ul></div>
+  <aside class="notes"><p>The corrections-only adapter is supplied for the course model; on the hub tier the lab trains one on the 92 corrections first, which adds a few minutes. The stretch trains on both sources together. Supplied state: data/tuning/teacher_filtered.jsonl, corrections_only.jsonl and the answer key of the teacher's wrong labels.</p></aside>
+</section>
+
+<!-- ======================= CLOSE ======================= -->
+<section class="slide" id="wrap-up" data-label="Day 3 in three lines" data-n="42" data-session="4">
+  <div class="kicker">Day 3</div>
+  <h2>Three things to keep</h2>
+  <div class="cols cols-3">
+    <div class="card c-teal"><h4>Count, then train</h4><p class="small mb0">What trains, what fits in memory, and both curves. A run leaves a log or it did not happen.</p></div>
+    <div class="card c-coral"><h4>Choose with a rule</h4><p class="small mb0">On validation requests, with a margin for noise, the cheapest among equals. The test set stays closed.</p></div>
+    <div class="card c-purple"><h4>The student learns its labels</h4><p class="small mb0">The right ones and the wrong ones. Fix behaviour in the data.</p></div>
+  </div>
+  <aside class="notes"><p>Ask each participant for the one number from today they trust least. Tomorrow's first session gives them the tool to test it.</p></aside>
+</section>
+
+<section class="slide dark" id="next" data-label="Next" data-n="43" data-session="4">
+  <div class="kicker">Tomorrow</div>
+  <h1>Day 4 · Evaluate and serve</h1>
+  <p class="lead">The test set is opened once: tuned against base against the larger model, what got worse, and what it costs to serve.</p>
+  <ul class="bullets">
+    <li>Guided self-study: write down, before tomorrow, the score you expect the tuned model to reach on the 400 test requests</li>
+    <li>Bring a task of your own in mind for the capstone: one input, one checkable output</li>
+  </ul>
+  <aside class="notes"><p>The written prediction matters: tomorrow's interval will be compared with it. Remind participants that the supervised exit check is taken without AI assistance and includes memory arithmetic.</p></aside>
+</section>
+</div>
+<script type="application/json" id="academy-data">{"v":1,"engine":"1.0.0","build":{"at":"2026-11-17T11:39:02Z","version":"2027.1.0","commit":"bacd51b"},"course":{"id":"ae-310","code":"AE-310","title":"Model Adaptation: Fine-Tuning, Distillation and Small Models","track":"ai-engineering","lang":"en","dir":"ltr","url":"https://sdaiaacademy.github.io/ae-310/","repo":"SDAIAAcademy/ae-310","home":"../index.html"},"deck":{"id":"day3","kind":"day","day":3,"label":"Day 3","title":"Train adapters and distil","prev":"day2.html","next":"day4.html","md":"day3.md","alt":{}},"sessions":[{"n":1,"label":"Session 1","title":"Low-rank adapters","slide":"s1","outcomes":["Configure a low-rank adapter: rank, scaling and target modules","Train an adapter with a short schedule and log the run","Read training and validation loss curves and name what they show"],"minutes":50,"lab":{"id":"3.1","title":"Train an adapter, read the curves","minutes":25,"href":"../labs/D3_1_lora_adapter.ipynb"}},{"n":2,"label":"Session 2","title":"Quantised adapters and memory","slide":"s2","outcomes":["Estimate memory from parameter counts and precision","Train an adapter on a 4-bit base","Compare memory, time and score of a 16-bit and a 4-bit run"],"minutes":50,"lab":{"id":"3.2","title":"The same adapter on a 4-bit base","minutes":25,"href":"../labs/D3_2_four_bit.ipynb"}},{"n":3,"label":"Session 3","title":"Settings that matter","slide":"s3","outcomes":["Explain what rank, scaling, learning rate and schedule each control","Read a sweep and separate a real difference from noise","Choose a setting on the validation set, never on the test set"],"minutes":50,"lab":{"id":"3.3","title":"Read a sweep, add a run","minutes":25,"href":"../labs/D3_3_sweep.ipynb"}},{"n":4,"label":"Session 4","title":"Distilling a behaviour","slide":"s4","outcomes":["Distinguish distilling outputs from distilling logits","Distil a larger model's tool-call behaviour into a small student","Compare a distilled adapter with a corrections-only adapter on behaviour slices"],"minutes":50,"lab":{"id":"3.4","title":"Distil a behaviour","minutes":25,"href":"../labs/D3_4_distil.ipynb"}}],"slides":[{"id":"title","n":1,"title":"Train adapters and distil","kind":"title","session":0,"hash":"5823e592","md":"#### [day3#title] Train adapters and distil\n\n*SDAIA Academy · Model Adaptation: Fine-Tuning, Distillation and Small Models*\n\nDay 3: Train low-rank adapters on 16-bit and 4-bit bases, choose settings on validation and distil a behaviour\n\nAI Engineering Track · 4 teaching days + capstone day · 4 sessions · 4 labs · AE-310","notes":"Today the 661 examples meet a model. Four sessions, one question each: what trains, what fits, which settings matter, and what a student learns from a teacher. Every number on today's slides is from the course model on a processor; the room's own runs will differ by a few requests, and on the notebook GPU by more.","minutes":null,"lo":[]},{"id":"agenda","n":2,"title":"Train adapters and distil","kind":"content","session":0,"hash":"b7f95f1d","md":"#### [day3#agenda] Train adapters and distil\n\n*Today*\n\n- **Session 1 · Low-rank adapters**: A library adapter on a decoder: what trains, what stays frozen and what the curves say\n- **Session 2 · Quantised adapters and memory**: Where training memory goes, and what a 4-bit base under 16-bit adapters costs\n- **Session 3 · Settings that matter**: Rank, scaling, learning rate and schedule: which settings move the score, read from a sweep\n- **Session 4 · Distilling a behaviour**: A behaviour is a policy: teach the student what the larger model does, errors included","notes":"","minutes":null,"lo":[]},{"id":"review-day2","n":3,"title":"What must be true of the text before the first training step?","kind":"quiz","session":0,"hash":"dcaff806","md":"#### [day3#review-day2] What must be true of the text before the first training step?\n\n*Review of Day 2*\n\n**Question:** You are about to train on 661 examples. Which check from yesterday can no longer be made once the run has finished and the loss has fallen?\n\n- A. That the tuned model beats the base on the test set\n- B. That the validation loss fell\n- C. That the rendered text ends the turn and matches the model's template\n- D. That the adapter has the intended rank","notes":"Answer: C. This is the bridge from Day 2: tuning.encode does what the fixed renderer of Lab 2.3 did, and every lab today relies on it.","minutes":null,"lo":["LO2"]},{"id":"two-tiers","n":4,"title":"One code path, two base models","kind":"content","session":0,"hash":"14cb6ad5","md":"#### [day3#two-tiers] One code path, two base models\n\n*How today runs*\n\n- **On a notebook GPU.** A small open-weight model from the Hub, Qwen3-0.6B, in 16 bits or in 4 bits. Downloaded into the notebook, not to your laptop. Free GPUs vary in type and limits.\n- **On a processor.** The course model in the repository: the same layout at about one million parameters, with its own tokeniser and template. A run takes a few minutes.\n\n> **The supplied runs and all numbers on the slides are the course model's.** It was pretrained by the course to stand where a small open-weight model stands in this case: able in general, refusing requests for personal data, and answering registration requests in an older text format.","notes":"Say plainly what the course model is and is not. It is a real decoder trained by gradient descent, so adapters, quantisation, sweeps and regressions behave as they do at scale. It is not a language model anyone would deploy. Participants with a GPU runtime should use it for Labs 3.1 to 3.4 and note their own numbers. No hub-tier reference numbers are supplied.","minutes":null,"lo":["LO3"]},{"id":"s1","n":5,"title":"Low-rank adapters","kind":"section","session":1,"hash":"c17c4bda","md":"#### [day3#s1] Low-rank adapters\n\n*Session 1*\n\n- Configure a low-rank adapter: rank, scaling and target modules\n- Train an adapter with a short schedule and log the run\n- Read training and validation loss curves and name what they show","notes":"","minutes":null,"lo":["LO3"]},{"id":"what-the-base-does","n":6,"title":"The base knows the task and writes it in the wrong form","kind":"content","session":1,"hash":"5a1dc7ac","md":"#### [day3#what-the-base-does] The base knows the task and writes it in the wrong form\n\n*Before any training*\n\n**request:** Request: certificate of membership. CR number 4042480051.\n\n**base (weak example):** CALL issue_certificate cr_number=4042480051 kind=membership\n\n**wanted:** \\\u003ctool_call> {\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4042480051\", \"kind\": \"membership\"}} \\\u003c/tool_call>\n\nOn the 120 validation requests the base produces **0 valid calls**. In its old format it has the content right on 85 of the 101 requests that need a registry call.","notes":"Use Day 1's vocabulary: this is a format failure on top of behaviour failures (the base answers a request with no number in polite prose instead of escalating). A format the base was trained out of is exactly what a few hundred examples can move. The base's ceiling on content is the adapter's starting point, not its limit.","minutes":null,"lo":["LO3"]},{"id":"full-tuning-cost","n":7,"title":"Full fine-tuning moves every weight, and keeps a copy per task","kind":"content","session":1,"hash":"2f12b7ad","md":"#### [day3#full-tuning-cost] Full fine-tuning moves every weight, and keeps a copy per task\n\n*Why not train everything?*\n\n- Gradients and optimiser state for every parameter: several times the memory of the weights\n- One full copy of the model for each task you tune\n- Every weight can move, so everything the base knew can be disturbed\n\n- **The adapter's bet.** The change a task needs is small and has structure. Freeze the base; learn only a low-rank correction to a few of its matrices.","notes":"AE-301 introduced low-rank adapters as an idea; today they are trained. The three costs on the left are memory, storage and forgetting. Adapters address the first two directly and the third only partly, as Day 4 will show.\n\nSources: Hu et al., LoRA: Low-Rank Adaptation of Large Language Models (2021).","minutes":null,"lo":["LO3"]},{"id":"lora-idea","n":8,"title":"W stays frozen; the adapter adds B·A beside it","kind":"content","session":1,"hash":"76333e0f","md":"#### [day3#lora-idea] W stays frozen; the adapter adds B·A beside it\n\n*Low-rank adaptation*\n\n1. **W** d_out × d_in, frozen\n2. **B** d_out × r, starts at zero\n3. **A** r × d_in, starts random\n4. **alpha / r** a fixed scale\n\n- Parameters added to one matrix: **r × (d_in + d_out)**\n- B starts at zero, so at step 0 the adapted model **is** the base\n- Which matrices get an adapter is a setting: today, the query and value projections of every attention layer","notes":"Draw it once on the board with numbers: a 1024 by 1024 matrix has about a million weights; a rank-8 adapter on it has 8 × 2048 = 16,384. The zero start of B is why Lab 3.1 can score \"the base\" through the freshly wrapped model.\n\nSources: Hu et al., LoRA (2021).","minutes":null,"lo":["LO3"]},{"id":"what-trains","n":9,"title":"1.6% of the parameters train","kind":"content","session":1,"hash":"e44dce54","md":"#### [day3#what-trains] 1.6% of the parameters train\n\n*Lab 3.1 · task 1*\n\n- **1,001,728** parameters in the course model, all frozen\n- **16,384** in a rank-8 adapter on 8 matrices\n- **68 KB** the adapter on disk: the only file you ship per task\n\n> **Count before you train.** If the trainable share is not what you expect, the adapter is on the wrong modules, or the base is not frozen.","notes":"The lab has participants derive the count from the shapes and compare it with what the model reports. On a model of several hundred million parameters the same adapter is well under one percent; the share is larger here only because the base is tiny.","minutes":null,"lo":["LO3"]},{"id":"training-loop","n":10,"title":"The whole training loop fits on a slide","kind":"content","session":1,"hash":"11560214","md":"#### [day3#training-loop] The whole training loop fits on a slide\n\n*tuning.train, in essence*\n\n```python\n# file: tuning.py\nparams = [p for p in model.parameters() if p.requires_grad]      # the adapter only\nopt = torch.optim.AdamW(params, lr=lr)\nfor step in range(steps):\n    x, labels, mask = next_batch()               # rendered with the template; labels masked on the prompt\n    for group in opt.param_groups:\n        group[\"lr\"] = lr * schedule(step)        # warm-up, then cosine decay\n    loss = model(input_ids=x, attention_mask=mask, labels=labels).loss\n    loss.backward()\n    torch.nn.utils.clip_grad_norm_(params, 1.0)\n    opt.step(); opt.zero_grad()\n    if (step + 1) % 25 == 0:\n        log(step, loss, loss_on(model, validation))\n```","notes":"A plain loop on purpose: nothing today is hidden in a trainer class. Libraries such as TRL wrap exactly this and add checkpointing, logging and mixed precision; use them in a project, and know what they wrap. Point at the two lines that come from Day 2: the template and the label mask live in next_batch.","minutes":null,"lo":["LO3"]},{"id":"two-curves","n":11,"title":"Two curves: one on what it trained on, one on what it did not","kind":"content","session":1,"hash":"0b89681b","md":"#### [day3#two-curves] Two curves: one on what it trained on, one on what it did not\n\n*Lab 3.1 · task 4*\n\n| Step | Training loss | Validation loss |\n| --- | --- | --- |\n| 25 | 0.070 | 0.032 |\n| 50 | 0.041 | 0.020 |\n| 100 | 0.044 | 0.016 |\n| 150 | 0.029 | 0.014 |\n| 200 | 0.031 | 0.012 |\n| 250 | 0.034 | 0.013 |\n| 300 | 0.028 | 0.012 |\n\n- **Both fall together:** the adapter is learning the task\n- **Training falls, validation rises:** it is memorising the set. Stop earlier, or look for near-copies\n- **Neither falls:** the learning rate, the label mask or the frozen flags","notes":"The course's run: 300 steps, learning rate 0.002, batch 8, 115 seconds on a processor. The validation set here is 120 examples the adapter never trains on. A validation loss measured on examples that leaked from training would fall for ever; yesterday's overlap report is what makes this column worth reading.","minutes":null,"lo":["LO3"]},{"id":"loss-is-not-score","n":12,"title":"A loss is not a score: grade the calls","kind":"content","session":1,"hash":"913b3878","md":"#### [day3#loss-is-not-score] A loss is not a score: grade the calls\n\n*Lab 3.1 · task 5*\n\n| Item | Value |\n| --- | --- |\n| Base, right | 0 of 120 |\n| Adapter, valid calls | 92 of 120 |\n| Adapter, right | 85 of 120 |\n\nThe registry accepts a call or it does not. A lower loss means the right tokens became more likely on average; one wrong digit in a registration number is a small loss and a rejected call.","notes":"Exact match on the validation requests, the same grader as Day 1. The gap between valid and right is where to look next: these are well-formed calls with a wrong argument. Ask the room to guess which arguments before they open their own outputs.","minutes":null,"lo":["LO3"]},{"id":"run-log","n":13,"title":"An adapter without its run log cannot be reproduced","kind":"content","session":1,"hash":"8d44477a","md":"#### [day3#run-log] An adapter without its run log cannot be reproduced\n\n*What a run leaves behind*\n\n```json\n// file: adapters/registry-16bit/run_log.json\n{\"tier\": \"tiny\", \"steps\": 300, \"lr\": 0.002, \"batch\": 8, \"schedule\": \"cosine\", \"seed\": 310,\n \"train_rows\": 661, \"val_rows\": 120, \"trainable\": 16384, \"seconds\": 115,\n \"curve\": [{\"step\": 25, \"train_loss\": …, \"val_loss\": …}, …],\n \"val\": {\"right\": 85, \"of\": 120}}\n```\n\n- Beside it: the base and its precision, the tuning set (the dataset card), the code version\n- The capstone asks for run logs with timestamps in the repository","notes":"The catalog's tools list offers an experiment tracker or a run log committed to the repository. The course uses the second: a JSON file beside the adapter. In a team, a tracker such as MLflow holds the same fields for many runs.","minutes":null,"lo":["LO3"]},{"id":"check-adapter","n":14,"title":"How many parameters train?","kind":"quiz","session":1,"hash":"e6a62223","md":"#### [day3#check-adapter] How many parameters train?\n\n*Checkpoint*\n\n**Question:** A base has 24 layers. You put a rank-8 adapter on the query and value projections of each layer; each is a 1,024 × 1,024 matrix. How many parameters train?\n\n- A. 16,384\n- B. 32,768\n- C. 786,432\n- D. 50,331,648","notes":"Answer: C. Follow-up: what happens to the count if the rank doubles? It doubles. If you add the other attention projections and the feed-forward matrices? It grows several times: targets are a larger lever on capacity than rank.","minutes":null,"lo":["LO3"]},{"id":"lab-3-1","n":15,"title":"Train an adapter, read the curves","kind":"lab","session":1,"hash":"83687b25","md":"#### [day3#lab-3-1] Train an adapter, read the curves\n\nLab 3.1 · 25 min\n\nTrain a low-rank adapter on the supplied tuning set, read its training and validation loss, score it against the base on validation requests, and save the adapter with its run log.\n\n[D3_1_lora_adapter.ipynb](https://sdaiaacademy.github.io/ae-310/labs/D3_1_lora_adapter.ipynb)\n\n- [ ] Load the base and count what trains (4 min)\n- [ ] Score the base on validation requests (4 min)\n- [ ] Train the adapter (8 min)\n- [ ] Read the two loss curves (5 min)\n- [ ] Score the adapter and save it with its log (4 min)\n- [ ] ✱ Stretch: Read the supplied log of a run that went wrong and name the setting","notes":"On a processor the run takes a few minutes (115 seconds for the supplied run on a laptop); start it, then discuss task 4 while it runs. Typical problem on Colab: the runtime is not a GPU runtime, so the lab silently takes the course model; the banner and the first line say which tier is active. Supplied state: data/tuning/train.jsonl and val.jsonl. The stretch reads the log of a run with a learning rate of 0.1, no warm-up and no decay: 0 of 120.","minutes":null,"lo":[]},{"id":"s2","n":16,"title":"Quantised adapters and memory","kind":"section","session":2,"hash":"6b687441","md":"#### [day3#s2] Quantised adapters and memory\n\n*Session 2*\n\n- Estimate memory from parameter counts and precision\n- Train an adapter on a 4-bit base\n- Compare memory, time and score of a 16-bit and a 4-bit run","notes":"","minutes":null,"lo":["LO3"]},{"id":"memory-arithmetic","n":17,"title":"Whether a model fits is arithmetic: parameters times bits","kind":"content","session":2,"hash":"07f1428f","md":"#### [day3#memory-arithmetic] Whether a model fits is arithmetic: parameters times bits\n\n*Do this before you rent anything*\n\n| Parameters | 16 bits | 4 bits |\n| --- | --- | --- |\n| 0.6 billion | 1.1 GB | 0.3 GB |\n| 1.7 billion | 3.2 GB | 0.8 GB |\n| 7 billion | 13.0 GB | 3.5 GB |\n| 27 billion | 50.3 GB | 13.4 GB |\n\nWeights only. 16 bits is two bytes a weight. 4 bits is half a byte, plus here one 16-bit scale for every block of 64 weights.","notes":"Computed with the function participants write in Lab 3.2: n × bits ÷ 8 ÷ 2^30. The 4-bit column uses a simplified accounting of the per-block constants; real libraries compress those further. Ask: which of these can be loaded on the accelerator you have access to, and which only in 4 bits?","minutes":null,"lo":["LO3"]},{"id":"weights-are-the-floor","n":18,"title":"The weights are the floor; training adds three things on top","kind":"content","session":2,"hash":"d6f697f1","md":"#### [day3#weights-are-the-floor] The weights are the floor; training adds three things on top\n\n*Why \"it fits\" is not the end of it*\n\n- **Activations.** Kept for every token of every example in the batch, at every layer, for the backward pass. Grows with batch size × sequence length.\n- **Adapter gradients.** Small: only A and B have them.\n- **Optimiser state.** Two more numbers for each trainable parameter with AdamW. Small for the same reason.\n\n> **Out of memory with weights that fit?** Lower the batch size or the maximum length first. Gradient accumulation keeps the effective batch.","notes":"This is why a base can be served on an accelerator on which it cannot be trained, and why the hub tier trims sequences to a maximum length. With an adapter, the base's own gradients are not stored, but activations still are: they are needed to reach the adapter in early layers.","minutes":null,"lo":["LO3"]},{"id":"what-4-bit-means","n":19,"title":"A 4-bit weight is one of 16 levels, times the scale of its block","kind":"content","session":2,"hash":"5268e819","md":"#### [day3#what-4-bit-means] A 4-bit weight is one of 16 levels, times the scale of its block\n\n*Lab 3.2 · task 1*\n\n```python\n# file: Lab 3.2\nscale   = block.abs().max()                          # one number kept per block of 64 weights\nnearest = (block / scale - levels).abs().argmin()     # index of the closest of 16 levels: 4 bits\nrounded = levels[nearest] * scale                     # what the model computes with\n```\n\n- The 16 levels are not evenly spaced: they are denser near zero, where most weights of a trained network lie (the NF4 type)\n- Rounding is an error added to every weight. Whether it matters is an empirical question, per model and per task","notes":"On a GPU, bitsandbytes stores the 4-bit indices packed and converts them back in every forward pass. On a processor the course rounds the weights to the same 16 levels and leaves them in ordinary tensors: the effect on quality is real, the memory figure is computed rather than measured. The lab says so in its output.\n\nSources: Dettmers et al., QLoRA: Efficient Finetuning of Quantized LLMs (2023).","minutes":null,"lo":["LO3"]},{"id":"qlora-arrangement","n":20,"title":"The base is rounded and frozen; the adapter trains in full precision","kind":"content","session":2,"hash":"47315ae9","md":"#### [day3#qlora-arrangement] The base is rounded and frozen; the adapter trains in full precision\n\n*Training on a quantised base*\n\n**4-bit base** frozen, rounded → **Adapter** full precision, trainable → **Loss** on the assistant's turn\n\n- Gradients pass through the rounded weights to the adapter; the rounded weights never change\n- The adapter learns the task **and** part of what rounding lost\n- So the adapter belongs to its base at that precision: serve it on the base it was trained on","notes":"The last bullet is the stretch of Lab 3.2: load the 4-bit adapter on the 16-bit base and score it. In the course's rerun of the lab (88 of 120 on its own base, against 87 for the supplied run on the next slide) the 4-bit adapter also scored 88 on the 16-bit base: nothing lost here. Do not generalise from a model this small; measure the pair you will serve.\n\nSources: Dettmers et al., QLoRA (2023).","minutes":null,"lo":["LO3"]},{"id":"sixteen-against-four","n":21,"title":"The same adapter on two bases","kind":"content","session":2,"hash":"ad0b34e0","md":"#### [day3#sixteen-against-four] The same adapter on two bases\n\n*Lab 3.2 · task 4*\n\n|  | 16-bit base | 4-bit base |\n| --- | --- | --- |\n| Base weights (course model) | 1.91 MB | 0.85 MB |\n| Untrained, valid calls of 120 | 0 | 0 |\n| Final validation loss | 0.0124 | 0.0125 |\n| Validation requests right, of 120 | 85 | 87 |\n\n> **Why not 4 to 1?** The embedding table stays at 16 bits, and in a model this small it is a large share. In a model of billions of parameters the linear layers dominate and the ratio approaches the arithmetic.","notes":"The supplied runs: 85 of 120 on the 16-bit base, 87 on the 4-bit base. One run each, one seed: a difference of a few requests in 120 is inside the noise of a run, and Day 4's paired comparison is the tool for deciding it. On a GPU a 4-bit base also trains somewhat slower, because the weights are converted in every forward pass; on a processor here nothing is packed, so time does not differ for that reason.","minutes":null,"lo":["LO3"]},{"id":"check-memory","n":22,"title":"Will it fit?","kind":"quiz","session":2,"hash":"b090026e","md":"#### [day3#check-memory] Will it fit?\n\n*Checkpoint*\n\n**Question:** An accelerator has 16 GB of memory. You want to train an adapter on a base with 7 billion parameters. What does the arithmetic say?\n\n- A. Load it in 16 bits: 13 GB of weights fit in 16 GB\n- B. Load it in 4 bits: about 3.5 GB of weights, leaving room for activations\n- C. Either: only the adapter needs memory, and it is tiny\n- D. It cannot be done on this accelerator","notes":"Answer: B. This kind of item is in the supervised exit check: memory arithmetic without assistance. Have participants do one more by hand: 1.7 billion parameters at 16 bits.","minutes":null,"lo":["LO3"]},{"id":"lab-3-2","n":23,"title":"The same adapter on a 4-bit base","kind":"lab","session":2,"hash":"6e1f98d2","md":"#### [day3#lab-3-2] The same adapter on a 4-bit base\n\nLab 3.2 · 25 min\n\nDo the memory arithmetic for 16 and 4 bits, train the same adapter on a 4-bit base, and compare memory, time and score with the supplied 16-bit run.\n\n[D3_2_four_bit.ipynb](https://sdaiaacademy.github.io/ae-310/labs/D3_2_four_bit.ipynb)\n\n- [ ] Memory arithmetic for 16 and 4 bits (6 min)\n- [ ] Load the 4-bit base and score it untrained (4 min)\n- [ ] Train the same adapter on it (8 min)\n- [ ] Compare memory, time and score with the 16-bit run (7 min)\n- [ ] ✱ Stretch: Load your 4-bit adapter on the 16-bit base and score it: does it transfer?","notes":"Tasks 1 and 2 need no training; start the run of task 3 and discuss the arithmetic table while it trains. On the hub tier the 4-bit load needs bitsandbytes and a GPU; without one the lab takes the course model. Supplied state: the 16-bit run log and the untrained base at both precisions in data/reference.","minutes":null,"lo":[]},{"id":"s3","n":24,"title":"Settings that matter","kind":"section","session":3,"hash":"d8ea3624","md":"#### [day3#s3] Settings that matter\n\n*Session 3*\n\n- Explain what rank, scaling, learning rate and schedule each control\n- Read a sweep and separate a real difference from noise\n- Choose a setting on the validation set, never on the test set","notes":"","minutes":null,"lo":["LO3"]},{"id":"settings-ranked","n":25,"title":"A few settings decide the run; most can stay at a sensible value","kind":"content","session":3,"hash":"5dcec332","md":"#### [day3#settings-ranked] A few settings decide the run; most can stay at a sensible value\n\n*Where to spend your runs*\n\n| Setting | What it does | Today |\n| --- | --- | --- |\n| **Learning rate** | The size of each step. Too low: nothing moves. Too high: the loss jumps or diverges | swept |\n| **Steps** | How long. Read from the validation curve, not guessed | fixed at 300 |\n| **Rank** | The capacity of the adapter, and its size | swept |\n| Target modules | Which matrices get an adapter | query and value, fixed |\n| Alpha | The scale of the update; tied to the rank | 2 × rank |\n| Batch, warm-up, schedule | Stability of the steps | 8, 6%, cosine |","notes":"The order of the top three is the order to explore them in. Alpha and the learning rate do related jobs; change one at a time. Dropout on the adapter is left at zero in the course: with a few hundred examples and a short schedule, stopping in time does the regularising.","minutes":null,"lo":["LO3"]},{"id":"sweep-table","n":26,"title":"Eight supplied runs, one cell missing","kind":"content","session":3,"hash":"b7b3aeb8","md":"#### [day3#sweep-table] Eight supplied runs, one cell missing\n\n*Lab 3.3 · task 1*\n\n| Validation right, of 120 | lr 0.0002 | lr 0.002 | lr 0.02 | Trainable |\n| --- | --- | --- | --- | --- |\n| Rank 2 | 1 | 86 | 83 | 4,096 |\n| Rank 8 | 21 | 85 | 86 | 16,384 |\n| Rank 32 | 85 | **?** | 8 | 65,536 |\n\nRead it by column, then by row. Which setting moves the score more?","notes":"Each cell is one run of 300 steps on the course model, one seed. By column: at the lowest learning rate ranks 2 and 8 barely move in 300 steps (1 and 21 right) while rank 32 already reaches 85; at the highest, rank 32 breaks (8). By row: once the learning rate is in range, the ranks are within a few requests of each other. The learning rate moves the score far more than the rank, and the two interact: a higher rank gets by with a lower learning rate and breaks earlier at a high one. Participants predict the missing cell from its neighbours before running it; the course's run of that cell scored 88.","minutes":null,"lo":["LO3"]},{"id":"noise-in-a-sweep","n":27,"title":"One run per cell, one seed: a few requests in 120 is not a difference","kind":"content","session":3,"hash":"2cc5212c","md":"#### [day3#noise-in-a-sweep] One run per cell, one seed: a few requests in 120 is not a difference\n\n*How much of the table is real?*\n\n- The same setting and seed, run twice here: 85 and 89 of 120\n- A sweep read to the last digit chooses noise\n- The honest table has several seeds per cell, or an interval\n\n- **The lab's rule.** The highest validation score; among runs within 4 requests of the best, the one with the fewest trainable parameters. Chosen: **rank 2 at 0.002**, 86 of 120.","notes":"The rule is written before the table is read; that is what makes it a rule. \"Within 4\" is a judgement about noise on 120 requests, taken from what was measured: rank 8 at 0.002 with seed 310 scored 85 in the supplied run and 89 when the solution notebook of Lab 3.1 ran it again on the same laptop, because the order of a processor's arithmetic is not fixed between runs. A participant may defend a different margin. What is not defensible is choosing a cell because it is one request ahead.","minutes":null,"lo":["LO3"]},{"id":"choose-on-validation","n":28,"title":"Choose on validation requests; the test set stays closed until Day 4","kind":"content","session":3,"hash":"60097247","md":"#### [day3#choose-on-validation] Choose on validation requests; the test set stays closed until Day 4\n\n*The discipline*\n\n1. **Tuning set** 661 · the adapter learns from it\n2. **Validation** 120 · you choose settings on it\n3. **Test** 400 · opened once, to report\n\n> **Choosing is fitting.** A test set used to pick a setting has been fitted to, by you. Its score no longer says how the chosen model does on new requests.","notes":"The three sets were split by company on Day 1's data preparation, so that no company's requests are on both sides; yesterday's overlap report checked the tuning set against the test set. Nine cells chosen on 120 validation requests already overfit validation a little, which is one more reason for the margin rule.","minutes":null,"lo":["LO3"]},{"id":"rank-is-a-cost","n":29,"title":"Rank is a cost first, a quality setting second","kind":"content","session":3,"hash":"9fe2696a","md":"#### [day3#rank-is-a-cost] Rank is a cost first, a quality setting second\n\n*Lab 3.3 · stretch*\n\n| Item | Value |\n| --- | --- |\n| Rank 2 · 4,096 parameters | best 86 of 120 |\n| Rank 8 · 16,384 parameters | best 86 of 120 |\n| Rank 32 · 65,536 parameters | best 88 of 120 |\n\nBest score of each rank over the learning rates, the missing cell included. From rank 2 to rank 32: sixteen times the parameters for 2 more requests of 120, which is inside the noise.","notes":"More rank means more memory in training, a larger file for each adapter and more to load for each task on a shared server. Buy it when the validation score pays for it, and say what it paid.","minutes":null,"lo":["LO3"]},{"id":"budget-a-sweep","n":30,"title":"A sweep has a budget, and data usually beats it","kind":"content","session":3,"hash":"3e030465","md":"#### [day3#budget-a-sweep] A sweep has a budget, and data usually beats it\n\n*Before you launch one*\n\n**15,625** runs in a grid of six settings at five values each\n\n- Fix what one small sweep and the literature already tell you: targets, schedule, batch\n- Sweep the learning rate first, then the rank\n- Then spend the remaining hours on the data: one more source of corrections moves more than a fourth learning rate","notes":"5 to the power 6. The point is proportion: yesterday was a full day on data, today's sweep is one session. In the capstone the rubric gives data quality 25 points and training 15.","minutes":null,"lo":["LO3"]},{"id":"check-sweep","n":31,"title":"Which run do you ship?","kind":"quiz","session":3,"hash":"a02a9c7d","md":"#### [day3#check-sweep] Which run do you ship?\n\n*Checkpoint*\n\n**Question:** On 120 validation requests: rank 8 scores 101, rank 32 scores 102, rank 64 scores 100. Each is one run. Which do you choose, and on what ground?\n\n- A. Rank 8: the three cannot be told apart, and it is the cheapest\n- B. Rank 32: it has the highest score\n- C. Rank 64: more capacity is safer\n- D. Whichever scores best on the test set","notes":"Answer: A. If someone argues for more seeds instead, they are right too: that is the better answer when there is time, and the same rule then applies to the means.","minutes":null,"lo":["LO3"]},{"id":"lab-3-3","n":32,"title":"Read a sweep, add a run","kind":"lab","session":3,"hash":"d435876f","md":"#### [day3#lab-3-3] Read a sweep, add a run\n\nLab 3.3 · 25 min\n\nRead the supplied sweep of rank and learning rate, predict and run the one setting it lacks, and choose a setting on the validation set with a reason.\n\n[D3_3_sweep.ipynb](https://sdaiaacademy.github.io/ae-310/labs/D3_3_sweep.ipynb)\n\n- [ ] Read the supplied sweep (6 min)\n- [ ] Predict the missing setting (3 min)\n- [ ] Run it (9 min)\n- [ ] Choose on the validation set and say why (7 min)\n- [ ] ✱ Stretch: Plot validation accuracy against trainable parameters","notes":"The supplied sweep is the course model's on every tier. Task 2 has no code: insist on a written prediction before the run starts. On the hub tier the missing setting is run on the participant's base and compared with their own Lab 3.1 run, not with the supplied table. Supplied state: data/reference/d3_3_sweep.json.","minutes":null,"lo":[]},{"id":"s4","n":33,"title":"Distilling a behaviour","kind":"section","session":4,"hash":"25adad48","md":"#### [day3#s4] Distilling a behaviour\n\n*Session 4*\n\n- Distinguish distilling outputs from distilling logits\n- Distil a larger model's tool-call behaviour into a small student\n- Compare a distilled adapter with a corrections-only adapter on behaviour slices","notes":"","minutes":null,"lo":["LO3"]},{"id":"what-distillation-is","n":34,"title":"Distillation: the student learns from the teacher's answers","kind":"content","session":4,"hash":"69f42512","md":"#### [day3#what-distillation-is] Distillation: the student learns from the teacher's answers\n\n*The fourth lever of Day 1*\n\n1. **Teacher** a larger model, prompted\n2. **Verifier** schema and rules (Lab 2.2)\n3. **Filtered calls** 841 examples\n4. **Student** the small model with an adapter\n\n- Here the student sees only the teacher's final outputs: the same training as any other tuning set\n- What is distilled is one **behaviour**, on one kind of request; the student does not become the teacher","notes":"The classic form of distillation trains the student on the teacher's output probabilities; that needs access to them and the same vocabulary. With hosted teachers and tool calls, training on verified outputs is the practical form, and the only difference from Day 2's other sources is who wrote the label.\n\nSources: Hinton, Vinyals and Dean, Distilling the Knowledge in a Neural Network (2015).","minutes":null,"lo":["LO3"]},{"id":"two-sets-compared","n":35,"title":"Few labels from people, or many from a model","kind":"content","session":4,"hash":"135b69fb","md":"#### [day3#two-sets-compared] Few labels from people, or many from a model\n\n*Lab 3.4 · task 1*\n\n|  | Staff corrections | Teacher, filtered |\n| --- | --- | --- |\n| Examples | 92 | 841 |\n| Plain requests | 28 | 523 |\n| Escalations | 27 | 107 |\n| Two registration numbers | 21 | 109 |\n| Arabic-Indic digits | 17 | 129 |\n| Wrong labels (answer key) | 0 | 16 |\n\nThe corrections sit where Qayd failed, because that is why the desk corrected them. The teacher's set has the mix of real requests.","notes":"A request can be in more than one slice. The corrections are the 92 that survived yesterday's cleaning. The wrong teacher labels are the ones the verifier could not see: valid, consistent with the request, and wrong.","minutes":null,"lo":["LO3"]},{"id":"short-schedule","n":36,"title":"A short schedule is enough for one consistent behaviour","kind":"content","session":4,"hash":"ea2a8da7","md":"#### [day3#short-schedule] A short schedule is enough for one consistent behaviour\n\n*Lab 3.4 · task 2*\n\n**200 steps** on 841 teacher calls: validation loss 0.0282 → 0.0143 in 61 s\n\n- Many consistent examples of the same decision: the student needs few passes\n- Longer schedules buy memorisation of individual labels, the wrong ones included\n- The course's promise holds: a short run on a free runtime","notes":"Same adapter, same learning rate as the morning; only the data and the number of steps changed. If a participant's run is still improving at the last point of the curve, let them say so rather than extend it: the comparison in task 3 is made at this budget.","minutes":null,"lo":["LO3"]},{"id":"slices-compared","n":37,"title":"Compare by slice, and count the requests in each slice first","kind":"content","session":4,"hash":"77d146e3","md":"#### [day3#slices-compared] Compare by slice, and count the requests in each slice first\n\n*Lab 3.4 · task 3*\n\n| Validation slice | Requests | Corrections only | Distilled |\n| --- | --- | --- | --- |\n| Plain | 71 | 46 | 49 |\n| Escalation | 19 | 18 | 19 |\n| Two registration numbers | 12 | 4 | 6 |\n| Arabic-Indic digits | 22 | 14 | 14 |\n| All | 120 | 81 | 86 |\n\n> **A slice of 12 requests moves by 8 points for each request.** The table says where to look, not how large a difference is.","notes":"In the course's runs the 841 teacher calls beat the 92 corrections by 5 requests of 120 (86 against 81), a few requests in each slice: no single slice decides it. Both adapters learn to escalate; both stay weak on requests with two registration numbers (4 and 6 of 12). The corrections-only adapter was trained for 300 steps on 92 examples.","minutes":null,"lo":["LO3"]},{"id":"student-copies","n":38,"title":"What the verifier let through, the student can learn","kind":"content","session":4,"hash":"f72a8840","md":"#### [day3#student-copies] What the verifier let through, the student can learn\n\n*Lab 3.4 · task 4*\n\n- **16** wrong labels among the 841 kept (1.9%)\n- **0** of those requests the student answers with the teacher's wrong call\n- **12** it answers correctly although its label was wrong\n\n> **A scattered error is outvoted. A systematic one is the lesson.** If the teacher is wrong every time on one kind of request, the student learns exactly that.","notes":"In the course's run the student repeats none of the 16 wrong calls and answers 12 of those requests correctly: the errors are scattered over kinds of request, and the other 825 labels outvote them. The remaining 4 it gets wrong in its own way. In a real project there is no answer key: the equivalent check is to audit the student's errors on validation requests and ask, for each, whether the teacher makes the same one.","minutes":null,"lo":["LO3"]},{"id":"when-not-to-distil","n":39,"title":"Distillation needs a better teacher, usable outputs and data that may be sent","kind":"content","session":4,"hash":"7643bdff","md":"#### [day3#when-not-to-distil] Distillation needs a better teacher, usable outputs and data that may be sent\n\n*Three questions before you distil*\n\n- **Is the teacher better?** On this behaviour, measured on the same requests (Lab 1.1). A teacher that fails the same way has nothing to teach.\n- **May its outputs train a model?** The licence of an open-weight teacher, or the terms of a hosted one. Read them as you read the student's licence on Day 1.\n- **May the requests reach it?** Restricted requests may not go to a hosted teacher. Run the teacher on your own servers, or label synthetic and masked requests.","notes":"The third card is the chamber's case: the requirement that made it choose a small model also limits how it may build the tuning set. The generative AI guideline for government asks that information classified Restricted or higher is kept out of prompts to public tools.\n\nSources: SDAIA, Generative AI Guidelines for Government; NDMO, Data Classification Policy.","minutes":null,"lo":["LO3"]},{"id":"check-distil","n":40,"title":"Where do you fix it?","kind":"quiz","session":4,"hash":"49d1de83","md":"#### [day3#check-distil] Where do you fix it?\n\n*Checkpoint*\n\n**Question:** A distilled student takes the partner company's registration number in requests that name two. An audit shows the teacher does the same in about one such request in five. What do you change first?\n\n- A. Train the student for more steps\n- B. Raise the adapter's rank\n- C. Lower the sampling temperature of the student\n- D. The data: correct or remove those teacher labels, or add staff corrections for that kind of request","notes":"Answer: D. One more option worth naming aloud: a rule in the verifier, if the error can be stated as a rule. Here it cannot, because both numbers are in the request.","minutes":null,"lo":["LO3"]},{"id":"lab-3-4","n":41,"title":"Distil a behaviour","kind":"lab","session":4,"hash":"8216b0ec","md":"#### [day3#lab-3-4] Distil a behaviour\n\nLab 3.4 · 25 min\n\nTrain the student on the larger model's filtered tool calls with a short schedule and compare it, slice by slice, with the supplied adapter trained on staff corrections alone.\n\n[D3_4_distil.ipynb](https://sdaiaacademy.github.io/ae-310/labs/D3_4_distil.ipynb)\n\n- [ ] Compare the two tuning sets (4 min)\n- [ ] Train the student on the teacher's filtered calls (9 min)\n- [ ] Score both adapters on the behaviour slices (7 min)\n- [ ] Find a teacher error the student copied (5 min)\n- [ ] ✱ Stretch: Train on corrections and teacher calls together and compare","notes":"The corrections-only adapter is supplied for the course model; on the hub tier the lab trains one on the 92 corrections first, which adds a few minutes. The stretch trains on both sources together. Supplied state: data/tuning/teacher_filtered.jsonl, corrections_only.jsonl and the answer key of the teacher's wrong labels.","minutes":null,"lo":[]},{"id":"wrap-up","n":42,"title":"Three things to keep","kind":"content","session":4,"hash":"49e20c13","md":"#### [day3#wrap-up] Three things to keep\n\n*Day 3*\n\n- **Count, then train.** What trains, what fits in memory, and both curves. A run leaves a log or it did not happen.\n- **Choose with a rule.** On validation requests, with a margin for noise, the cheapest among equals. The test set stays closed.\n- **The student learns its labels.** The right ones and the wrong ones. Fix behaviour in the data.","notes":"Ask each participant for the one number from today they trust least. Tomorrow's first session gives them the tool to test it.","minutes":null,"lo":[]},{"id":"next","n":43,"title":"Day 4 · Evaluate and serve","kind":"content","session":4,"hash":"0324fa2c","md":"#### [day3#next] Day 4 · Evaluate and serve\n\n*Tomorrow*\n\nThe test set is opened once: tuned against base against the larger model, what got worse, and what it costs to serve.\n\n- Guided self-study: write down, before tomorrow, the score you expect the tuned model to reach on the 400 test requests\n- Bring a task of your own in mind for the capstone: one input, one checkable output","notes":"The written prediction matters: tomorrow's interval will be compared with it. Remind participants that the supervised exit check is taken without AI assistance and includes memory arithmetic.","minutes":null,"lo":[]}],"activities":[{"id":"review-day2-q1","slide":"review-day2","type":"single","prompt":"You are about to train on 661 examples. Which check from yesterday can no longer be made once the run has finished and the loss has fallen?","options":[{"key":"A","text":"That the tuned model beats the base on the test set"},{"key":"B","text":"That the validation loss fell"},{"key":"C","text":"That the rendered text ends the turn and matches the model's template"},{"key":"D","text":"That the adapter has the intended rank"}],"correct":[2],"explanation":"A wrong rendering trains without complaint: the loss falls on whatever text it is given. It can be checked afterwards, but by then the run has been paid for.","misconceptions":["Can still be made afterwards: the test set is opened on Day 4","A property of the run, read from its log after it ends","","Read from the adapter's configuration at any time"],"lo":["LO2"]},{"id":"check-adapter-q1","slide":"check-adapter","type":"single","prompt":"A base has 24 layers. You put a rank-8 adapter on the query and value projections of each layer; each is a 1,024 × 1,024 matrix. How many parameters train?","options":[{"key":"A","text":"16,384"},{"key":"B","text":"32,768"},{"key":"C","text":"786,432"},{"key":"D","text":"50,331,648"}],"correct":[2],"explanation":"Each adapted matrix adds r × (d_in + d_out) = 8 × 2,048 = 16,384. There are 2 × 24 = 48 of them: 48 × 16,384 = 786,432.","misconceptions":["Counts one matrix of one layer: 8 × (1,024 + 1,024)","Counts both matrices of a layer but forgets there are 24 layers","","Counts the full matrices, which are frozen: 48 × 1,024 × 1,024"],"lo":["LO3"]},{"id":"check-memory-q1","slide":"check-memory","type":"single","prompt":"An accelerator has 16 GB of memory. You want to train an adapter on a base with 7 billion parameters. What does the arithmetic say?","options":[{"key":"A","text":"Load it in 16 bits: 13 GB of weights fit in 16 GB"},{"key":"B","text":"Load it in 4 bits: about 3.5 GB of weights, leaving room for activations"},{"key":"C","text":"Either: only the adapter needs memory, and it is tiny"},{"key":"D","text":"It cannot be done on this accelerator"}],"correct":[1],"explanation":"Weights are the floor. Training needs headroom for activations, which grow with batch size and sequence length; 4 bits leaves it, 16 bits does not.","misconceptions":["13 GB of weights leave about 3 GB for activations of every token in the batch: too little for training","","Confuses the adapter's size with the base's: the base must still be in memory to compute anything","Ignores quantisation: 3.5 GB of weights is well inside 16 GB"],"lo":["LO3"]},{"id":"check-sweep-q1","slide":"check-sweep","type":"single","prompt":"On 120 validation requests: rank 8 scores 101, rank 32 scores 102, rank 64 scores 100. Each is one run. Which do you choose, and on what ground?","options":[{"key":"A","text":"Rank 8: the three cannot be told apart, and it is the cheapest"},{"key":"B","text":"Rank 32: it has the highest score"},{"key":"C","text":"Rank 64: more capacity is safer"},{"key":"D","text":"Whichever scores best on the test set"}],"correct":[0],"explanation":"Differences of one or two requests are inside the noise of a single run. Among runs that cannot be told apart, take the cheapest, and say so.","misconceptions":["","Reads a difference of one request in 120 as real, and pays four times the parameters for it","Assumes capacity is quality, against the scores in front of you","Uses the test set to choose, which spends it"],"lo":["LO3"]},{"id":"check-distil-q1","slide":"check-distil","type":"single","prompt":"A distilled student takes the partner company's registration number in requests that name two. An audit shows the teacher does the same in about one such request in five. What do you change first?","options":[{"key":"A","text":"Train the student for more steps"},{"key":"B","text":"Raise the adapter's rank"},{"key":"C","text":"Lower the sampling temperature of the student"},{"key":"D","text":"The data: correct or remove those teacher labels, or add staff corrections for that kind of request"}],"correct":[3],"explanation":"The student learnt what it was shown. A systematic error in the labels is fixed in the labels; no training setting removes it.","misconceptions":["Fits the same wrong labels more closely","Adds capacity to learn the same wrong labels","Changes how the student writes, not what it was taught to decide",""],"lo":["LO3"]}],"ai":{"context":{"course":"../context/course.md","courseJs":"../context/course.js","day":"day3.md","llms":"../llms.txt"},"tasks":[],"tools":[]},"bridge":{"allowedOrigins":[]},"features":{},"strings":{}}</script>
+<script src="../_engine/academy.js"></script>
+</body>
+</html>

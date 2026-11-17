@@ -1,0 +1,17 @@
+{
+ "model": "CohereLabs/c4ai-command-r7b-arabic-02-2025",
+ "slot": "an Arabic-capable open-weight model",
+ "parameters": "7 billion",
+ "arabic": "Built for Arabic and English, by its name and its language tags.",
+ "licence": "Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)",
+ "licence_url": "https://creativecommons.org/licenses/by-nc/4.0/legalcode.en",
+ "model_card": "https://huggingface.co/CohereLabs/c4ai-command-r7b-arabic-02-2025",
+ "read_on": "2026-11-15",
+ "access": "gated: the files and the model card open only after you accept the provider's conditions on the model page. The course authors did not accept them, so any condition written there is not on this sheet: read the page before you rely on this model.",
+ "clauses": [
+  {"id": "1", "says": "Defines NonCommercial as not primarily intended for or directed towards commercial advantage or monetary compensation."},
+  {"id": "2", "says": "Grants the right to reproduce and share the material, and to produce and share adapted material, for NonCommercial purposes only."},
+  {"id": "3", "says": "Sharing requires attribution, a notice of the licence and an indication of changes."},
+  {"id": "6", "says": "The rights end automatically on a breach."}
+ ]
+}

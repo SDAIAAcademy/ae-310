@@ -1,0 +1,18 @@
+{
+ "status": {
+  "corrected": 123,
+  "accepted": 342,
+  "abandoned": 35
+ },
+ "corrections": 123,
+ "examples": 453,
+ "by_source": {
+  "trace": 342,
+  "correction": 111
+ },
+ "dropped": {
+  "correction rejected by the interface": 12,
+  "abandoned: no label": 35
+ },
+ "wrong_labels_left": 8
+}

@@ -1,0 +1,30 @@
+{
+ "counts": {
+  "small": {
+   "correct": 27,
+   "knowledge": 10,
+   "format": 37,
+   "behaviour": 26
+  },
+  "large": {
+   "correct": 63,
+   "knowledge": 23,
+   "format": 9,
+   "behaviour": 5
+  }
+ },
+ "approach": {
+  "knowledge": [
+   "retrieval",
+   "Both models fail it: the code table must be given, in context or by retrieval."
+  ],
+  "format": [
+   "prompting",
+   "The larger model rarely fails it: schema hints and examples first, tuning for what remains."
+  ],
+  "behaviour": [
+   "distillation",
+   "The larger model gets it right: teach the small model, by tuning on corrections or on the larger model's calls."
+  ]
+ }
+}

@@ -1,0 +1,18 @@
+{
+ "model": "LiquidAI/LFM3-1.7B",
+ "slot": "a small model from a second family",
+ "parameters": "1.7 billion",
+ "arabic": "The model card lists Arabic among its languages.",
+ "licence": "LFM Open License v1.0",
+ "licence_url": "https://huggingface.co/LiquidAI/LFM3-1.7B/blob/main/LICENSE",
+ "model_card": "https://huggingface.co/LiquidAI/LFM3-1.7B",
+ "read_on": "2026-11-15",
+ "access": "open: no form to accept",
+ "clauses": [
+  {"id": "1", "says": "Defines Commercial Use as any use for direct or indirect commercial advantage or monetary compensation, and the Threshold as annual revenue of 10 million United States dollars or more."},
+  {"id": "2", "says": "Grants a copyright licence to reproduce the work, prepare derivative works of it and distribute both, subject to the limit of section 5."},
+  {"id": "4", "says": "Redistribution must carry a copy of the licence, a notice in every changed file, and the original notices."},
+  {"id": "5", "says": "The rights for Commercial Use hold only while the legal entity does not exceed the Threshold. Commercial Use by an entity above it is not licensed. The Threshold does not apply to a qualified non-profit organisation's use for non-commercial or research purposes."},
+  {"id": "11", "says": "The licence ends automatically on any breach; all use must then stop and all copies be deleted."}
+ ]
+}

@@ -1,0 +1,96 @@
+{
+ "scores": {
+  "base": 2,
+  "tuned": 295,
+  "large": 378
+ },
+ "of": 400,
+ "by_lang": {
+  "ar": {
+   "n": 200,
+   "base": 2,
+   "tuned": 148,
+   "large": 184
+  },
+  "en": {
+   "n": 200,
+   "base": 0,
+   "tuned": 147,
+   "large": 194
+  }
+ },
+ "comparisons": [
+  {
+   "scope": "all",
+   "a": "tuned",
+   "b": "base",
+   "n": 400,
+   "difference": 0.7325,
+   "low": 0.69,
+   "high": 0.7725,
+   "only_a": 293,
+   "only_b": 0,
+   "reading": "tuned is better than base"
+  },
+  {
+   "scope": "all",
+   "a": "tuned",
+   "b": "large",
+   "n": 400,
+   "difference": -0.2075,
+   "low": -0.2575,
+   "high": -0.16,
+   "only_a": 13,
+   "only_b": 96,
+   "reading": "large is better than tuned"
+  },
+  {
+   "scope": "Arabic",
+   "a": "tuned",
+   "b": "base",
+   "n": 200,
+   "difference": 0.73,
+   "low": 0.67,
+   "high": 0.79,
+   "only_a": 146,
+   "only_b": 0,
+   "reading": "tuned is better than base"
+  },
+  {
+   "scope": "Arabic",
+   "a": "tuned",
+   "b": "large",
+   "n": 200,
+   "difference": -0.18,
+   "low": -0.245,
+   "high": -0.115,
+   "only_a": 9,
+   "only_b": 45,
+   "reading": "large is better than tuned"
+  },
+  {
+   "scope": "English",
+   "a": "tuned",
+   "b": "base",
+   "n": 200,
+   "difference": 0.735,
+   "low": 0.675,
+   "high": 0.79,
+   "only_a": 147,
+   "only_b": 0,
+   "reading": "tuned is better than base"
+  },
+  {
+   "scope": "English",
+   "a": "tuned",
+   "b": "large",
+   "n": 200,
+   "difference": -0.235,
+   "low": -0.295,
+   "high": -0.17,
+   "only_a": 4,
+   "only_b": 51,
+   "reading": "large is better than tuned"
+  }
+ ]
+}

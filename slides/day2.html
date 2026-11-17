@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-ax="deck" data-track="ai-engineering">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 2 · Data for tuning · Model Adaptation: Fine-Tuning, Distillation and Small Models</title>
+<meta name="generator" content="SDAIA Academy engine 1.0.0">
+<link rel="icon" href="../_engine/icon.svg">
+<link rel="alternate" type="text/markdown" href="day2.md">
+<link rel="describedby" href="../llms.txt">
+<link rel="stylesheet" href="../_engine/academy.css">
+</head>
+<body>
+<div class="deck" data-course="Model Adaptation: Fine-Tuning, Distillation and Small Models" data-track="ai-engineering" data-day="Day 2">
+<section class="slide title" id="title" data-auto="title" data-label="Welcome" data-n="1">
+  <div class="kicker">SDAIA Academy · Model Adaptation: Fine-Tuning, Distillation and Small Models</div>
+  <h1>Data for tuning</h1>
+  <p class="lead mt">Day 2: Build the tuning set from traces, corrections and a teacher, render it correctly and clean it</p>
+  <div class="meta"><span class="track">AI Engineering Track</span><span>4 teaching days + capstone day</span><span>4 sessions · 4 labs</span><span>AE-310</span></div>
+  <aside class="notes"><p>Open with yesterday's result: the frozen baseline scored 67 in 100 and the larger model 94 (stand-in run; use your room's numbers). Today builds the set that is supposed to close that gap. Say the proportion now and again at the end: in a real adaptation project most of the engineer's hours are today's work, not tomorrow's.</p></aside>
+</section>
+
+<section class="slide" id="agenda" data-auto="agenda" data-label="Agenda" data-n="2">
+  <div class="kicker">Today</div>
+  <h2>Data for tuning</h2>
+  <div class="agenda"><div class="item"><div><b>Session 1 · Tuning data from traces and corrections</b><small>Pilot traces and staff corrections are labels with errors: keep what can be trusted</small></div></div><div class="item"><div><b>Session 2 · Teacher generation and verifier filtering</b><small>A larger model labels what staff never saw, and a verifier decides what enters the set</small></div></div><div class="item"><div><b>Session 3 · Chat templates and tool-call formats</b><small>The chat template is part of the model: train on the exact text the server will send</small></div></div><div class="item"><div><b>Session 4 · Deduplication, decontamination and personal data</b><small>Duplicates inflate, leaks flatter and personal data does not belong in weights</small></div></div></div>
+</section>
+
+<section class="slide" id="review-day1" data-lo="LO1" data-n="3">
+  <div class="kicker">Review of Day 1</div>
+  <h2>Which failures does today's data have to fix?</h2>
+  <div class="quiz" data-type="single" data-lo="LO1" data-id="review-day1-q1">
+    <p class="lead">With the frozen instructions, Qayd still takes a partner company's registration number in some requests. The code table and the schema are in the prompt. Which examples must today's tuning set contain?</p>
+    <div class="opts">
+      <div class="opt" data-why="Adds knowledge the prompt already holds: the failure is a decision, not a missing fact" data-k="A">More rows of the activity code table</div>
+      <div class="opt" data-ok data-k="B">Requests with two registration numbers, labelled with the applicant's own</div>
+      <div class="opt" data-why="Repeats what the model already does right, which teaches the format again and the decision never" data-k="C">More requests that Qayd already answers correctly</div>
+      <div class="opt" data-why="Fixes the form of a call whose form is already valid" data-k="D">Examples of well-formed JSON</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> A behaviour failure is fixed by examples of the right decision in the situation where the model decides wrongly. Data for tuning is chosen by failure class.</div>
+  </div>
+  <aside class="notes"><p>Answer: B. This sets the lens for the day: every source of examples is judged by whether it contains the behaviour the model lacks. Accepted traces mostly do not; corrections and teacher labels do.</p></aside>
+</section>
+
+<section class="slide" id="three-sources" data-label="Three sources" data-lo="LO2" data-n="4">
+  <div class="kicker">The day in one picture</div>
+  <h2>Three sources become one clean tuning set</h2>
+  <div class="flow">
+    <div class="step c-teal"><b>Traces</b>500 pilot requests, 342 accepted</div>
+    <div class="arrow">→</div>
+    <div class="step c-cyan"><b>Corrections</b>123 by the registry desk</div>
+    <div class="arrow">→</div>
+    <div class="step c-purple"><b>Teacher</b>300 labels by a larger model</div>
+    <div class="arrow">→</div>
+    <div class="step c-coral"><b>Clean</b>template, duplicates, leaks, personal data</div>
+    <div class="arrow">→</div>
+    <div class="step c-navy"><b>661 examples</b>with a card and an overlap report</div>
+  </div>
+  <p class="small mt">Each lab starts from a supplied file, so the four can be done in any order and nobody waits for a neighbour.</p>
+  <aside class="notes"><p>Outcome 2 names every step on this slide. The evidence it asks for is the dataset with its card and an overlap report against the test set: Lab 2.4 writes the report, Lab 4.4 the card. Numbers are from the course's solution run with the stand-in models.</p></aside>
+</section>
+
+<!-- ======================= SESSION 1 ======================= -->
+<section class="slide section" id="s1" data-auto="section" data-session="1" data-n="5">
+  <div class="kicker">Session 1</div>
+  <h1>Tuning data from traces and corrections</h1>
+  <ul class="bullets outcomes"><li>Read a trace and say which label, if any, it carries</li><li>Join staff corrections to traces and reject corrections the interface refuses</li><li>Write tuning examples in chat format with a tool call</li></ul>
+  <div class="sess-no">01</div>
+</section>
+
+<section class="slide" id="trace-anatomy" data-label="A trace" data-lo="LO2" data-n="6" data-session="1">
+  <div class="kicker">The raw material</div>
+  <h2>A trace is a request, the model's answer and what a person did next</h2>
+  <div class="trace s">
+    <div class="ev user"><b>request</b>نريد التجديد لمدة سنة واحدة. سجلنا التجاري 4067281583.</div>
+    <div class="ev call"><b>Qayd</b><code>{"name": "renew_membership", "arguments": {"cr_number": "4067281583", "years": 2}}</code></div>
+    <div class="ev guard"><b>registry desk</b>status: corrected</div>
+    <div class="ev result"><b>correction</b><code>{"name": "renew_membership", "arguments": {"cr_number": "4067281583", "years": 1}}</code></div>
+  </div>
+  <p class="small mt">The request asks for one year (سنة واحدة). Qayd wrote two. The desk's correction is the label.</p>
+  <aside class="notes"><p>AE-303 treats traces as the raw material of evaluation; here the same traces are the raw material of training. Ask: which of the four lines would you train on? The request and the correction. Qayd's own wrong answer is never a training target, but it tells you which behaviour to look for in other traces.</p></aside>
+</section>
+
+<section class="slide" id="three-statuses" data-label="Statuses" data-lo="LO2" data-n="7" data-session="1">
+  <div class="kicker">What label does a trace carry?</div>
+  <h2>Accepted, corrected, abandoned: three statuses, three kinds of label</h2>
+  <table class="t small">
+    <tr><th>Status</th><th class="num">Traces</th><th>The label</th><th>What it can teach</th></tr>
+    <tr><td>Accepted</td><td class="num">342</td><td>Qayd's own output</td><td>The format, again. Nothing about its failures</td></tr>
+    <tr><td>Corrected</td><td class="num">123</td><td>The desk's call</td><td>The behaviour Qayd lacks</td></tr>
+    <tr><td>Abandoned</td><td class="num">35</td><td>None</td><td>Nothing, until someone labels it</td></tr>
+  </table>
+  <div class="callout note mt small"><b>Abandoned traces are not random.</b> The desk gave up on the hardest requests. Leaving them out makes the tuning set easier than production.</div>
+  <aside class="notes"><p>Counts from Lab 2.1 on the supplied 500 traces. Selection bias is the quiet problem of trace-based data: what gets labelled depends on what people bothered to fix. The dataset card says so in its limits.</p></aside>
+</section>
+
+<section class="slide" id="accepted-is-not-correct" data-label="Accepted" data-lo="LO2" data-n="8" data-session="1">
+  <div class="kicker">The first trap</div>
+  <h2>"Accepted" means nobody objected, not that the call was right</h2>
+  <div class="cols cols-2 mid">
+    <div class="stat center"><div class="big">8 of 342</div><div class="lbl">accepted traces carry a wrong call (the generator's answer key)</div></div>
+    <ul class="bullets small">
+      <li>A rule check finds <b>2</b> of them: the number in the call is not in the request</li>
+      <li>The other 6 pass every check: valid, plausible, wrong</li>
+      <li>In your own project there is no answer key: only an audit of a sample tells you the rate</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>The eight are planted. Three quarters of the examples from traces are accepted ones, so their error rate matters more than the corrections'. Label noise of two or three percent rarely stops a model from learning; it does put a ceiling on what the test can show, and it teaches the specific wrong decisions that were accepted.</p></aside>
+</section>
+
+<section class="slide" id="corrections-have-errors" data-label="Corrections" data-lo="LO2" data-n="9" data-session="1">
+  <div class="kicker">The second trap</div>
+  <h2>A correction is typed by a person at a busy desk</h2>
+  <table class="t small">
+    <tr><th>What the desk typed</th><th>What the registry says</th></tr>
+    <tr><td><code>"cr_number": "403158269"</code></td><td>not 10 Western digits</td></tr>
+    <tr><td><code>"city": "الطائف"</code></td><td>a value outside the list: the interface takes "Taif"</td></tr>
+    <tr><td><code>"cr_number": "٤٠٥٠٥٢٢٦٨٧"</code></td><td>not 10 Western digits</td></tr>
+  </table>
+  <div class="callout tip mt small"><b>Validate every label against the tool interface.</b> 12 of the 123 corrections are rejected. A label the tool would refuse is not a label.</div>
+  <aside class="notes"><p>The desk knew what it meant in every one of the twelve. Do not repair them silently: a repair is your guess entering the training set without a source. Send them back, or drop them and count them. The lab asserts that the count is twelve.</p></aside>
+</section>
+
+<section class="slide" id="validate-labels" data-label="Validate" data-lo="LO2" data-n="10" data-session="1">
+  <div class="kicker">Lab 2.1 · task 3</div>
+  <h2>The tool's own schema is the first reviewer of every label</h2>
+  <pre class="code" data-file="Lab 2.1"><code class="language-python"><span class="hljs-keyword">for</span> trace <span class="hljs-keyword">in</span> traces:
+    call = labels[trace[<span class="hljs-string">&quot;id&quot;</span>]]          <span class="hljs-comment"># Qayd&#x27;s output, or the desk&#x27;s call</span>
+    <span class="hljs-keyword">if</span> call <span class="hljs-keyword">is</span> <span class="hljs-literal">None</span>:
+        <span class="hljs-keyword">continue</span>                        <span class="hljs-comment"># abandoned: no label</span>
+    errors = C.schema_errors(call)      <span class="hljs-comment"># what the registry would refuse</span>
+    <span class="hljs-keyword">if</span> errors:
+        rejected.append((trace, call, errors))
+    <span class="hljs-keyword">else</span>:
+        kept.append((trace, call))</code></pre>
+  <aside class="notes"><p>C.schema_errors checks the tool name, the required arguments, their types, the lists of allowed values and the shape of a registration number. It is the same function the grader uses, which is the point: training labels and evaluation share one definition of a valid call.</p></aside>
+</section>
+
+<section class="slide" id="chat-format-example" data-label="Chat format" data-lo="LO2" data-n="11" data-session="1">
+  <div class="kicker">Lab 2.1 · task 4</div>
+  <h2>A tuning example is a short conversation with a tool call</h2>
+  <pre class="code s" data-file="examples_traces.jsonl"><code class="language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;R-0412&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;source&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;correction&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;lang&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;ar&quot;</span><span class="hljs-punctuation">,</span>
+ <span class="hljs-attr">&quot;messages&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span>
+  <span class="hljs-punctuation">{</span><span class="hljs-attr">&quot;role&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;user&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;content&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;نريد التجديد لمدة سنة واحدة. سجلنا التجاري 4067281583.&quot;</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-punctuation">{</span><span class="hljs-attr">&quot;role&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;assistant&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;content&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span><span class="hljs-punctuation">,</span>
+   <span class="hljs-attr">&quot;tool_calls&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">{</span><span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;function&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;function&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+       <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;renew_membership&quot;</span><span class="hljs-punctuation">,</span>
+       <span class="hljs-attr">&quot;arguments&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-attr">&quot;cr_number&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;4067281583&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;years&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">}</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">}</span></code></pre>
+  <p class="small mt">Messages and <code>tool_calls</code>, not a rendered string: the model's template does the rendering (session 3). <code>source</code> stays with every row.</p>
+  <aside class="notes"><p>This is the structure chat templates in Transformers take and the structure a server receives. Keeping the source on every row costs nothing now and pays three times: the card's counts, the corrections-only adapter of Lab 3.4, and the question "which source taught it that?" on Day 4.</p><p>Sources: Transformers documentation, chat templates.</p></aside>
+</section>
+
+<section class="slide" id="counts-are-the-card" data-label="Counts" data-lo="LO2" data-n="12" data-session="1">
+  <div class="kicker">Lab 2.1 · task 5</div>
+  <h2>What you dropped is the first paragraph of the dataset card</h2>
+  <div class="bars">
+    <div class="row"><span>Kept from accepted traces</span><div class="bar c-teal" style="--w:68%"></div><span class="val">342</span></div>
+    <div class="row"><span>Kept from corrections</span><div class="bar c-cyan" style="--w:22%"></div><span class="val">111</span></div>
+    <div class="row"><span>Abandoned, no label</span><div class="bar c-coral" style="--w:7%"></div><span class="val">35</span></div>
+    <div class="row"><span>Corrections rejected</span><div class="bar c-purple" style="--w:2.4%"></div><span class="val">12</span></div>
+  </div>
+  <p class="small mt">500 traces, 453 examples. Three quarters of them are what Qayd already does.</p>
+  <aside class="notes"><p>The last sentence is the motivation for session 2. If 342 of 453 examples repeat current behaviour, the set is weak exactly where the model is weak. The corrections are precious and few; the teacher adds volume where it is needed.</p></aside>
+</section>
+
+<section class="slide" id="check-traces" data-lo="LO2" data-n="13" data-session="1">
+  <div class="kicker">Checkpoint</div>
+  <h2>Which rows enter the tuning set?</h2>
+  <div class="quiz" data-type="single" data-lo="LO2" data-id="check-traces-q1">
+    <p class="lead">A corrected trace has the desk's call <code>{"name": "update_record", "arguments": {"cr_number": "4031582699", "field": "city", "value": "الدمام"}}</code>. The interface lists cities in English. What do you do with it?</p>
+    <div class="opts">
+      <div class="opt" data-why="Trusts a person's label over the tool it must call: the model would learn a value the registry refuses" data-k="A">Keep it: a human correction is always right</div>
+      <div class="opt" data-why="Puts your own guess into the set under the desk's name, with no record of the change" data-k="B">Change the value to "Dammam" and keep it as a correction</div>
+      <div class="opt" data-ok data-k="C">Drop it and count it, or send it back to the desk</div>
+      <div class="opt" data-why="Uses the model's wrong answer as a training target" data-k="D">Replace it with Qayd's original output</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> The registry would reject the call, so it is not a usable label. Whatever you do with it must be visible in the counts.</div>
+  </div>
+  <aside class="notes"><p>Answer: C. B is tempting and sometimes right in practice, as a separate, named source ("repaired by the engineer") with its own review. What is not acceptable is a silent repair.</p></aside>
+</section>
+
+<section class="slide lab top" id="lab-2-1" data-auto="lab" data-lab="2.1" data-label="Lab 2.1" data-n="14" data-session="1">
+  <div class="cols cols-2 mid"><div><div class="lab-tag">Lab 2.1 · 25 min</div><h2>Traces to examples</h2><p class="lead small">Turn 500 pilot traces and the registry desk's corrections into chat-format examples: keep accepted calls, apply corrections, validate every label against the tool interface and count what was dropped.</p><a class="nb" href="../labs/D2_1_traces_corrections.ipynb">D2_1_traces_corrections.ipynb</a></div><ul class="checklist"><li>Read the traces and their statuses <span class="min">4 min</span></li><li>Join the corrections to the traces <span class="min">5 min</span></li><li>Validate every label against the tool interface <span class="min">7 min</span></li><li>Write chat-format examples <span class="min">5 min</span></li><li>Count what was kept and dropped <span class="min">4 min</span></li><li class="stretch">✱ Stretch: Find accepted traces whose call disagrees with the request text</li></ul></div>
+  <aside class="notes"><p>The lab asserts its counts against the supplied reference, so a wrong join shows at once. Typical problem: parsing the output of corrected traces (the label is the desk's call, not Qayd's output). The stretch finds two of the eight accepted-and-wrong traces with one rule. Supplied state: data/traces_500.jsonl and data/corrections.jsonl; nothing from Day 1 is needed.</p></aside>
+</section>
+
+<!-- ======================= SESSION 2 ======================= -->
+<section class="slide section" id="s2" data-auto="section" data-session="2" data-n="15">
+  <div class="kicker">Session 2</div>
+  <h1>Teacher generation and verifier filtering</h1>
+  <ul class="bullets outcomes"><li>Generate labels with a larger model under frozen instructions</li><li>Filter teacher outputs with schema checks and rule checks</li><li>Measure yield and estimate the errors a verifier lets through</li></ul>
+  <div class="sess-no">02</div>
+</section>
+
+<section class="slide" id="why-a-teacher" data-label="Why a teacher" data-lo="LO2" data-n="16" data-session="2">
+  <div class="kicker">Labels for what the desk never saw</div>
+  <h2>A larger model can label requests nobody corrected</h2>
+  <div class="cols cols-2">
+    <ul class="bullets">
+      <li>The pilot left <b>900 requests</b> with no label at all</li>
+      <li>On Day 1 the larger model was right on <b>94 in 100</b> with the frozen instructions</li>
+      <li>Its labels are cheap, fast and in volume, where staff time is none of the three</li>
+    </ul>
+    <div class="card c-coral"><h4>The price</h4><p class="small mb0">It is wrong on about 6 in 100, and whatever enters the set is what the student learns. A teacher needs a <b>verifier</b>.</p></div>
+  </div>
+  <aside class="notes"><p>This is data distillation: the student learns from the teacher's outputs. Session 3.4 returns to it as a method; today it is a data source like the other two, with its own error profile. The stand-in teacher's error rate was written into the script; a real teacher's must be measured.</p></aside>
+</section>
+
+<section class="slide" id="teacher-same-format" data-label="Same format" data-lo="LO2" data-n="17" data-session="2">
+  <div class="kicker">Two conditions before you call the teacher</div>
+  <h2>Same output format as the student, and only data that may leave</h2>
+  <div class="cols cols-2">
+    <div class="card c-teal"><h4>Format</h4><p class="small mb0">The teacher gets the frozen instructions and examples. Its label must be the exact text the student has to produce, or the student learns someone else's format.</p></div>
+    <div class="card c-coral"><h4>Placement</h4><p class="small mb0">The pool in the lab is synthetic. Real members' requests are Restricted: a hosted teacher may not see them. Run the teacher on your own servers, or label masked and synthetic requests only.</p></div>
+  </div>
+  <div class="callout warn mt small"><b>The teacher's terms count too.</b> Its licence and its provider's conditions on training another model with its outputs belong in yesterday's licence table.</div>
+  <aside class="notes"><p>The placement card is the responsible-use point of the session and it is easy to skip in a lab where everything is synthetic. Say it plainly: the requirement that made the chamber choose a small model also forbids sending the real traces to a hosted teacher.</p></aside>
+</section>
+
+<section class="slide" id="verifier-two-layers" data-label="Verifier" data-lo="LO2" data-n="18" data-session="2">
+  <div class="kicker">What stands between the teacher and the set</div>
+  <h2>A verifier has two layers: the schema, then rules against the request</h2>
+  <div class="flow">
+    <div class="step c-purple"><b>Teacher output</b>300</div>
+    <div class="arrow">→</div>
+    <div class="step c-teal"><b>Schema</b>would the registry accept it? 6 rejected</div>
+    <div class="arrow">→</div>
+    <div class="step c-cyan"><b>Rules</b>does it agree with the request? 1 rejected</div>
+    <div class="arrow">→</div>
+    <div class="step c-navy"><b>Kept</b>293</div>
+  </div>
+  <div class="callout tip mt"><b>A schema knows the interface, not the request.</b> <code>"cr_number": "4000000000"</code> is a valid argument and an invention. Only a rule that reads the request can tell.</div>
+  <aside class="notes"><p>Counts from Lab 2.2 with the stand-in teacher. Verifiers can also be models (a second model judging the first); AE-303 covers calibrating such a grader. Code checks come first because they are free, deterministic and explainable.</p></aside>
+</section>
+
+<section class="slide" id="rule-check-code" data-label="Rule checks" data-lo="LO2" data-n="19" data-session="2">
+  <div class="kicker">Lab 2.2 · task 3</div>
+  <h2>A rule check compares the call with the text it claims to answer</h2>
+  <pre class="code s" data-file="Lab 2.2"><code class="language-python">numbers = CR.findall(C.western_digits(text))   <span class="hljs-comment"># numbers the request contains</span>
+args = call[<span class="hljs-string">&quot;arguments&quot;</span>]
+<span class="hljs-keyword">if</span> <span class="hljs-string">&quot;cr_number&quot;</span> <span class="hljs-keyword">in</span> args <span class="hljs-keyword">and</span> args[<span class="hljs-string">&quot;cr_number&quot;</span>] <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> numbers:
+    errors.append(<span class="hljs-string">&quot;the registration number is not in the request&quot;</span>)
+<span class="hljs-keyword">if</span> call[<span class="hljs-string">&quot;name&quot;</span>] == <span class="hljs-string">&quot;escalate_to_staff&quot;</span> <span class="hljs-keyword">and</span> args.get(<span class="hljs-string">&quot;reason&quot;</span>) == <span class="hljs-string">&quot;missing_cr&quot;</span> <span class="hljs-keyword">and</span> numbers:
+    errors.append(<span class="hljs-string">&quot;escalated as missing although the request gives a number&quot;</span>)
+<span class="hljs-keyword">if</span> call[<span class="hljs-string">&quot;name&quot;</span>] == <span class="hljs-string">&quot;create_membership&quot;</span> <span class="hljs-keyword">and</span> args.get(<span class="hljs-string">&quot;company_name&quot;</span>, <span class="hljs-string">&quot;&quot;</span>) <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> text:
+    errors.append(<span class="hljs-string">&quot;the company name is not in the request&quot;</span>)</code></pre>
+  <aside class="notes"><p>Each rule encodes one sentence a registry officer would say. Write rules for what must be true of every right answer, and test each rule for false alarms: a rule that rejects right answers silently removes a kind of example. The stretch shows one such rule.</p></aside>
+</section>
+
+<section class="slide" id="verifier-blind-spot" data-label="Blind spot" data-lo="LO2" data-n="20" data-session="2">
+  <div class="kicker">What passes</div>
+  <h2>Valid, consistent with the request, and wrong</h2>
+  <table class="t small">
+    <tr><th>The teacher's error</th><th>Schema</th><th>Rules</th></tr>
+    <tr><td>Takes the partner's registration number</td><td>passes</td><td>passes: the number is in the request</td></tr>
+    <tr><td>Renews where a certificate was asked for</td><td>passes</td><td>passes</td></tr>
+    <tr><td>Writes two years for "one year"</td><td>passes</td><td>passes</td></tr>
+    <tr><td>Invents a registration number</td><td>passes</td><td><b>caught</b></td></tr>
+    <tr><td>Answers in prose</td><td><b>caught</b></td><td></td></tr>
+  </table>
+  <aside class="notes"><p>The top three rows are decisions. To catch them a verifier would have to make the decision itself, which is the task. This is the honest limit of filtering: it removes malformed and inconsistent labels, not wrong judgements. Those are found by people, on a sample.</p></aside>
+</section>
+
+<section class="slide" id="yield-is-not-quality" data-label="Yield" data-lo="LO2" data-n="21" data-session="2">
+  <div class="kicker">Lab 2.2 · tasks 4 and 5</div>
+  <h2>Yield says how much passed, not whether it is right</h2>
+  <div class="cols cols-3 mid">
+    <div class="stat center"><div class="big">97.7%</div><div class="lbl">yield: 293 of 300 kept</div></div>
+    <div class="stat center"><div class="big">8</div><div class="lbl">wrong labels among the 293 kept (answer key): the verifier caught 7 of 15</div></div>
+    <div class="stat center"><div class="big">0 of 30</div><div class="lbl">found by the desk's audit, which allows up to 11%</div></div>
+  </div>
+  <div class="callout note mt small"><b>For the card:</b> "audit of 30 kept examples, 0 errors, 95% upper bound 11%", and the kinds of error the verifier cannot see.</div>
+  <aside class="notes"><p>The audit is the lesson. Zero in thirty feels like proof and is not: the Wilson upper bound is 11.4%. The true rate here is 2.7%, known only because the data is synthetic. To bound an error rate below 3% with zero errors found you need an audit of about 125 examples. Ask the room how many their team audits.</p></aside>
+</section>
+
+<section class="slide" id="check-verifier" data-lo="LO2" data-n="22" data-session="2">
+  <div class="kicker">Checkpoint</div>
+  <h2>What did the verifier prove?</h2>
+  <div class="quiz" data-type="single" data-lo="LO2" data-id="check-verifier-q1">
+    <p class="lead">A teacher labelled 1,000 requests. Schema and rule checks kept 960. Nobody has read any of them. What can you state about the 960?</p>
+    <div class="opts">
+      <div class="opt" data-why="Reads yield as accuracy: passing the checks says the labels are well-formed and consistent, not right" data-k="A">They are 96% accurate</div>
+      <div class="opt" data-why="Assumes the checks see every error, although a valid, consistent call can be the wrong decision" data-k="B">They contain no errors, because the bad ones were rejected</div>
+      <div class="opt" data-why="Discards labels that are mostly right for lack of a measurement that an audit can supply" data-k="C">They cannot be used until every one is read by staff</div>
+      <div class="opt" data-ok data-k="D">They are valid and consistent with their requests; their error rate is unknown until a sample is audited</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> A verifier removes what it can detect. The rate of what it cannot detect is measured by people, on a sample, with an interval.</div>
+  </div>
+  <aside class="notes"><p>Answer: D. If the room picks A, ask what the 4% that failed tells you about the 96% that passed. Nothing.</p></aside>
+</section>
+
+<section class="slide lab top" id="lab-2-2" data-auto="lab" data-lab="2.2" data-label="Lab 2.2" data-n="23" data-session="2">
+  <div class="cols cols-2 mid"><div><div class="lab-tag">Lab 2.2 · 25 min</div><h2>Teacher and verifier</h2><p class="lead small">Label 300 unlabelled requests with the larger model, filter the outputs with schema and rule checks, and measure the yield and the errors that still pass.</p><a class="nb" href="../labs/D2_2_teacher_filter.ipynb">D2_2_teacher_filter.ipynb</a></div><ul class="checklist"><li>Label 300 requests with the larger model <span class="min">4 min</span></li><li>Schema checks <span class="min">5 min</span></li><li>Two rule checks against the request <span class="min">8 min</span></li><li>Yield, and what was rejected <span class="min">4 min</span></li><li>Audit 30 kept examples <span class="min">4 min</span></li><li class="stretch">✱ Stretch: Add a third rule and measure whether it rejects a right answer</li></ul></div>
+  <aside class="notes"><p>With a key, the 300 teacher calls are within a free daily quota only on an account with credits; otherwise the stand-in answers and the lab asserts the supplied counts. Typical problem in task 3: comparing the number before converting Arabic-Indic digits, which rejects right answers. The pool is supplied; nothing from Lab 2.1 is needed.</p></aside>
+</section>
+
+<!-- ======================= SESSION 3 ======================= -->
+<section class="slide section" id="s3" data-auto="section" data-session="3" data-n="24">
+  <div class="kicker">Session 3</div>
+  <h1>Chat templates and tool-call formats</h1>
+  <ul class="bullets outcomes"><li>Render a conversation with a model's own chat template</li><li>Find formatting faults that harm training: a turn that never ends, a foreign tool-call format, unmasked labels</li><li>Check rendered examples token by token before training</li></ul>
+  <div class="sess-no">03</div>
+</section>
+
+<section class="slide" id="model-sees-one-string" data-label="One string" data-lo="LO2" data-n="25" data-session="3">
+  <div class="kicker">What the model actually reads</div>
+  <h2>The model never sees your messages: it sees one string</h2>
+  <pre class="code s" data-file="rendered by the chat template of the course model"><code class="language-text">&lt;|im_start|&gt;user
+نأمل إرسال شهادة العضوية للسجل التجاري 4029184372.&lt;|im_end|&gt;
+&lt;|im_start|&gt;assistant
+&lt;tool_call&gt;
+{&quot;name&quot;: &quot;issue_certificate&quot;, &quot;arguments&quot;: {&quot;cr_number&quot;: &quot;4029184372&quot;, &quot;kind&quot;: &quot;membership&quot;}}
+&lt;/tool_call&gt;&lt;|im_end|&gt;</code></pre>
+  <p class="small mt">Role markers, an end-of-turn token, a wrapper for the call. Every one of these is a convention of <b>this</b> model, written in its template.</p>
+  <aside class="notes"><p>Printed in Lab 2.3, task 1. The template is a small Jinja program stored with the tokeniser. Transformers applies it with apply_chat_template; a server applies the same file. If participants did the pre-work they have seen the template of a real model and can say where its tool calls go.</p><p>Sources: Transformers documentation, chat templates.</p></aside>
+</section>
+
+<section class="slide" id="template-is-part-of-model" data-label="Part of the model" data-lo="LO2" data-n="26" data-session="3">
+  <div class="kicker">The durable idea</div>
+  <h2>The chat template is part of the model</h2>
+  <div class="cols cols-2">
+    <ul class="bullets">
+      <li>The base model was trained on strings in exactly this shape</li>
+      <li>Your adapter will be served strings in exactly this shape</li>
+      <li>So train on strings in exactly this shape: <b>use the template, do not rewrite it</b></li>
+    </ul>
+    <div class="card c-coral"><h4>What goes wrong</h4><p class="small mb0">A hand-written renderer trains "fine": the loss falls, because the model learns whatever text it is given. The fault shows in production, as a format nobody sends.</p></div>
+  </div>
+  <aside class="notes"><p>A falling loss is evidence that training ran, never that the text was right. This is why the lab compares strings character by character before any training step.</p></aside>
+</section>
+
+<section class="slide" id="generation-prompt" data-label="Prompt and full" data-lo="LO2" data-n="27" data-session="3">
+  <div class="kicker">Two renderings of one example</div>
+  <h2>The server sends the prompt; training adds the answer</h2>
+  <div class="cols cols-2">
+    <div class="card c-teal"><h4>Prompt</h4><p class="small mb0"><code>add_generation_prompt=True</code>: the request, then the marker that opens the assistant's turn. The model writes what follows.</p></div>
+    <div class="card c-purple"><h4>Full</h4><p class="small mb0">The whole conversation, the assistant's turn and its end-of-turn token included. The full text must <b>start with</b> the prompt, character for character.</p></div>
+  </div>
+  <div class="callout tip mt"><b>That prefix property is what makes the label mask possible:</b> everything up to the end of the prompt is context, everything after it is the target.</div>
+  <aside class="notes"><p>The lab asserts full.startswith(prompt). When that assertion fails with a real model, the usual cause is a template that inserts something different with and without the generation prompt, for instance a reasoning block. Then the mask must be built from the template's own output, not from string lengths.</p></aside>
+</section>
+
+<section class="slide" id="tool-call-formats-differ" data-label="Formats differ" data-lo="LO2" data-n="28" data-session="3">
+  <div class="kicker">Tool-call formats</div>
+  <h2>Two model families, two ways to write the same call</h2>
+  <div class="cols cols-2">
+    <div>
+      <h4>Qwen3: JSON in tags</h4>
+      <pre class="code s"><code class="language-text">&lt;tool_call&gt;
+{&quot;name&quot;: &quot;get_weather&quot;, &quot;arguments&quot;: {&quot;city&quot;: &quot;Paris&quot;}}
+&lt;/tool_call&gt;</code></pre>
+    </div>
+    <div>
+      <h4>LFM3: an XML form in tags</h4>
+      <pre class="code s"><code class="language-text">&lt;tool_call&gt;
+&lt;function=get_weather&gt;
+&lt;parameter=city&gt;
+Paris
+&lt;/parameter&gt;
+&lt;/function&gt;
+&lt;/tool_call&gt;</code></pre>
+    </div>
+  </div>
+  <p class="small mt">Change the base model and the tuning set must be rendered again. Store messages, never rendered strings.</p>
+  <aside class="notes"><p>Both forms are from the models' own cards, read on 15 November 2026. The same tags, different content: a parser written for one silently fails on the other. This is why yesterday's examples were stored as messages with tool_calls.</p><p>Sources: Qwen3-0.6B model card; LFM3-1.7B model card.</p></aside>
+</section>
+
+<section class="slide" id="three-faults" data-label="Three faults" data-lo="LO2" data-n="29" data-session="3">
+  <div class="kicker">Lab 2.3</div>
+  <h2>Three faults that train "fine" and fail in service</h2>
+  <div class="cols cols-3 gap-s">
+    <div class="card c-coral"><h4>1 · The turn never ends</h4><p class="small mb0">No end-of-turn token after the answer. The adapter never learns to stop and writes to the token limit on every request.</p></div>
+    <div class="card c-purple"><h4>2 · A foreign call format</h4><p class="small mb0"><code>str(call)</code>: single quotes, no tags. The model is taught the Python-dictionary failure of Lab 1.1.</p></div>
+    <div class="card c-amber"><h4>3 · Loss on everything</h4><p class="small mb0">Labels equal to the input. A third of the signal goes into predicting members' requests instead of the answer.</p></div>
+  </div>
+  <aside class="notes"><p>All three are in the colleague's renderer in the lab, and all three are common in real projects. Fault 1 also raises cost: a model that does not stop bills the maximum output on every request. Fault 3 on the lab's example: 82 tokens, 56 of them in the answer; unmasked, 32% of the loss is spent on the request.</p></aside>
+</section>
+
+<section class="slide" id="label-mask" data-label="Label mask" data-lo="LO2" data-n="30" data-session="3">
+  <div class="kicker">Fault 3, fixed</div>
+  <h2>The loss is taken on the assistant's turn only</h2>
+  <pre class="code" data-file="Lab 2.3 · task 4"><code class="language-python">prompt_ids = tok(prompt, add_special_tokens=<span class="hljs-literal">False</span>)[<span class="hljs-string">&quot;input_ids&quot;</span>]
+full_ids   = tok(full,   add_special_tokens=<span class="hljs-literal">False</span>)[<span class="hljs-string">&quot;input_ids&quot;</span>]
+labels = [-<span class="hljs-number">100</span>] * <span class="hljs-built_in">len</span>(prompt_ids) + full_ids[<span class="hljs-built_in">len</span>(prompt_ids):]
+<span class="hljs-comment">#         ignored by the loss       the tool call and the end of turn</span></code></pre>
+  <div class="callout note mt small"><b>Why it matters beyond efficiency.</b> A model trained to predict requests is trained to reproduce what members wrote. Masking the prompt is also a data-protection measure.</div>
+  <aside class="notes"><p>-100 is the index PyTorch's cross-entropy ignores. Libraries offer this as an option (training on completions only); know whether yours does it, and check one example by decoding the supervised tokens, as the lab does. add_special_tokens=False because the template already wrote every special token: a tokeniser that adds its own start token would double it.</p></aside>
+</section>
+
+<section class="slide" id="round-trip-check" data-label="Round trip" data-lo="LO2" data-n="31" data-session="3">
+  <div class="kicker">The check people skip</div>
+  <h2>Encode, decode, compare: does the text survive the tokeniser?</h2>
+  <div class="chat">
+    <div class="msg user"><span class="who">written</span>الرد على owner289@member.example أو الاتصال على 0509022407.</div>
+    <div class="msg ai bad"><span class="who">decoded</span>الرد على owner289&lt;|unk|&gt;member.example أو الاتصال على 0509022407.</div>
+  </div>
+  <p class="small mt">The course tokeniser has no token for the @ sign. Masking removes the address before the tokeniser sees it (Lab 2.4), and the lab's fixed renderer round-trips 50 of 50 masked examples.</p>
+  <aside class="notes"><p>A real finding from building this course: the first version of the lab rendered unmasked examples and some of them failed this check. With a real model's tokeniser the usual culprits are normalised characters, stripped spaces before special tokens and unknown symbols in a small vocabulary. Run the check on every example before the first training step.</p></aside>
+</section>
+
+<section class="slide" id="check-template" data-lo="LO2" data-n="32" data-session="3">
+  <div class="kicker">Checkpoint</div>
+  <h2>It answers, and then it keeps writing</h2>
+  <div class="quiz" data-type="single" data-lo="LO2" data-id="check-template-q1">
+    <p class="lead">A freshly tuned adapter produces the correct tool call and then continues with more calls and stray text until the token limit. The base model never did this. Where do you look first?</p>
+    <div class="opts">
+      <div class="opt" data-ok data-k="A">The rendered training text: is there an end-of-turn token after the assistant's answer?</div>
+      <div class="opt" data-why="Treats a formatting fault as an optimisation problem: a lower rate would learn the same wrong text more slowly" data-k="B">The learning rate: it was too high</div>
+      <div class="opt" data-why="Hides the symptom at serving time and pays for the extra tokens on every request" data-k="C">The server: raise the stop-token limit</div>
+      <div class="opt" data-why="Blames quantity for a fault that every example shares" data-k="D">The tuning set: it needs more examples</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> A model stops because it was shown stopping. If the training text never ends the turn, no setting teaches it to.</div>
+  </div>
+  <aside class="notes"><p>Answer: A. Demonstration if time allows: print the last ten tokens of one rendered training example. If the end-of-turn token is not among them, the diagnosis is done.</p></aside>
+</section>
+
+<section class="slide lab top" id="lab-2-3" data-auto="lab" data-lab="2.3" data-label="Lab 2.3" data-n="33" data-session="3">
+  <div class="cols cols-2 mid"><div><div class="lab-tag">Lab 2.3 · 25 min</div><h2>Three formatting faults</h2><p class="lead small">Render examples with the model's chat template, then find and fix three faults in a hand-written renderer that would harm training.</p><a class="nb" href="../labs/D2_3_chat_templates.ipynb">D2_3_chat_templates.ipynb</a></div><ul class="checklist"><li>Render one example with the model's template <span class="min">5 min</span></li><li>Fault 1: the turn that never ends <span class="min">5 min</span></li><li>Fault 2: a tool call the template would not write <span class="min">6 min</span></li><li>Fault 3: a loss on the whole conversation <span class="min">6 min</span></li><li>Check the fixed renderer on 50 examples <span class="min">3 min</span></li><li class="stretch">✱ Stretch: Render the same example with a second model's template and list the differences</li></ul></div>
+  <aside class="notes"><p>No model is loaded and nothing is trained: the lab uses the tokeniser of the course model, which ships in the repository with a chat template. The stretch fetches the tokeniser files of the hub model (a few megabytes, no weights); where the network blocks the Hub it says so and goes on. Supplied state: data/tuning/train.jsonl.</p></aside>
+</section>
+
+<!-- ======================= SESSION 4 ======================= -->
+<section class="slide section" id="s4" data-label="Session 4 · Clean the set" data-auto="section" data-session="4" data-n="34">
+  <div class="kicker">Session 4</div>
+  <h1>Deduplication, decontamination and personal data</h1>
+  <ul class="bullets outcomes"><li>Remove near-duplicates with a stated rule and threshold</li><li>Report overlap with the test set, separating leaks from template collisions</li><li>Scan a tuning set for personal data and mask it</li></ul>
+  <div class="sess-no">04</div>
+</section>
+
+<section class="slide" id="three-silent-problems" data-label="Silent problems" data-lo="LO2" data-n="35" data-session="4">
+  <div class="kicker">What a loss curve will never show</div>
+  <h2>Duplicates inflate, leaks flatter, personal data does not belong in weights</h2>
+  <div class="cols cols-3 gap-s">
+    <div class="card c-teal"><h4>Near-duplicates</h4><p class="small mb0">The same request, sent twice with "Hello" in front. The set looks larger than it is, and one member's wording is over-weighted.</p></div>
+    <div class="card c-coral"><h4>Test-set overlap</h4><p class="small mb0">A test request in the tuning set. Every score on Day 4 would be too high, by an unknown amount.</p></div>
+    <div class="card c-purple"><h4>Personal data</h4><p class="small mb0">Names, mobile numbers, identity numbers in free text. Not needed to choose a tool, and a model can reproduce what it was trained on.</p></div>
+  </div>
+  <aside class="notes"><p>None of the three raises an error or bends a curve. They are found only by looking for them, which is why outcome 2 lists each by name and asks for a report.</p></aside>
+</section>
+
+<section class="slide" id="near-duplicate-rule" data-label="Near-duplicates" data-lo="LO2" data-n="36" data-session="4">
+  <div class="kicker">A rule you can state in one sentence</div>
+  <h2>Near-duplicate: one text's three-word runs are contained in the other's</h2>
+  <div class="chat">
+    <div class="msg user"><span class="who">kept</span>Kindly extend the membership of CR 4013583134 by 1 year.</div>
+    <div class="msg user"><span class="who">removed</span>Kindly extend the membership of CR 4013583134 by 1 year. Regards.</div>
+  </div>
+  <ul class="bullets small mt">
+    <li>Normalise: lower case, Western digits, no punctuation</li>
+    <li>Compare runs of three words; <b>containment</b> = shared runs divided by the smaller set</li>
+    <li>Near-duplicate at 0.9 or more, compared only within the same registration number</li>
+  </ul>
+  <aside class="notes"><p>Containment rather than plain overlap, because a re-sent request is the original plus a greeting: the smaller text is wholly inside the larger. The lab removes 67 near-duplicates from 746 rows. Embedding similarity is the heavier alternative; start with a rule you can explain to the data protection officer.</p></aside>
+</section>
+
+<section class="slide" id="threshold-tradeoff" data-label="Threshold" data-lo="LO2" data-n="37" data-session="4">
+  <div class="kicker">A threshold is a decision, and it has a cost</div>
+  <h2>At 0.8 the rule merged two different requests</h2>
+  <div class="chat">
+    <div class="msg user"><span class="who">kept at 0.8</span>نرجو إرسال قائمة بجميع الأعضاء العاملين في الاستشارات.</div>
+    <div class="msg ai bad"><span class="who">removed at 0.8</span>نرجو إرسال قائمة بجميع الأعضاء العاملين في الأجهزة الطبية.</div>
+  </div>
+  <p class="small mt">Two short requests that differ only in the activity they ask about: five of the six word runs of the shorter one are shared. At 0.8 they count as one; at 0.9 both stay. The lower threshold removed 82 rows, the higher one 67.</p>
+  <div class="callout tip mt small"><b>Read what a threshold removes</b> before you accept it. Print ten removed pairs; if one is not a duplicate, the threshold is wrong for your data.</div>
+  <aside class="notes"><p>This happened while the course was being built: the first threshold was 0.8 and the first removed pair printed was this one. Short texts are the weak point of any shingle rule, because one changed word is a large share of a short text. The report states the rule and the threshold so that a reader can disagree.</p></aside>
+</section>
+
+<section class="slide" id="leak-or-collision" data-label="Leak or collision" data-lo="LO2" data-n="38" data-session="4">
+  <div class="kicker">Decontamination</div>
+  <h2>A leak is removed; a template collision is kept and counted</h2>
+  <table class="t small">
+    <tr><th></th><th>Leak</th><th>Template collision</th></tr>
+    <tr><td>What it is</td><td>A near-copy of a test request about the same registration number</td><td>A short request with no number that many members write alike</td></tr>
+    <tr><td>Example</td><td>"We are Al-Salam Supplies Est. from Dammam … CR 4001995900"</td><td>"We need a membership certificate as soon as possible."</td></tr>
+    <tr><td>In the lab</td><td class="num">18 removed</td><td class="num">31 kept</td></tr>
+    <tr><td>Why</td><td>A test case inside the training data</td><td>Removing it would delete a kind of request from training</td></tr>
+  </table>
+  <aside class="notes"><p>The split by company was applied to the test set and not to the pilot traces: members of test-set companies wrote again during the pilot. 23 near-copies were planted in the 500 traces; 18 reach this step with a registration number and are removed, the others have no number or were dropped earlier. The distinction between leak and collision is a judgement: state it in the report and let the reader decide whether 31 collisions worry them.</p></aside>
+</section>
+
+<section class="slide" id="personal-data-scan" data-label="Personal data" data-lo="LO2" data-n="39" data-session="4">
+  <div class="kicker">Lab 2.4 · tasks 3 and 4</div>
+  <h2>Patterns find numbers and addresses; names need a list</h2>
+  <div class="cols cols-2">
+    <div class="bars">
+      <div class="row"><span>Mobile numbers</span><div class="bar c-teal" style="--w:100%"></div><span class="val">248</span></div>
+      <div class="row"><span>Names (from the registry)</span><div class="bar c-cyan" style="--w:77%"></div><span class="val">192</span></div>
+      <div class="row"><span>Identity numbers</span><div class="bar c-coral" style="--w:29%"></div><span class="val">71</span></div>
+      <div class="row"><span>E-mail addresses</span><div class="bar c-purple" style="--w:23%"></div><span class="val">56</span></div>
+    </div>
+    <ul class="bullets small">
+      <li>Found in 661 rows, then masked: <code>[PHONE]</code>, <code>[NAME]</code>, <code>[ID]</code>, <code>[EMAIL]</code></li>
+      <li>A second scan after masking finds 0</li>
+      <li>A registration number identifies a company, not a person, and stays</li>
+    </ul>
+  </div>
+  <div class="callout warn mt small"><b>"0 found" is a claim about the scan.</b> A name that is not on the registry's list passes. The card says which kinds and which list.</div>
+  <aside class="notes"><p>The Personal Data Protection Law defines personal data by what can identify a person and lists names, identification numbers and contact numbers among its examples. The synthetic requests are shaped that way on purpose. All values are generated; none belongs to a person.</p><p>Sources: Personal Data Protection Law.</p></aside>
+</section>
+
+<section class="slide" id="mask-both-sides" data-label="Mask both sides" data-lo="LO2" data-n="40" data-session="4">
+  <div class="kicker">One function, two places</div>
+  <h2>Mask in training and in service, with the same function</h2>
+  <div class="flow">
+    <div class="step c-navy"><b>Request</b>"… Contact: Fares Al-Sudairy, mobile 0525658054, ID 1168502369."</div>
+    <div class="arrow">→</div>
+    <div class="step c-teal"><b>Mask</b>the same code in the data pipeline and in front of the server</div>
+    <div class="arrow">→</div>
+    <div class="step c-coral"><b>Model</b>"… Contact: [NAME], mobile [PHONE], ID [ID]."</div>
+  </div>
+  <div class="callout tip mt"><b>The model sees in service what it saw in training.</b> Mask only the tuning set and production sends it digits it never met.</div>
+  <aside class="notes"><p>The course's tuning.render applies the mask to every request, in training, in evaluation and in the server of Lab 4.3. The example person and numbers are synthetic. Masking before the model also means the logs of the model server hold no personal data, which Anoud will ask about.</p></aside>
+</section>
+
+<section class="slide" id="cleaning-changes-mix" data-label="The mix" data-lo="LO2" data-n="41" data-session="4">
+  <div class="kicker">The stretch of Lab 2.4</div>
+  <h2>Cleaning changed the mix: escalations fell from 19% to 16%</h2>
+  <div class="cols cols-2 mid">
+    <div class="bars">
+      <div class="row"><span>Escalations before</span><div class="bar c-coral" style="--w:19%"></div><span class="val">145 of 746</span></div>
+      <div class="row"><span>Escalations after</span><div class="bar c-teal" style="--w:16%"></div><span class="val">108 of 661</span></div>
+    </div>
+    <ul class="bullets small">
+      <li>Requests with no number are short and alike, so deduplication removes more of them</li>
+      <li>Escalation is the behaviour Qayd lacks most</li>
+      <li>Whether it still learns to escalate is measured on Day 4, on that slice</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>Every cleaning step is also a sampling step. This is why the dataset card reports the set by source, by language and by kind of call after cleaning, and why Day 4 evaluates by slice.</p></aside>
+</section>
+
+<section class="slide" id="overlap-report" data-label="The report" data-lo="LO2" data-n="42" data-session="4">
+  <div class="kicker">Evidence for outcome 2</div>
+  <h2>The overlap report says what was removed, by which rule</h2>
+  <table class="t small">
+    <tr><th>Step</th><th class="num">Rows</th></tr>
+    <tr><td>Raw examples (traces, corrections, teacher)</td><td class="num">746</td></tr>
+    <tr><td>Near-duplicates removed</td><td class="num">67</td></tr>
+    <tr><td>Leaks from the test set removed</td><td class="num">18</td></tr>
+    <tr><td>Template collisions kept</td><td class="num">31</td></tr>
+    <tr class="hl"><td>Tuning set: 295 traces, 92 corrections, 274 teacher; 336 Arabic, 325 English</td><td class="num">661</td></tr>
+  </table>
+  <p class="small mt">Rule: containment of three-word runs at 0.9 or more, within the same registration number.</p>
+  <aside class="notes"><p>This table is artifacts/2.4/overlap_report.json. The supplied data/tuning/train.jsonl is exactly these 661 rows, and the lab asserts that a participant's cleaned set equals it. Tomorrow every lab trains on that file.</p></aside>
+</section>
+
+<section class="slide" id="check-overlap" data-label="Checkpoint · leak or not" data-lo="LO2" data-n="43" data-session="4">
+  <div class="kicker">Checkpoint</div>
+  <h2>Leak or not?</h2>
+  <div class="quiz" data-type="single" data-lo="LO2" data-id="check-overlap-q1">
+    <p class="lead">Your overlap check flags a tuning row: "We want to renew for two years. Thank you." The same sentence is in the test set. Neither names a company or a number. What goes in the report?</p>
+    <div class="opts">
+      <div class="opt" data-why="Treats any shared text as a leak and would delete every short, common request from training" data-k="A">A leak: remove it, and remove every row like it</div>
+      <div class="opt" data-ok data-k="B">A template collision: keep it, and report how many there are</div>
+      <div class="opt" data-why="Hides a fact that a reader of the report needs to judge the test" data-k="C">Nothing: generic sentences need no mention</div>
+      <div class="opt" data-why="Changes the test set after the fact, which breaks every comparison already made on it" data-k="D">Remove the sentence from the test set instead</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> The row carries no member's content and is how members really write. It stays, and the count goes in the report so that the reader can judge the test.</div>
+  </div>
+  <aside class="notes"><p>Answer: B. A cautious team may also report the test score with and without the collided test requests; that is a good capstone habit.</p></aside>
+</section>
+
+<section class="slide lab top" id="lab-2-4" data-auto="lab" data-lab="2.4" data-label="Lab 2.4" data-n="44" data-session="4">
+  <div class="cols cols-2 mid"><div><div class="lab-tag">Lab 2.4 · 25 min</div><h2>Clean the set</h2><p class="lead small">Remove near-duplicates from the raw examples, find and remove overlap with the test set, scan for personal data, mask it and write the overlap report.</p><a class="nb" href="../labs/D2_4_dedup_pii.ipynb">D2_4_dedup_pii.ipynb</a></div><ul class="checklist"><li>Remove near-duplicates <span class="min">6 min</span></li><li>Find overlap with the test set <span class="min">7 min</span></li><li>Scan for personal data <span class="min">5 min</span></li><li>Mask and scan again <span class="min">4 min</span></li><li>Write the overlap report <span class="min">3 min</span></li><li class="stretch">✱ Stretch: Count escalation examples before and after cleaning: what did cleaning change?</li></ul></div>
+  <aside class="notes"><p>The helper functions (words, shingles, containment, bucket) are written; participants write the three loops. The lab asserts each count and finally that the cleaned set equals the supplied data/tuning/train.jsonl. Typical problem: comparing across buckets, which is slow and flags different companies' requests. Supplied state: data/reference/examples_raw.jsonl, so Labs 2.1 and 2.2 are not needed.</p></aside>
+</section>
+
+<!-- ======================= CLOSE ======================= -->
+<section class="slide" id="wrap-up" data-label="Day 2 in three lines" data-n="45" data-session="4">
+  <div class="kicker">Day 2</div>
+  <h2>Three things to keep</h2>
+  <div class="cols cols-3">
+    <div class="card c-teal"><h4>Every label has a source and a check</h4><p class="small mb0">Accepted, corrected, taught by a larger model. Validate each against the tool, and count what you drop.</p></div>
+    <div class="card c-coral"><h4>Train on the server's string</h4><p class="small mb0">The model's own template, an end of turn, a masked prompt. Compare characters before you compare losses.</p></div>
+    <div class="card c-purple"><h4>Clean, and say how</h4><p class="small mb0">Duplicates, leaks and personal data, each with a rule a reader can dispute, and the mix after cleaning.</p></div>
+  </div>
+  <aside class="notes"><p>Data quality carries 25 of the capstone's 100 points, more than training. Ask each table which of today's four checks their current project does not have.</p></aside>
+</section>
+
+<section class="slide dark" id="next" data-label="Next" data-n="46" data-session="4">
+  <div class="kicker">Tomorrow</div>
+  <h1>Day 3 · Train adapters and distil</h1>
+  <p class="lead">The 661 examples meet a model: a low-rank adapter, a 4-bit base, a sweep and a distilled behaviour.</p>
+  <ul class="bullets">
+    <li>Guided self-study: open a GPU runtime in Colab once and run the setup check, or decide to train the course model on your laptop</li>
+    <li>Recall from AE-301 what a low-rank adapter adds to a layer: tomorrow starts there</li>
+  </ul>
+  <aside class="notes"><p>Tomorrow has two tiers. On a notebook GPU the labs train a small open-weight model; on a processor they train the course's own small model with the same code. Both are supported ways to take the day. Ask who will use which, so that tables can mix.</p></aside>
+</section>
+</div>
+<script type="application/json" id="academy-data">{"v":1,"engine":"1.0.0","build":{"at":"2026-11-17T11:39:02Z","version":"2027.1.0","commit":"bacd51b"},"course":{"id":"ae-310","code":"AE-310","title":"Model Adaptation: Fine-Tuning, Distillation and Small Models","track":"ai-engineering","lang":"en","dir":"ltr","url":"https://sdaiaacademy.github.io/ae-310/","repo":"SDAIAAcademy/ae-310","home":"../index.html"},"deck":{"id":"day2","kind":"day","day":2,"label":"Day 2","title":"Data for tuning","prev":"day1.html","next":"day3.html","md":"day2.md","alt":{}},"sessions":[{"n":1,"label":"Session 1","title":"Tuning data from traces and corrections","slide":"s1","outcomes":["Read a trace and say which label, if any, it carries","Join staff corrections to traces and reject corrections the interface refuses","Write tuning examples in chat format with a tool call"],"minutes":50,"lab":{"id":"2.1","title":"Traces to examples","minutes":25,"href":"../labs/D2_1_traces_corrections.ipynb"}},{"n":2,"label":"Session 2","title":"Teacher generation and verifier filtering","slide":"s2","outcomes":["Generate labels with a larger model under frozen instructions","Filter teacher outputs with schema checks and rule checks","Measure yield and estimate the errors a verifier lets through"],"minutes":50,"lab":{"id":"2.2","title":"Teacher and verifier","minutes":25,"href":"../labs/D2_2_teacher_filter.ipynb"}},{"n":3,"label":"Session 3","title":"Chat templates and tool-call formats","slide":"s3","outcomes":["Render a conversation with a model's own chat template","Find formatting faults that harm training: a turn that never ends, a foreign tool-call format, unmasked labels","Check rendered examples token by token before training"],"minutes":50,"lab":{"id":"2.3","title":"Three formatting faults","minutes":25,"href":"../labs/D2_3_chat_templates.ipynb"}},{"n":4,"label":"Session 4","title":"Deduplication, decontamination and personal data","slide":"s4","outcomes":["Remove near-duplicates with a stated rule and threshold","Report overlap with the test set, separating leaks from template collisions","Scan a tuning set for personal data and mask it"],"minutes":50,"lab":{"id":"2.4","title":"Clean the set","minutes":25,"href":"../labs/D2_4_dedup_pii.ipynb"}}],"slides":[{"id":"title","n":1,"title":"Data for tuning","kind":"title","session":0,"hash":"81e1a5c5","md":"#### [day2#title] Data for tuning\n\n*SDAIA Academy · Model Adaptation: Fine-Tuning, Distillation and Small Models*\n\nDay 2: Build the tuning set from traces, corrections and a teacher, render it correctly and clean it\n\nAI Engineering Track · 4 teaching days + capstone day · 4 sessions · 4 labs · AE-310","notes":"Open with yesterday's result: the frozen baseline scored 67 in 100 and the larger model 94 (stand-in run; use your room's numbers). Today builds the set that is supposed to close that gap. Say the proportion now and again at the end: in a real adaptation project most of the engineer's hours are today's work, not tomorrow's.","minutes":null,"lo":[]},{"id":"agenda","n":2,"title":"Data for tuning","kind":"content","session":0,"hash":"91807795","md":"#### [day2#agenda] Data for tuning\n\n*Today*\n\n- **Session 1 · Tuning data from traces and corrections**: Pilot traces and staff corrections are labels with errors: keep what can be trusted\n- **Session 2 · Teacher generation and verifier filtering**: A larger model labels what staff never saw, and a verifier decides what enters the set\n- **Session 3 · Chat templates and tool-call formats**: The chat template is part of the model: train on the exact text the server will send\n- **Session 4 · Deduplication, decontamination and personal data**: Duplicates inflate, leaks flatter and personal data does not belong in weights","notes":"","minutes":null,"lo":[]},{"id":"review-day1","n":3,"title":"Which failures does today's data have to fix?","kind":"quiz","session":0,"hash":"b06488fc","md":"#### [day2#review-day1] Which failures does today's data have to fix?\n\n*Review of Day 1*\n\n**Question:** With the frozen instructions, Qayd still takes a partner company's registration number in some requests. The code table and the schema are in the prompt. Which examples must today's tuning set contain?\n\n- A. More rows of the activity code table\n- B. Requests with two registration numbers, labelled with the applicant's own\n- C. More requests that Qayd already answers correctly\n- D. Examples of well-formed JSON","notes":"Answer: B. This sets the lens for the day: every source of examples is judged by whether it contains the behaviour the model lacks. Accepted traces mostly do not; corrections and teacher labels do.","minutes":null,"lo":["LO1"]},{"id":"three-sources","n":4,"title":"Three sources become one clean tuning set","kind":"content","session":0,"hash":"3267709f","md":"#### [day2#three-sources] Three sources become one clean tuning set\n\n*The day in one picture*\n\n1. **Traces** 500 pilot requests, 342 accepted\n2. **Corrections** 123 by the registry desk\n3. **Teacher** 300 labels by a larger model\n4. **Clean** template, duplicates, leaks, personal data\n5. **661 examples** with a card and an overlap report\n\nEach lab starts from a supplied file, so the four can be done in any order and nobody waits for a neighbour.","notes":"Outcome 2 names every step on this slide. The evidence it asks for is the dataset with its card and an overlap report against the test set: Lab 2.4 writes the report, Lab 4.4 the card. Numbers are from the course's solution run with the stand-in models.","minutes":null,"lo":["LO2"]},{"id":"s1","n":5,"title":"Tuning data from traces and corrections","kind":"section","session":1,"hash":"ab77c348","md":"#### [day2#s1] Tuning data from traces and corrections\n\n*Session 1*\n\n- Read a trace and say which label, if any, it carries\n- Join staff corrections to traces and reject corrections the interface refuses\n- Write tuning examples in chat format with a tool call","notes":"","minutes":null,"lo":["LO2"]},{"id":"trace-anatomy","n":6,"title":"A trace is a request, the model's answer and what a person did next","kind":"content","session":1,"hash":"3ffefbcd","md":"#### [day2#trace-anatomy] A trace is a request, the model's answer and what a person did next\n\n*The raw material*\n\n- request: نريد التجديد لمدة سنة واحدة. سجلنا التجاري 4067281583.\n- Qayd: `{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4067281583\", \"years\": 2}}`\n- registry desk: status: corrected\n- correction: `{\"name\": \"renew_membership\", \"arguments\": {\"cr_number\": \"4067281583\", \"years\": 1}}`\n\nThe request asks for one year (سنة واحدة). Qayd wrote two. The desk's correction is the label.","notes":"AE-303 treats traces as the raw material of evaluation; here the same traces are the raw material of training. Ask: which of the four lines would you train on? The request and the correction. Qayd's own wrong answer is never a training target, but it tells you which behaviour to look for in other traces.","minutes":null,"lo":["LO2"]},{"id":"three-statuses","n":7,"title":"Accepted, corrected, abandoned: three statuses, three kinds of label","kind":"content","session":1,"hash":"2db34ef0","md":"#### [day2#three-statuses] Accepted, corrected, abandoned: three statuses, three kinds of label\n\n*What label does a trace carry?*\n\n| Status | Traces | The label | What it can teach |\n| --- | --- | --- | --- |\n| Accepted | 342 | Qayd's own output | The format, again. Nothing about its failures |\n| Corrected | 123 | The desk's call | The behaviour Qayd lacks |\n| Abandoned | 35 | None | Nothing, until someone labels it |\n\n> **Abandoned traces are not random.** The desk gave up on the hardest requests. Leaving them out makes the tuning set easier than production.","notes":"Counts from Lab 2.1 on the supplied 500 traces. Selection bias is the quiet problem of trace-based data: what gets labelled depends on what people bothered to fix. The dataset card says so in its limits.","minutes":null,"lo":["LO2"]},{"id":"accepted-is-not-correct","n":8,"title":"\"Accepted\" means nobody objected, not that the call was right","kind":"content","session":1,"hash":"226d80b1","md":"#### [day2#accepted-is-not-correct] \"Accepted\" means nobody objected, not that the call was right\n\n*The first trap*\n\n**8 of 342** accepted traces carry a wrong call (the generator's answer key)\n\n- A rule check finds **2** of them: the number in the call is not in the request\n- The other 6 pass every check: valid, plausible, wrong\n- In your own project there is no answer key: only an audit of a sample tells you the rate","notes":"The eight are planted. Three quarters of the examples from traces are accepted ones, so their error rate matters more than the corrections'. Label noise of two or three percent rarely stops a model from learning; it does put a ceiling on what the test can show, and it teaches the specific wrong decisions that were accepted.","minutes":null,"lo":["LO2"]},{"id":"corrections-have-errors","n":9,"title":"A correction is typed by a person at a busy desk","kind":"content","session":1,"hash":"53609674","md":"#### [day2#corrections-have-errors] A correction is typed by a person at a busy desk\n\n*The second trap*\n\n| What the desk typed | What the registry says |\n| --- | --- |\n| `\"cr_number\": \"403158269\"` | not 10 Western digits |\n| `\"city\": \"الطائف\"` | a value outside the list: the interface takes \"Taif\" |\n| `\"cr_number\": \"٤٠٥٠٥٢٢٦٨٧\"` | not 10 Western digits |\n\n> **Validate every label against the tool interface.** 12 of the 123 corrections are rejected. A label the tool would refuse is not a label.","notes":"The desk knew what it meant in every one of the twelve. Do not repair them silently: a repair is your guess entering the training set without a source. Send them back, or drop them and count them. The lab asserts that the count is twelve.","minutes":null,"lo":["LO2"]},{"id":"validate-labels","n":10,"title":"The tool's own schema is the first reviewer of every label","kind":"content","session":1,"hash":"41f13944","md":"#### [day2#validate-labels] The tool's own schema is the first reviewer of every label\n\n*Lab 2.1 · task 3*\n\n```python\n# file: Lab 2.1\nfor trace in traces:\n    call = labels[trace[\"id\"]]          # Qayd's output, or the desk's call\n    if call is None:\n        continue                        # abandoned: no label\n    errors = C.schema_errors(call)      # what the registry would refuse\n    if errors:\n        rejected.append((trace, call, errors))\n    else:\n        kept.append((trace, call))\n```","notes":"C.schema_errors checks the tool name, the required arguments, their types, the lists of allowed values and the shape of a registration number. It is the same function the grader uses, which is the point: training labels and evaluation share one definition of a valid call.","minutes":null,"lo":["LO2"]},{"id":"chat-format-example","n":11,"title":"A tuning example is a short conversation with a tool call","kind":"content","session":1,"hash":"580dea81","md":"#### [day2#chat-format-example] A tuning example is a short conversation with a tool call\n\n*Lab 2.1 · task 4*\n\n```json\n// file: examples_traces.jsonl\n{\"id\": \"R-0412\", \"source\": \"correction\", \"lang\": \"ar\",\n \"messages\": [\n  {\"role\": \"user\", \"content\": \"نريد التجديد لمدة سنة واحدة. سجلنا التجاري 4067281583.\"},\n  {\"role\": \"assistant\", \"content\": \"\",\n   \"tool_calls\": [{\"type\": \"function\", \"function\": {\n       \"name\": \"renew_membership\",\n       \"arguments\": {\"cr_number\": \"4067281583\", \"years\": 1}}}]}]}\n```\n\nMessages and `tool_calls`, not a rendered string: the model's template does the rendering (session 3). `source` stays with every row.","notes":"This is the structure chat templates in Transformers take and the structure a server receives. Keeping the source on every row costs nothing now and pays three times: the card's counts, the corrections-only adapter of Lab 3.4, and the question \"which source taught it that?\" on Day 4.\n\nSources: Transformers documentation, chat templates.","minutes":null,"lo":["LO2"]},{"id":"counts-are-the-card","n":12,"title":"What you dropped is the first paragraph of the dataset card","kind":"content","session":1,"hash":"7fe98871","md":"#### [day2#counts-are-the-card] What you dropped is the first paragraph of the dataset card\n\n*Lab 2.1 · task 5*\n\n| Item | Value |\n| --- | --- |\n| Kept from accepted traces | 342 |\n| Kept from corrections | 111 |\n| Abandoned, no label | 35 |\n| Corrections rejected | 12 |\n\n500 traces, 453 examples. Three quarters of them are what Qayd already does.","notes":"The last sentence is the motivation for session 2. If 342 of 453 examples repeat current behaviour, the set is weak exactly where the model is weak. The corrections are precious and few; the teacher adds volume where it is needed.","minutes":null,"lo":["LO2"]},{"id":"check-traces","n":13,"title":"Which rows enter the tuning set?","kind":"quiz","session":1,"hash":"35f7a785","md":"#### [day2#check-traces] Which rows enter the tuning set?\n\n*Checkpoint*\n\n**Question:** A corrected trace has the desk's call `{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4031582699\", \"field\": \"city\", \"value\": \"الدمام\"}}`. The interface lists cities in English. What do you do with it?\n\n- A. Keep it: a human correction is always right\n- B. Change the value to \"Dammam\" and keep it as a correction\n- C. Drop it and count it, or send it back to the desk\n- D. Replace it with Qayd's original output","notes":"Answer: C. B is tempting and sometimes right in practice, as a separate, named source (\"repaired by the engineer\") with its own review. What is not acceptable is a silent repair.","minutes":null,"lo":["LO2"]},{"id":"lab-2-1","n":14,"title":"Traces to examples","kind":"lab","session":1,"hash":"8f6753b7","md":"#### [day2#lab-2-1] Traces to examples\n\nLab 2.1 · 25 min\n\nTurn 500 pilot traces and the registry desk's corrections into chat-format examples: keep accepted calls, apply corrections, validate every label against the tool interface and count what was dropped.\n\n[D2_1_traces_corrections.ipynb](https://sdaiaacademy.github.io/ae-310/labs/D2_1_traces_corrections.ipynb)\n\n- [ ] Read the traces and their statuses (4 min)\n- [ ] Join the corrections to the traces (5 min)\n- [ ] Validate every label against the tool interface (7 min)\n- [ ] Write chat-format examples (5 min)\n- [ ] Count what was kept and dropped (4 min)\n- [ ] ✱ Stretch: Find accepted traces whose call disagrees with the request text","notes":"The lab asserts its counts against the supplied reference, so a wrong join shows at once. Typical problem: parsing the output of corrected traces (the label is the desk's call, not Qayd's output). The stretch finds two of the eight accepted-and-wrong traces with one rule. Supplied state: data/traces_500.jsonl and data/corrections.jsonl; nothing from Day 1 is needed.","minutes":null,"lo":[]},{"id":"s2","n":15,"title":"Teacher generation and verifier filtering","kind":"section","session":2,"hash":"7ec90836","md":"#### [day2#s2] Teacher generation and verifier filtering\n\n*Session 2*\n\n- Generate labels with a larger model under frozen instructions\n- Filter teacher outputs with schema checks and rule checks\n- Measure yield and estimate the errors a verifier lets through","notes":"","minutes":null,"lo":["LO2"]},{"id":"why-a-teacher","n":16,"title":"A larger model can label requests nobody corrected","kind":"content","session":2,"hash":"68ef4178","md":"#### [day2#why-a-teacher] A larger model can label requests nobody corrected\n\n*Labels for what the desk never saw*\n\n- The pilot left **900 requests** with no label at all\n- On Day 1 the larger model was right on **94 in 100** with the frozen instructions\n- Its labels are cheap, fast and in volume, where staff time is none of the three\n\n- **The price.** It is wrong on about 6 in 100, and whatever enters the set is what the student learns. A teacher needs a **verifier**.","notes":"This is data distillation: the student learns from the teacher's outputs. Session 3.4 returns to it as a method; today it is a data source like the other two, with its own error profile. The stand-in teacher's error rate was written into the script; a real teacher's must be measured.","minutes":null,"lo":["LO2"]},{"id":"teacher-same-format","n":17,"title":"Same output format as the student, and only data that may leave","kind":"content","session":2,"hash":"8648dd93","md":"#### [day2#teacher-same-format] Same output format as the student, and only data that may leave\n\n*Two conditions before you call the teacher*\n\n- **Format.** The teacher gets the frozen instructions and examples. Its label must be the exact text the student has to produce, or the student learns someone else's format.\n- **Placement.** The pool in the lab is synthetic. Real members' requests are Restricted: a hosted teacher may not see them. Run the teacher on your own servers, or label masked and synthetic requests only.\n\n> **The teacher's terms count too.** Its licence and its provider's conditions on training another model with its outputs belong in yesterday's licence table.","notes":"The placement card is the responsible-use point of the session and it is easy to skip in a lab where everything is synthetic. Say it plainly: the requirement that made the chamber choose a small model also forbids sending the real traces to a hosted teacher.","minutes":null,"lo":["LO2"]},{"id":"verifier-two-layers","n":18,"title":"A verifier has two layers: the schema, then rules against the request","kind":"content","session":2,"hash":"51b32fa0","md":"#### [day2#verifier-two-layers] A verifier has two layers: the schema, then rules against the request\n\n*What stands between the teacher and the set*\n\n1. **Teacher output** 300\n2. **Schema** would the registry accept it? 6 rejected\n3. **Rules** does it agree with the request? 1 rejected\n4. **Kept** 293\n\n> **A schema knows the interface, not the request.** `\"cr_number\": \"4000000000\"` is a valid argument and an invention. Only a rule that reads the request can tell.","notes":"Counts from Lab 2.2 with the stand-in teacher. Verifiers can also be models (a second model judging the first); AE-303 covers calibrating such a grader. Code checks come first because they are free, deterministic and explainable.","minutes":null,"lo":["LO2"]},{"id":"rule-check-code","n":19,"title":"A rule check compares the call with the text it claims to answer","kind":"content","session":2,"hash":"234bda55","md":"#### [day2#rule-check-code] A rule check compares the call with the text it claims to answer\n\n*Lab 2.2 · task 3*\n\n```python\n# file: Lab 2.2\nnumbers = CR.findall(C.western_digits(text))   # numbers the request contains\nargs = call[\"arguments\"]\nif \"cr_number\" in args and args[\"cr_number\"] not in numbers:\n    errors.append(\"the registration number is not in the request\")\nif call[\"name\"] == \"escalate_to_staff\" and args.get(\"reason\") == \"missing_cr\" and numbers:\n    errors.append(\"escalated as missing although the request gives a number\")\nif call[\"name\"] == \"create_membership\" and args.get(\"company_name\", \"\") not in text:\n    errors.append(\"the company name is not in the request\")\n```","notes":"Each rule encodes one sentence a registry officer would say. Write rules for what must be true of every right answer, and test each rule for false alarms: a rule that rejects right answers silently removes a kind of example. The stretch shows one such rule.","minutes":null,"lo":["LO2"]},{"id":"verifier-blind-spot","n":20,"title":"Valid, consistent with the request, and wrong","kind":"content","session":2,"hash":"716f6120","md":"#### [day2#verifier-blind-spot] Valid, consistent with the request, and wrong\n\n*What passes*\n\n| The teacher's error | Schema | Rules |\n| --- | --- | --- |\n| Takes the partner's registration number | passes | passes: the number is in the request |\n| Renews where a certificate was asked for | passes | passes |\n| Writes two years for \"one year\" | passes | passes |\n| Invents a registration number | passes | **caught** |\n| Answers in prose | **caught** |  |","notes":"The top three rows are decisions. To catch them a verifier would have to make the decision itself, which is the task. This is the honest limit of filtering: it removes malformed and inconsistent labels, not wrong judgements. Those are found by people, on a sample.","minutes":null,"lo":["LO2"]},{"id":"yield-is-not-quality","n":21,"title":"Yield says how much passed, not whether it is right","kind":"content","session":2,"hash":"fa4c1df9","md":"#### [day2#yield-is-not-quality] Yield says how much passed, not whether it is right\n\n*Lab 2.2 · tasks 4 and 5*\n\n- **97.7%** yield: 293 of 300 kept\n- **8** wrong labels among the 293 kept (answer key): the verifier caught 7 of 15\n- **0 of 30** found by the desk's audit, which allows up to 11%\n\n> **For the card:** \"audit of 30 kept examples, 0 errors, 95% upper bound 11%\", and the kinds of error the verifier cannot see.","notes":"The audit is the lesson. Zero in thirty feels like proof and is not: the Wilson upper bound is 11.4%. The true rate here is 2.7%, known only because the data is synthetic. To bound an error rate below 3% with zero errors found you need an audit of about 125 examples. Ask the room how many their team audits.","minutes":null,"lo":["LO2"]},{"id":"check-verifier","n":22,"title":"What did the verifier prove?","kind":"quiz","session":2,"hash":"cdb2912c","md":"#### [day2#check-verifier] What did the verifier prove?\n\n*Checkpoint*\n\n**Question:** A teacher labelled 1,000 requests. Schema and rule checks kept 960. Nobody has read any of them. What can you state about the 960?\n\n- A. They are 96% accurate\n- B. They contain no errors, because the bad ones were rejected\n- C. They cannot be used until every one is read by staff\n- D. They are valid and consistent with their requests; their error rate is unknown until a sample is audited","notes":"Answer: D. If the room picks A, ask what the 4% that failed tells you about the 96% that passed. Nothing.","minutes":null,"lo":["LO2"]},{"id":"lab-2-2","n":23,"title":"Teacher and verifier","kind":"lab","session":2,"hash":"3be89846","md":"#### [day2#lab-2-2] Teacher and verifier\n\nLab 2.2 · 25 min\n\nLabel 300 unlabelled requests with the larger model, filter the outputs with schema and rule checks, and measure the yield and the errors that still pass.\n\n[D2_2_teacher_filter.ipynb](https://sdaiaacademy.github.io/ae-310/labs/D2_2_teacher_filter.ipynb)\n\n- [ ] Label 300 requests with the larger model (4 min)\n- [ ] Schema checks (5 min)\n- [ ] Two rule checks against the request (8 min)\n- [ ] Yield, and what was rejected (4 min)\n- [ ] Audit 30 kept examples (4 min)\n- [ ] ✱ Stretch: Add a third rule and measure whether it rejects a right answer","notes":"With a key, the 300 teacher calls are within a free daily quota only on an account with credits; otherwise the stand-in answers and the lab asserts the supplied counts. Typical problem in task 3: comparing the number before converting Arabic-Indic digits, which rejects right answers. The pool is supplied; nothing from Lab 2.1 is needed.","minutes":null,"lo":[]},{"id":"s3","n":24,"title":"Chat templates and tool-call formats","kind":"section","session":3,"hash":"06abff1b","md":"#### [day2#s3] Chat templates and tool-call formats\n\n*Session 3*\n\n- Render a conversation with a model's own chat template\n- Find formatting faults that harm training: a turn that never ends, a foreign tool-call format, unmasked labels\n- Check rendered examples token by token before training","notes":"","minutes":null,"lo":["LO2"]},{"id":"model-sees-one-string","n":25,"title":"The model never sees your messages: it sees one string","kind":"content","session":3,"hash":"55037573","md":"#### [day2#model-sees-one-string] The model never sees your messages: it sees one string\n\n*What the model actually reads*\n\n```text\n# file: rendered by the chat template of the course model\n\u003c|im_start|>user\nنأمل إرسال شهادة العضوية للسجل التجاري 4029184372.\u003c|im_end|>\n\u003c|im_start|>assistant\n\u003ctool_call>\n{\"name\": \"issue_certificate\", \"arguments\": {\"cr_number\": \"4029184372\", \"kind\": \"membership\"}}\n\u003c/tool_call>\u003c|im_end|>\n```\n\nRole markers, an end-of-turn token, a wrapper for the call. Every one of these is a convention of **this** model, written in its template.","notes":"Printed in Lab 2.3, task 1. The template is a small Jinja program stored with the tokeniser. Transformers applies it with apply_chat_template; a server applies the same file. If participants did the pre-work they have seen the template of a real model and can say where its tool calls go.\n\nSources: Transformers documentation, chat templates.","minutes":null,"lo":["LO2"]},{"id":"template-is-part-of-model","n":26,"title":"The chat template is part of the model","kind":"content","session":3,"hash":"50831009","md":"#### [day2#template-is-part-of-model] The chat template is part of the model\n\n*The durable idea*\n\n- The base model was trained on strings in exactly this shape\n- Your adapter will be served strings in exactly this shape\n- So train on strings in exactly this shape: **use the template, do not rewrite it**\n\n- **What goes wrong.** A hand-written renderer trains \"fine\": the loss falls, because the model learns whatever text it is given. The fault shows in production, as a format nobody sends.","notes":"A falling loss is evidence that training ran, never that the text was right. This is why the lab compares strings character by character before any training step.","minutes":null,"lo":["LO2"]},{"id":"generation-prompt","n":27,"title":"The server sends the prompt; training adds the answer","kind":"content","session":3,"hash":"c9da9f3f","md":"#### [day2#generation-prompt] The server sends the prompt; training adds the answer\n\n*Two renderings of one example*\n\n- **Prompt.** `add_generation_prompt=True`: the request, then the marker that opens the assistant's turn. The model writes what follows.\n- **Full.** The whole conversation, the assistant's turn and its end-of-turn token included. The full text must **start with** the prompt, character for character.\n\n> **That prefix property is what makes the label mask possible:** everything up to the end of the prompt is context, everything after it is the target.","notes":"The lab asserts full.startswith(prompt). When that assertion fails with a real model, the usual cause is a template that inserts something different with and without the generation prompt, for instance a reasoning block. Then the mask must be built from the template's own output, not from string lengths.","minutes":null,"lo":["LO2"]},{"id":"tool-call-formats-differ","n":28,"title":"Two model families, two ways to write the same call","kind":"content","session":3,"hash":"02cb0d62","md":"#### [day2#tool-call-formats-differ] Two model families, two ways to write the same call\n\n*Tool-call formats*\n\n##### Qwen3: JSON in tags\n\n```text\n\u003ctool_call>\n{\"name\": \"get_weather\", \"arguments\": {\"city\": \"Paris\"}}\n\u003c/tool_call>\n```\n\n##### LFM3: an XML form in tags\n\n```text\n\u003ctool_call>\n\u003cfunction=get_weather>\n\u003cparameter=city>\nParis\n\u003c/parameter>\n\u003c/function>\n\u003c/tool_call>\n```\n\nChange the base model and the tuning set must be rendered again. Store messages, never rendered strings.","notes":"Both forms are from the models' own cards, read on 15 November 2026. The same tags, different content: a parser written for one silently fails on the other. This is why yesterday's examples were stored as messages with tool_calls.\n\nSources: Qwen3-0.6B model card; LFM3-1.7B model card.","minutes":null,"lo":["LO2"]},{"id":"three-faults","n":29,"title":"Three faults that train \"fine\" and fail in service","kind":"content","session":3,"hash":"4399b7a2","md":"#### [day2#three-faults] Three faults that train \"fine\" and fail in service\n\n*Lab 2.3*\n\n- **1 · The turn never ends.** No end-of-turn token after the answer. The adapter never learns to stop and writes to the token limit on every request.\n- **2 · A foreign call format.** `str(call)`: single quotes, no tags. The model is taught the Python-dictionary failure of Lab 1.1.\n- **3 · Loss on everything.** Labels equal to the input. A third of the signal goes into predicting members' requests instead of the answer.","notes":"All three are in the colleague's renderer in the lab, and all three are common in real projects. Fault 1 also raises cost: a model that does not stop bills the maximum output on every request. Fault 3 on the lab's example: 82 tokens, 56 of them in the answer; unmasked, 32% of the loss is spent on the request.","minutes":null,"lo":["LO2"]},{"id":"label-mask","n":30,"title":"The loss is taken on the assistant's turn only","kind":"content","session":3,"hash":"725b96d5","md":"#### [day2#label-mask] The loss is taken on the assistant's turn only\n\n*Fault 3, fixed*\n\n```python\n# file: Lab 2.3 · task 4\nprompt_ids = tok(prompt, add_special_tokens=False)[\"input_ids\"]\nfull_ids   = tok(full,   add_special_tokens=False)[\"input_ids\"]\nlabels = [-100] * len(prompt_ids) + full_ids[len(prompt_ids):]\n#         ignored by the loss       the tool call and the end of turn\n```\n\n> **Why it matters beyond efficiency.** A model trained to predict requests is trained to reproduce what members wrote. Masking the prompt is also a data-protection measure.","notes":"-100 is the index PyTorch's cross-entropy ignores. Libraries offer this as an option (training on completions only); know whether yours does it, and check one example by decoding the supervised tokens, as the lab does. add_special_tokens=False because the template already wrote every special token: a tokeniser that adds its own start token would double it.","minutes":null,"lo":["LO2"]},{"id":"round-trip-check","n":31,"title":"Encode, decode, compare: does the text survive the tokeniser?","kind":"content","session":3,"hash":"972f569d","md":"#### [day2#round-trip-check] Encode, decode, compare: does the text survive the tokeniser?\n\n*The check people skip*\n\n**written:** الرد على owner289@member.example أو الاتصال على 0509022407.\n\n**decoded (weak example):** الرد على owner289\u003c|unk|>member.example أو الاتصال على 0509022407.\n\nThe course tokeniser has no token for the @ sign. Masking removes the address before the tokeniser sees it (Lab 2.4), and the lab's fixed renderer round-trips 50 of 50 masked examples.","notes":"A real finding from building this course: the first version of the lab rendered unmasked examples and some of them failed this check. With a real model's tokeniser the usual culprits are normalised characters, stripped spaces before special tokens and unknown symbols in a small vocabulary. Run the check on every example before the first training step.","minutes":null,"lo":["LO2"]},{"id":"check-template","n":32,"title":"It answers, and then it keeps writing","kind":"quiz","session":3,"hash":"0a82ced4","md":"#### [day2#check-template] It answers, and then it keeps writing\n\n*Checkpoint*\n\n**Question:** A freshly tuned adapter produces the correct tool call and then continues with more calls and stray text until the token limit. The base model never did this. Where do you look first?\n\n- A. The rendered training text: is there an end-of-turn token after the assistant's answer?\n- B. The learning rate: it was too high\n- C. The server: raise the stop-token limit\n- D. The tuning set: it needs more examples","notes":"Answer: A. Demonstration if time allows: print the last ten tokens of one rendered training example. If the end-of-turn token is not among them, the diagnosis is done.","minutes":null,"lo":["LO2"]},{"id":"lab-2-3","n":33,"title":"Three formatting faults","kind":"lab","session":3,"hash":"4264c0d7","md":"#### [day2#lab-2-3] Three formatting faults\n\nLab 2.3 · 25 min\n\nRender examples with the model's chat template, then find and fix three faults in a hand-written renderer that would harm training.\n\n[D2_3_chat_templates.ipynb](https://sdaiaacademy.github.io/ae-310/labs/D2_3_chat_templates.ipynb)\n\n- [ ] Render one example with the model's template (5 min)\n- [ ] Fault 1: the turn that never ends (5 min)\n- [ ] Fault 2: a tool call the template would not write (6 min)\n- [ ] Fault 3: a loss on the whole conversation (6 min)\n- [ ] Check the fixed renderer on 50 examples (3 min)\n- [ ] ✱ Stretch: Render the same example with a second model's template and list the differences","notes":"No model is loaded and nothing is trained: the lab uses the tokeniser of the course model, which ships in the repository with a chat template. The stretch fetches the tokeniser files of the hub model (a few megabytes, no weights); where the network blocks the Hub it says so and goes on. Supplied state: data/tuning/train.jsonl.","minutes":null,"lo":[]},{"id":"s4","n":34,"title":"Deduplication, decontamination and personal data","kind":"section","session":4,"hash":"e9980bc2","md":"#### [day2#s4] Deduplication, decontamination and personal data\n\n*Session 4*\n\n- Remove near-duplicates with a stated rule and threshold\n- Report overlap with the test set, separating leaks from template collisions\n- Scan a tuning set for personal data and mask it","notes":"","minutes":null,"lo":["LO2"]},{"id":"three-silent-problems","n":35,"title":"Duplicates inflate, leaks flatter, personal data does not belong in weights","kind":"content","session":4,"hash":"9f17cf75","md":"#### [day2#three-silent-problems] Duplicates inflate, leaks flatter, personal data does not belong in weights\n\n*What a loss curve will never show*\n\n- **Near-duplicates.** The same request, sent twice with \"Hello\" in front. The set looks larger than it is, and one member's wording is over-weighted.\n- **Test-set overlap.** A test request in the tuning set. Every score on Day 4 would be too high, by an unknown amount.\n- **Personal data.** Names, mobile numbers, identity numbers in free text. Not needed to choose a tool, and a model can reproduce what it was trained on.","notes":"None of the three raises an error or bends a curve. They are found only by looking for them, which is why outcome 2 lists each by name and asks for a report.","minutes":null,"lo":["LO2"]},{"id":"near-duplicate-rule","n":36,"title":"Near-duplicate: one text's three-word runs are contained in the other's","kind":"content","session":4,"hash":"f3322f75","md":"#### [day2#near-duplicate-rule] Near-duplicate: one text's three-word runs are contained in the other's\n\n*A rule you can state in one sentence*\n\n**kept:** Kindly extend the membership of CR 4013583134 by 1 year.\n\n**removed:** Kindly extend the membership of CR 4013583134 by 1 year. Regards.\n\n- Normalise: lower case, Western digits, no punctuation\n- Compare runs of three words; **containment** = shared runs divided by the smaller set\n- Near-duplicate at 0.9 or more, compared only within the same registration number","notes":"Containment rather than plain overlap, because a re-sent request is the original plus a greeting: the smaller text is wholly inside the larger. The lab removes 67 near-duplicates from 746 rows. Embedding similarity is the heavier alternative; start with a rule you can explain to the data protection officer.","minutes":null,"lo":["LO2"]},{"id":"threshold-tradeoff","n":37,"title":"At 0.8 the rule merged two different requests","kind":"content","session":4,"hash":"bbf89d9f","md":"#### [day2#threshold-tradeoff] At 0.8 the rule merged two different requests\n\n*A threshold is a decision, and it has a cost*\n\n**kept at 0.8:** نرجو إرسال قائمة بجميع الأعضاء العاملين في الاستشارات.\n\n**removed at 0.8 (weak example):** نرجو إرسال قائمة بجميع الأعضاء العاملين في الأجهزة الطبية.\n\nTwo short requests that differ only in the activity they ask about: five of the six word runs of the shorter one are shared. At 0.8 they count as one; at 0.9 both stay. The lower threshold removed 82 rows, the higher one 67.\n\n> **Read what a threshold removes** before you accept it. Print ten removed pairs; if one is not a duplicate, the threshold is wrong for your data.","notes":"This happened while the course was being built: the first threshold was 0.8 and the first removed pair printed was this one. Short texts are the weak point of any shingle rule, because one changed word is a large share of a short text. The report states the rule and the threshold so that a reader can disagree.","minutes":null,"lo":["LO2"]},{"id":"leak-or-collision","n":38,"title":"A leak is removed; a template collision is kept and counted","kind":"content","session":4,"hash":"5c4c8c90","md":"#### [day2#leak-or-collision] A leak is removed; a template collision is kept and counted\n\n*Decontamination*\n\n|  | Leak | Template collision |\n| --- | --- | --- |\n| What it is | A near-copy of a test request about the same registration number | A short request with no number that many members write alike |\n| Example | \"We are Al-Salam Supplies Est. from Dammam … CR 4001995900\" | \"We need a membership certificate as soon as possible.\" |\n| In the lab | 18 removed | 31 kept |\n| Why | A test case inside the training data | Removing it would delete a kind of request from training |","notes":"The split by company was applied to the test set and not to the pilot traces: members of test-set companies wrote again during the pilot. 23 near-copies were planted in the 500 traces; 18 reach this step with a registration number and are removed, the others have no number or were dropped earlier. The distinction between leak and collision is a judgement: state it in the report and let the reader decide whether 31 collisions worry them.","minutes":null,"lo":["LO2"]},{"id":"personal-data-scan","n":39,"title":"Patterns find numbers and addresses; names need a list","kind":"content","session":4,"hash":"d31c0800","md":"#### [day2#personal-data-scan] Patterns find numbers and addresses; names need a list\n\n*Lab 2.4 · tasks 3 and 4*\n\n| Item | Value |\n| --- | --- |\n| Mobile numbers | 248 |\n| Names (from the registry) | 192 |\n| Identity numbers | 71 |\n| E-mail addresses | 56 |\n\n- Found in 661 rows, then masked: `[PHONE]`, `[NAME]`, `[ID]`, `[EMAIL]`\n- A second scan after masking finds 0\n- A registration number identifies a company, not a person, and stays\n\n> **\"0 found\" is a claim about the scan.** A name that is not on the registry's list passes. The card says which kinds and which list.","notes":"The Personal Data Protection Law defines personal data by what can identify a person and lists names, identification numbers and contact numbers among its examples. The synthetic requests are shaped that way on purpose. All values are generated; none belongs to a person.\n\nSources: Personal Data Protection Law.","minutes":null,"lo":["LO2"]},{"id":"mask-both-sides","n":40,"title":"Mask in training and in service, with the same function","kind":"content","session":4,"hash":"bed7fe77","md":"#### [day2#mask-both-sides] Mask in training and in service, with the same function\n\n*One function, two places*\n\n1. **Request** \"… Contact: Fares Al-Sudairy, mobile 0525658054, ID 1168502369.\"\n2. **Mask** the same code in the data pipeline and in front of the server\n3. **Model** \"… Contact: [NAME], mobile [PHONE], ID [ID].\"\n\n> **The model sees in service what it saw in training.** Mask only the tuning set and production sends it digits it never met.","notes":"The course's tuning.render applies the mask to every request, in training, in evaluation and in the server of Lab 4.3. The example person and numbers are synthetic. Masking before the model also means the logs of the model server hold no personal data, which Anoud will ask about.","minutes":null,"lo":["LO2"]},{"id":"cleaning-changes-mix","n":41,"title":"Cleaning changed the mix: escalations fell from 19% to 16%","kind":"content","session":4,"hash":"5c3cf005","md":"#### [day2#cleaning-changes-mix] Cleaning changed the mix: escalations fell from 19% to 16%\n\n*The stretch of Lab 2.4*\n\n| Item | Value |\n| --- | --- |\n| Escalations before | 145 of 746 |\n| Escalations after | 108 of 661 |\n\n- Requests with no number are short and alike, so deduplication removes more of them\n- Escalation is the behaviour Qayd lacks most\n- Whether it still learns to escalate is measured on Day 4, on that slice","notes":"Every cleaning step is also a sampling step. This is why the dataset card reports the set by source, by language and by kind of call after cleaning, and why Day 4 evaluates by slice.","minutes":null,"lo":["LO2"]},{"id":"overlap-report","n":42,"title":"The overlap report says what was removed, by which rule","kind":"content","session":4,"hash":"bd7bb6ac","md":"#### [day2#overlap-report] The overlap report says what was removed, by which rule\n\n*Evidence for outcome 2*\n\n| Step | Rows |\n| --- | --- |\n| Raw examples (traces, corrections, teacher) | 746 |\n| Near-duplicates removed | 67 |\n| Leaks from the test set removed | 18 |\n| Template collisions kept | 31 |\n| Tuning set: 295 traces, 92 corrections, 274 teacher; 336 Arabic, 325 English | 661 |\n\nRule: containment of three-word runs at 0.9 or more, within the same registration number.","notes":"This table is artifacts/2.4/overlap_report.json. The supplied data/tuning/train.jsonl is exactly these 661 rows, and the lab asserts that a participant's cleaned set equals it. Tomorrow every lab trains on that file.","minutes":null,"lo":["LO2"]},{"id":"check-overlap","n":43,"title":"Leak or not?","kind":"quiz","session":4,"hash":"70c5e2b6","md":"#### [day2#check-overlap] Leak or not?\n\n*Checkpoint*\n\n**Question:** Your overlap check flags a tuning row: \"We want to renew for two years. Thank you.\" The same sentence is in the test set. Neither names a company or a number. What goes in the report?\n\n- A. A leak: remove it, and remove every row like it\n- B. A template collision: keep it, and report how many there are\n- C. Nothing: generic sentences need no mention\n- D. Remove the sentence from the test set instead","notes":"Answer: B. A cautious team may also report the test score with and without the collided test requests; that is a good capstone habit.","minutes":null,"lo":["LO2"]},{"id":"lab-2-4","n":44,"title":"Clean the set","kind":"lab","session":4,"hash":"31774eba","md":"#### [day2#lab-2-4] Clean the set\n\nLab 2.4 · 25 min\n\nRemove near-duplicates from the raw examples, find and remove overlap with the test set, scan for personal data, mask it and write the overlap report.\n\n[D2_4_dedup_pii.ipynb](https://sdaiaacademy.github.io/ae-310/labs/D2_4_dedup_pii.ipynb)\n\n- [ ] Remove near-duplicates (6 min)\n- [ ] Find overlap with the test set (7 min)\n- [ ] Scan for personal data (5 min)\n- [ ] Mask and scan again (4 min)\n- [ ] Write the overlap report (3 min)\n- [ ] ✱ Stretch: Count escalation examples before and after cleaning: what did cleaning change?","notes":"The helper functions (words, shingles, containment, bucket) are written; participants write the three loops. The lab asserts each count and finally that the cleaned set equals the supplied data/tuning/train.jsonl. Typical problem: comparing across buckets, which is slow and flags different companies' requests. Supplied state: data/reference/examples_raw.jsonl, so Labs 2.1 and 2.2 are not needed.","minutes":null,"lo":[]},{"id":"wrap-up","n":45,"title":"Three things to keep","kind":"content","session":4,"hash":"1328e1d5","md":"#### [day2#wrap-up] Three things to keep\n\n*Day 2*\n\n- **Every label has a source and a check.** Accepted, corrected, taught by a larger model. Validate each against the tool, and count what you drop.\n- **Train on the server's string.** The model's own template, an end of turn, a masked prompt. Compare characters before you compare losses.\n- **Clean, and say how.** Duplicates, leaks and personal data, each with a rule a reader can dispute, and the mix after cleaning.","notes":"Data quality carries 25 of the capstone's 100 points, more than training. Ask each table which of today's four checks their current project does not have.","minutes":null,"lo":[]},{"id":"next","n":46,"title":"Day 3 · Train adapters and distil","kind":"content","session":4,"hash":"3ca8b376","md":"#### [day2#next] Day 3 · Train adapters and distil\n\n*Tomorrow*\n\nThe 661 examples meet a model: a low-rank adapter, a 4-bit base, a sweep and a distilled behaviour.\n\n- Guided self-study: open a GPU runtime in Colab once and run the setup check, or decide to train the course model on your laptop\n- Recall from AE-301 what a low-rank adapter adds to a layer: tomorrow starts there","notes":"Tomorrow has two tiers. On a notebook GPU the labs train a small open-weight model; on a processor they train the course's own small model with the same code. Both are supported ways to take the day. Ask who will use which, so that tables can mix.","minutes":null,"lo":[]}],"activities":[{"id":"review-day1-q1","slide":"review-day1","type":"single","prompt":"With the frozen instructions, Qayd still takes a partner company's registration number in some requests. The code table and the schema are in the prompt. Which examples must today's tuning set contain?","options":[{"key":"A","text":"More rows of the activity code table"},{"key":"B","text":"Requests with two registration numbers, labelled with the applicant's own"},{"key":"C","text":"More requests that Qayd already answers correctly"},{"key":"D","text":"Examples of well-formed JSON"}],"correct":[1],"explanation":"A behaviour failure is fixed by examples of the right decision in the situation where the model decides wrongly. Data for tuning is chosen by failure class.","misconceptions":["Adds knowledge the prompt already holds: the failure is a decision, not a missing fact","","Repeats what the model already does right, which teaches the format again and the decision never","Fixes the form of a call whose form is already valid"],"lo":["LO1"]},{"id":"check-traces-q1","slide":"check-traces","type":"single","prompt":"A corrected trace has the desk's call {\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4031582699\", \"field\": \"city\", \"value\": \"الدمام\"}}. The interface lists cities in English. What do you do with it?","options":[{"key":"A","text":"Keep it: a human correction is always right"},{"key":"B","text":"Change the value to \"Dammam\" and keep it as a correction"},{"key":"C","text":"Drop it and count it, or send it back to the desk"},{"key":"D","text":"Replace it with Qayd's original output"}],"correct":[2],"explanation":"The registry would reject the call, so it is not a usable label. Whatever you do with it must be visible in the counts.","misconceptions":["Trusts a person's label over the tool it must call: the model would learn a value the registry refuses","Puts your own guess into the set under the desk's name, with no record of the change","","Uses the model's wrong answer as a training target"],"lo":["LO2"]},{"id":"check-verifier-q1","slide":"check-verifier","type":"single","prompt":"A teacher labelled 1,000 requests. Schema and rule checks kept 960. Nobody has read any of them. What can you state about the 960?","options":[{"key":"A","text":"They are 96% accurate"},{"key":"B","text":"They contain no errors, because the bad ones were rejected"},{"key":"C","text":"They cannot be used until every one is read by staff"},{"key":"D","text":"They are valid and consistent with their requests; their error rate is unknown until a sample is audited"}],"correct":[3],"explanation":"A verifier removes what it can detect. The rate of what it cannot detect is measured by people, on a sample, with an interval.","misconceptions":["Reads yield as accuracy: passing the checks says the labels are well-formed and consistent, not right","Assumes the checks see every error, although a valid, consistent call can be the wrong decision","Discards labels that are mostly right for lack of a measurement that an audit can supply",""],"lo":["LO2"]},{"id":"check-template-q1","slide":"check-template","type":"single","prompt":"A freshly tuned adapter produces the correct tool call and then continues with more calls and stray text until the token limit. The base model never did this. Where do you look first?","options":[{"key":"A","text":"The rendered training text: is there an end-of-turn token after the assistant's answer?"},{"key":"B","text":"The learning rate: it was too high"},{"key":"C","text":"The server: raise the stop-token limit"},{"key":"D","text":"The tuning set: it needs more examples"}],"correct":[0],"explanation":"A model stops because it was shown stopping. If the training text never ends the turn, no setting teaches it to.","misconceptions":["","Treats a formatting fault as an optimisation problem: a lower rate would learn the same wrong text more slowly","Hides the symptom at serving time and pays for the extra tokens on every request","Blames quantity for a fault that every example shares"],"lo":["LO2"]},{"id":"check-overlap-q1","slide":"check-overlap","type":"single","prompt":"Your overlap check flags a tuning row: \"We want to renew for two years. Thank you.\" The same sentence is in the test set. Neither names a company or a number. What goes in the report?","options":[{"key":"A","text":"A leak: remove it, and remove every row like it"},{"key":"B","text":"A template collision: keep it, and report how many there are"},{"key":"C","text":"Nothing: generic sentences need no mention"},{"key":"D","text":"Remove the sentence from the test set instead"}],"correct":[1],"explanation":"The row carries no member's content and is how members really write. It stays, and the count goes in the report so that the reader can judge the test.","misconceptions":["Treats any shared text as a leak and would delete every short, common request from training","","Hides a fact that a reader of the report needs to judge the test","Changes the test set after the fact, which breaks every comparison already made on it"],"lo":["LO2"]}],"ai":{"context":{"course":"../context/course.md","courseJs":"../context/course.js","day":"day2.md","llms":"../llms.txt"},"tasks":[],"tools":[]},"bridge":{"allowedOrigins":[]},"features":{},"strings":{}}</script>
+<script src="../_engine/academy.js"></script>
+</body>
+</html>

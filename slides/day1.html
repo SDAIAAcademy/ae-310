@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en" dir="ltr" data-ax="deck" data-track="ai-engineering">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Day 1 · Decide whether to adapt · Model Adaptation: Fine-Tuning, Distillation and Small Models</title>
+<meta name="generator" content="SDAIA Academy engine 1.0.0">
+<link rel="icon" href="../_engine/icon.svg">
+<link rel="alternate" type="text/markdown" href="day1.md">
+<link rel="describedby" href="../llms.txt">
+<link rel="stylesheet" href="../_engine/academy.css">
+</head>
+<body>
+<div class="deck" data-course="Model Adaptation: Fine-Tuning, Distillation and Small Models" data-track="ai-engineering" data-day="Day 1">
+<section class="slide title" id="title" data-auto="title" data-label="Welcome" data-n="1">
+  <div class="kicker">SDAIA Academy · Model Adaptation: Fine-Tuning, Distillation and Small Models</div>
+  <h1>Decide whether to adapt</h1>
+  <p class="lead mt">Day 1: Sort the failures, freeze the baseline, read the licences and count the cost before any training</p>
+  <div class="meta"><span class="track">AI Engineering Track</span><span>4 teaching days + capstone day</span><span>4 sessions · 4 labs</span><span>AE-310</span></div>
+  <aside class="notes"><p>Welcome. Ask the room one calibrating question: who has fine-tuned a language model, and who can say what it was compared with? Most hands drop at the second half. That gap is this course. Rhythm: four sessions a day, each about 25 minutes of concepts and a 25-minute lab. The entry check (supervised, no AI assistance, on adaptation choices, data faults and memory arithmetic) is taken before session 1.</p></aside>
+</section>
+
+<section class="slide" id="agenda" data-auto="agenda" data-label="Agenda" data-n="2">
+  <div class="kicker">Today</div>
+  <h2>Decide whether to adapt</h2>
+  <div class="agenda"><div class="item"><div><b>Session 1 · Prompt, retrieve, tune or distil</b><small>Four ways to change what a model does, and which failures each one can fix</small></div></div><div class="item"><div><b>Session 2 · The baseline tuning must beat</b><small>A weak prompt flatters tuning: improve the prompt first, then freeze it with its score</small></div></div><div class="item"><div><b>Session 3 · Licences and terms of open-weight models</b><small>Open weights are not one licence: what you may adapt, deploy and distribute depends on the text</small></div></div><div class="item"><div><b>Session 4 · Cost and placement of the options</b><small>What each option costs per thousand requests, and where the data is processed</small></div></div></div>
+</section>
+
+<section class="slide" id="five-days" data-label="The course" data-lo="LO1 LO2 LO3 LO4 LO5 LO6" data-n="3">
+  <div class="kicker">The course in one line per day</div>
+  <h2>Decide, build the data, train, prove it, then defend the decision</h2>
+  <div class="ladder" style="--n:5">
+    <div class="rung c-teal on"><b>Day 1</b>Decide whether to adapt<small>failures, baseline, licence, cost</small></div>
+    <div class="rung c-cyan off"><b>Day 2</b>Data for tuning<small>traces, teacher, templates, cleaning</small></div>
+    <div class="rung c-coral off"><b>Day 3</b>Train adapters and distil<small>16-bit, 4-bit, settings, a behaviour</small></div>
+    <div class="rung c-purple off"><b>Day 4</b>Evaluate and serve<small>paired tests, regressions, load</small></div>
+    <div class="rung c-amber off"><b>Day 5</b>Capstone<small>your own adapted model, defended</small></div>
+  </div>
+  <aside class="notes"><p>Point out the order: a full day passes before any weight changes, and a full day follows training. Most failed fine-tuning projects skipped Day 1 or Day 4. The capstone repeats the whole path on a task each participant chooses in Lab 4.4.</p></aside>
+</section>
+
+<section class="slide" id="case-al-bayraq" data-label="The case" data-lo="LO1" data-n="4">
+  <div class="kicker">The case study · fictional, synthetic data</div>
+  <h2>Al-Bayraq Chamber of Commerce and its assistant, Qayd</h2>
+  <div class="cols cols-2">
+    <ul class="bullets">
+      <li>Members write in <b>Arabic and English</b>: new memberships, renewals, record changes, certificates</li>
+      <li><b>Qayd</b> turns each request into one call to the registry</li>
+      <li>Requests carry personal data and are classified <b>Restricted</b>: they stay on the chamber's own servers</li>
+      <li>So Qayd runs on a <b>small open-weight model</b>, and prompted alone it fails too often</li>
+    </ul>
+    <div class="card c-teal"><h4>The people you work for</h4><p class="small mb0"><b>Maysoon Al-Dabbagh</b> signs the decision. <b>Khuzama Al-Rumaizan</b>'s registry desk corrects Qayd. <b>Jarrah Al-Suhaim</b> owns the one accelerator. <b>Anoud Al-Fuhaid</b> protects the data, <b>Zakariya Al-Mousa</b> reads the licences. You are <b>Dhay Al-Shuwaier</b>, the engineer.</p></div>
+  </div>
+  <aside class="notes"><p>Everything is synthetic: 520 invented companies, invented owners, phone numbers and identity numbers generated with a fixed seed. Say it once and plainly. The placement requirement comes from the chamber's own classification: the national Data Classification Policy defines the levels, and SDAIA's Generative AI Guideline for Government tells entities to keep information classified Restricted or higher out of prompts sent to public tools.</p><p>Sources: Data Classification Policy; Generative AI Guideline for Government (both SDAIA).</p></aside>
+</section>
+
+<section class="slide" id="setup-check" data-label="Setup" data-n="5">
+  <div class="kicker">Before session 1</div>
+  <h2>Setup check: one notebook proves your environment</h2>
+  <div class="cols cols-2">
+    <ul class="bullets">
+      <li>Open <code>labs/00_setup_check.ipynb</code>, in Colab or locally with <code>uv</code></li>
+      <li>It imports every library, reads one data file and loads the course model</li>
+      <li>With a key, it asks each hosted model one question</li>
+      <li>Without a key, a <b>scripted stand-in</b> answers, and every lab says so on its first line</li>
+    </ul>
+    <div class="card c-coral flat"><h4>Two kinds of model in this course</h4><p class="small mb0">Days 1 and 2 <b>call</b> free hosted models. Days 3 and 4 <b>train</b>: the course's own small model on any processor, or an open-weight model on a notebook GPU.</p></div>
+  </div>
+  <aside class="notes"><p>Run it on the projector. Typical problems: no key in the Colab Secrets panel (the stand-in takes over, which is fine for today); a long folder path on Windows (set UV_PROJECT_ENVIRONMENT to a short folder, as the labs README says). The stand-in is a script, not a model: its numbers let every cell run and say nothing about a real model. The numbers on today's slides come from it, because the course was built without a working key; replace them with your room's.</p></aside>
+</section>
+
+<!-- ======================= SESSION 1 ======================= -->
+<section class="slide section" id="s1" data-auto="section" data-session="1" data-n="6">
+  <div class="kicker">Session 1</div>
+  <h1>Prompt, retrieve, tune or distil</h1>
+  <ul class="bullets outcomes"><li>Name what prompting, retrieval, tuning and distillation each change in a system</li><li>Sort the failures of a prompted model into knowledge, format and behaviour</li><li>Assign each failure class to an approach, with counts</li></ul>
+  <div class="sess-no">01</div>
+</section>
+
+<section class="slide" id="four-levers" data-label="Four levers" data-lo="LO1" data-n="7" data-session="1">
+  <div class="kicker">Four ways to change what a model does</div>
+  <h2>Each lever changes a different part of the system</h2>
+  <div class="cols cols-4 gap-s">
+    <div class="card c-teal"><h4>Prompt</h4><p class="small mb0">Changes the <b>instructions</b>. Minutes to try, read again on every request.</p></div>
+    <div class="card c-cyan"><h4>Retrieve</h4><p class="small mb0">Changes what the model <b>is shown</b>: a table, a document, a record.</p></div>
+    <div class="card c-coral"><h4>Tune</h4><p class="small mb0">Changes the <b>weights</b>, from your examples. Days of work, then no extra tokens.</p></div>
+    <div class="card c-purple"><h4>Distil</h4><p class="small mb0">Tuning whose examples come from a <b>larger model</b>.</p></div>
+  </div>
+  <div class="callout tip mt"><b>Order of cost.</b> Try them left to right. Each one you skip is a cheaper fix you never tested.</div>
+  <aside class="notes"><p>The durable idea of the day: adapt only after a stronger prompt fails. Ask who has seen a team fine-tune a model to fix something a schema hint would have fixed. Distillation is a kind of tuning; it gets its own card because where the examples come from changes the licence question (session 3) and the errors you inherit (Day 3).</p></aside>
+</section>
+
+<section class="slide" id="behaviour-not-knowledge" data-label="Behaviour" data-lo="LO1" data-n="8" data-session="1">
+  <div class="kicker">What tuning is good at</div>
+  <h2>Tuning changes behaviour more than knowledge</h2>
+  <div class="cols cols-2">
+    <div class="card c-teal"><h4>Tuning teaches well</h4><ul class="bullets small tight"><li>a format, exactly and every time</li><li>which tool to choose</li><li>when to stop and hand over to a person</li><li>a register, a language, a house style</li></ul></div>
+    <div class="card c-coral"><h4>Tuning teaches badly</h4><ul class="bullets small tight"><li>facts that change: a code table, a fee, a deadline</li><li>facts seen once in the training set</li><li>anything you must be able to correct tomorrow</li></ul></div>
+  </div>
+  <p class="small mt">A fact in the weights cannot be edited, cited or dated. A fact in the context can.</p>
+  <aside class="notes"><p>Use the chamber's activity codes: twelve codes, revised every year. A tuned model can memorise twelve rows, and in January it will still answer with last year's. The course's own small model does memorise them, and Day 4 names that as a limit. Rule of thumb for the room: if the fix is "the model should know X", think retrieval; if it is "the model should do Y", think tuning.</p></aside>
+</section>
+
+<section class="slide" id="narrow-tasks" data-label="Narrow tasks" data-lo="LO1" data-n="9" data-session="1">
+  <div class="kicker">Where a small model belongs</div>
+  <h2>Small models suit narrow tasks, not multi-step work</h2>
+  <table class="t small">
+    <tr><th>A small tuned model fits</th><th>It does not fit</th></tr>
+    <tr><td>One request in, one structured answer out</td><td>A plan of several steps that depend on each other</td></tr>
+    <tr><td>A fixed set of tools and fields</td><td>Tools it has never seen</td></tr>
+    <tr><td>Thousands of similar requests</td><td>Rare requests that each need judgement</td></tr>
+    <tr><td>An answer a program can check</td><td>An answer only an expert can check</td></tr>
+  </table>
+  <div class="callout note mt small"><b>Qayd is on the left.</b> One request, one of five tools, fields a schema can verify. The rare and the odd go to the registry desk through <code>escalate_to_staff</code>.</div>
+  <aside class="notes"><p>The LFM3-1.7B model card says the same of its own model in its own words: designed for tool calling and fine-tuning, not recommended for complex multi-step reasoning. A small model that escalates well is worth more than one that tries everything.</p><p>Sources: LFM3-1.7B model card.</p></aside>
+</section>
+
+<section class="slide" id="request-to-call" data-label="The task" data-lo="LO1" data-n="10" data-session="1">
+  <div class="kicker">The task, once</div>
+  <h2>One request in, exactly one tool call out</h2>
+  <div class="trace s">
+    <div class="ev user"><b>member</b>We moved our head office to Abha. Please update the record of CR 4064749760. Our partner company holds CR 4071506418; do not change their record.</div>
+    <div class="ev call"><b>tool call</b><code>{"name": "update_record", "arguments": {"cr_number": "4064749760", "field": "city", "value": "Abha"}}</code></div>
+    <div class="ev guard"><b>graded by code</b>the same tool and the same arguments as the correct call, or it is wrong</div>
+  </div>
+  <p class="small mt">Five tools: <code>create_membership</code>, <code>renew_membership</code>, <code>update_record</code>, <code>issue_certificate</code>, <code>escalate_to_staff</code>.</p>
+  <aside class="notes"><p>Read the request aloud and ask what could go wrong. Collect answers: the partner's number, Arabic-Indic digits, a code fence around the JSON, renewing instead of updating, no number at all. Every one of those is planted in the data. Exact match is strict on purpose: the registry service will not accept a nearly right call.</p></aside>
+</section>
+
+<section class="slide" id="three-failure-classes" data-label="Three classes" data-lo="LO1" data-n="11" data-session="1">
+  <div class="kicker">Sorting failures</div>
+  <h2>Three classes, because three different levers fix them</h2>
+  <table class="t small">
+    <tr><th>Class</th><th>What you see</th><th>Example in Qayd's answers</th></tr>
+    <tr><td><b>Knowledge</b></td><td>Right call, wrong fact the model was never given</td><td><code>"activity_code": "4711"</code> for information technology</td></tr>
+    <tr><td><b>Format</b></td><td>No call that parses, or one the interface rejects</td><td>a sentence, a code fence, a Python dictionary, digits left as ٤٠…</td></tr>
+    <tr><td><b>Behaviour</b></td><td>A valid call that is the wrong decision</td><td>renews with an invented number where it should escalate</td></tr>
+  </table>
+  <aside class="notes"><p>AE-303 teaches how to discover a failure taxonomy from traces by open coding. Here the three classes are given, because the question is narrower: which lever does each failure need? If participants have their own finer taxonomy from AE-303, each of its codes still lands in one of these three.</p></aside>
+</section>
+
+<section class="slide" id="larger-model-instrument" data-label="The instrument" data-lo="LO1" data-n="12" data-session="1">
+  <div class="kicker">Why run a larger model you will not deploy</div>
+  <h2>The larger model is an instrument: it shows what capability can fix</h2>
+  <div class="cols cols-2">
+    <div>
+      <div class="bars">
+        <div class="row"><span>Small model, right</span><div class="bar c-coral" style="--w:27%"></div><span class="val">27</span></div>
+        <div class="row"><span>Larger model, right</span><div class="bar c-teal" style="--w:63%"></div><span class="val">63</span></div>
+        <div class="row"><span>Larger model, knowledge failures</span><div class="bar c-purple" style="--w:23%"></div><span class="val">23</span></div>
+      </div>
+      <p class="caption">Lab 1.1, 100 requests, instructions version 0. Stand-in run.</p>
+    </div>
+    <ul class="bullets small">
+      <li>Where the larger model <b>also fails</b>, capability is not the problem: give the model the fact</li>
+      <li>Where it <b>succeeds</b>, the behaviour exists and can be taught to the small model</li>
+      <li>Where both fail on behaviour, look at the task before the model</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>The larger model cannot be deployed for the chamber: it runs on someone else's servers. It is used on synthetic requests only, as a measuring instrument and later as a teacher. The 23 knowledge failures of the larger model are the proof that no amount of tuning the small one will produce the code table.</p></aside>
+</section>
+
+<section class="slide" id="class-to-lever" data-label="Decision table" data-lo="LO1" data-n="13" data-session="1">
+  <div class="kicker">The evidence for outcome 1</div>
+  <h2>The decision table assigns each class to a lever, with counts</h2>
+  <table class="t">
+    <tr><th>Class</th><th class="num">Small</th><th class="num">Larger</th><th>Approach</th></tr>
+    <tr><td>Knowledge</td><td class="num">10</td><td class="num">23</td><td>Retrieval: put the code table in the context</td></tr>
+    <tr><td>Format</td><td class="num">37</td><td class="num">9</td><td>Prompting first; tuning for what remains</td></tr>
+    <tr><td>Behaviour</td><td class="num">26</td><td class="num">5</td><td>Tuning, or distillation from the larger model</td></tr>
+  </table>
+  <div class="callout warn mt small"><b>Read the knowledge row twice.</b> The rule sorts format first, so the small model's knowledge failures hide behind its format failures. Fix the format and they appear.</div>
+  <aside class="notes"><p>Numbers are from the stand-in run of Lab 1.1. A table like this, with the room's own counts, is what the capstone rubric's first criterion (adaptation decision, 15 points) asks for. A decision table without counts is an opinion.</p></aside>
+</section>
+
+<section class="slide" id="check-failure-class" data-lo="LO1" data-n="14" data-session="1">
+  <div class="kicker">Checkpoint</div>
+  <h2>Which lever?</h2>
+  <div class="quiz" data-type="single" data-lo="LO1" data-id="check-failure-class-q1">
+    <p class="lead">Qayd writes valid calls, but for "building materials" it answers with activity code <code>G-46</code>. The larger model, with the same instructions, makes the same mistake. What do you try first?</p>
+    <div class="opts">
+      <div class="opt" data-why="Treats a missing fact as a missing skill: no example set makes the model know a table that changes every year" data-k="A">Tune the small model on examples that contain the codes</div>
+      <div class="opt" data-why="Assumes capability is the problem, although the larger model fails in the same way" data-k="B">Replace the small model with a larger one</div>
+      <div class="opt" data-ok data-k="C">Put the chamber's code table in the context</div>
+      <div class="opt" data-why="Fixes the form of an answer whose form is already valid: the schema cannot supply the right code" data-k="D">Add a stricter output schema</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> Both models fail, so capability is not the cause. The table is a fact the models were never given, and it changes: it belongs in the context.</div>
+  </div>
+  <aside class="notes"><p>Answer: C. If the room chooses A, ask what happens when the table is revised next year. If it chooses D, show that the schema's list of allowed codes rejects G-46 but cannot tell the model which code is right.</p></aside>
+</section>
+
+<section class="slide lab top" id="lab-1-1" data-auto="lab" data-lab="1.1" data-label="Lab 1.1" data-n="15" data-session="1">
+  <div class="cols cols-2 mid"><div><div class="lab-tag">Lab 1.1 · 25 min</div><h2>Sort the failures</h2><p class="lead small">Run the small model and the larger reference model on 100 requests, grade every answer by code, sort the failures into knowledge, format and behaviour, and fill the decision table. Assistants are off in this lab.</p><a class="nb" href="../labs/D1_1_failure_sort.ipynb">D1_1_failure_sort.ipynb</a></div><ul class="checklist"><li>Run both models on 100 requests <span class="min">4 min</span></li><li>Grade by code and read ten failures <span class="min">6 min</span></li><li>Write the rule that sorts a failure <span class="min">8 min</span></li><li>Fill the decision table <span class="min">7 min</span></li><li class="stretch">✱ Stretch: Split the behaviour failures by language: is one language carrying them?</li></ul></div>
+  <aside class="notes"><p>Assistants are off for this lab: the entry's policy keeps the first failure analysis unaided. Walk the room during task 2 and make people say a word for each failure before they write the rule. Typical problem in task 3: testing the interface before the knowledge patch, which sends every invented code to format. The sorting order is in the task text. Nobody needs an earlier lab: this is the first.</p></aside>
+</section>
+
+<!-- ======================= SESSION 2 ======================= -->
+<section class="slide section" id="s2" data-auto="section" data-session="2" data-n="16">
+  <div class="kicker">Session 2</div>
+  <h1>The baseline tuning must beat</h1>
+  <ul class="bullets outcomes"><li>Improve a prompt with schema hints, context and examples, one change at a time</li><li>Report a score on 100 requests with an interval</li><li>Freeze a baseline: the prompt, the set and the score</li></ul>
+  <div class="sess-no">02</div>
+</section>
+
+<section class="slide" id="weak-baseline-flatters" data-label="Baseline" data-lo="LO1" data-n="17" data-session="2">
+  <div class="kicker">The most common false result in fine-tuning</div>
+  <h2>A weak prompt flatters tuning</h2>
+  <div class="cols cols-2">
+    <ul class="bullets">
+      <li>"Our tuned model went from 27 to 85" compares a week of work with <b>one careless sentence</b></li>
+      <li>Half of that gain may be available in an afternoon, with no training at all</li>
+      <li>The honest comparison is against the <b>best prompt you could write</b></li>
+    </ul>
+    <div class="card c-coral"><h4>What the baseline is for</h4><p class="small mb0">It is the number the adapter must beat on Day 4. If the adapter cannot beat a good prompt on the same model, the project ends here, cheaply.</p></div>
+  </div>
+  <aside class="notes"><p>This is the first durable idea in the entry: adapt only after a stronger prompt fails. Ask: who decides that the prompt is "the best you could write"? Nobody can prove it. What you can do is show the steps you took, one change at a time, with scores. That record is what a reviewer accepts.</p></aside>
+</section>
+
+<section class="slide" id="one-change-at-a-time" data-label="One change" data-lo="LO1" data-n="18" data-session="2">
+  <div class="kicker">Method</div>
+  <h2>One change at a time, each scored on the same 100 requests</h2>
+  <div class="flow">
+    <div class="step c-navy"><b>v0</b>one sentence</div>
+    <div class="arrow">→</div>
+    <div class="step c-teal"><b>v1</b>schema hints</div>
+    <div class="arrow">→</div>
+    <div class="step c-cyan"><b>v2</b>the code table</div>
+    <div class="arrow">→</div>
+    <div class="step c-coral"><b>v3</b>the rules</div>
+    <div class="arrow">→</div>
+    <div class="step c-purple"><b>v4</b>four examples</div>
+  </div>
+  <div class="callout tip mt"><b>Each change targets a class.</b> Schema hints: format. The table: knowledge. Rules and examples: behaviour, as far as words can reach it.</div>
+  <aside class="notes"><p>Prompts as versioned code is AE-203, day 1; nothing new there. What is new is the purpose: the versions are an argument. Each step shows which class of failure words alone can remove.</p></aside>
+</section>
+
+<section class="slide" id="schema-hint" data-label="Schema hints" data-lo="LO1" data-n="19" data-session="2">
+  <div class="kicker">Version 1</div>
+  <h2>A schema hint tells the model what a call looks like</h2>
+  <div class="prompt" data-tool="prompts.SCHEMA_HINT">
+    <span class="seg c-teal">Answer with exactly one tool call and nothing else, in this form: &lt;tool_call&gt; {"name": "&lt;tool&gt;", "arguments": {...}} &lt;/tool_call&gt;</span>
+    <span class="seg c-cyan">Tools: create_membership(company_name, cr_number, city, activity_code) … escalate_to_staff(reason)</span>
+    <span class="seg c-coral">cr_number is 10 Western digits (convert Arabic-Indic digits). company_name is copied as written. city is the English name.</span>
+  </div>
+  <div class="legend"><span class="c-teal">The wrapper</span><span class="c-cyan">The interface</span><span class="c-coral">How to write each field</span></div>
+  <aside class="notes"><p>Each sentence answers a failure seen in Lab 1.1: prose and code fences (the wrapper), wrong key names (the interface), digits and translated names (the field rules). A server can also force the form with constrained decoding; that removes parse errors, not wrong decisions, and it must then be used in training and serving alike.</p></aside>
+</section>
+
+<section class="slide" id="examples-from-validation" data-label="Examples" data-lo="LO1" data-n="20" data-session="2">
+  <div class="kicker">Version 4</div>
+  <h2>Examples come from validation requests, never from the test set</h2>
+  <div class="cols cols-3 gap-s">
+    <div class="card c-teal"><h4>Validation set</h4><p class="small mb0">120 requests. The source of the four examples, and of every choice on Day 3.</p></div>
+    <div class="card c-cyan"><h4>The 100 requests</h4><p class="small mb0">Analysis and the baseline score. An example taken from here is an answer shown in advance.</p></div>
+    <div class="card c-coral"><h4>Test set</h4><p class="small mb0">400 requests from companies no other set contains. Opened on Day 4, once.</p></div>
+  </div>
+  <div class="callout warn mt"><b>No personal data in an example.</b> An example is sent with every request, for as long as the prompt lives.</div>
+  <aside class="notes"><p>The split is by company: no company of the test set appears in the traces, the pool or the validation set. Day 2 shows what happens when that is violated (23 planted leaks). The four examples were chosen to cover a new membership, an Arabic certificate request, a missing number and an out-of-scope question, and none carries a contact line.</p></aside>
+</section>
+
+<section class="slide" id="prompt-scores" data-label="Scores" data-lo="LO1" data-n="21" data-session="2">
+  <div class="kicker">Lab 1.2 · stand-in run</div>
+  <h2>Words alone took the small model from 27 to 67 in 100</h2>
+  <div class="bars">
+    <div class="row"><span>v0 · one sentence</span><div class="bar c-navy" style="--w:27%"></div><span class="val">27</span></div>
+    <div class="row"><span>v1 · schema hints</span><div class="bar c-teal" style="--w:35%"></div><span class="val">35</span></div>
+    <div class="row"><span>v2 · code table</span><div class="bar c-cyan" style="--w:50%"></div><span class="val">50</span></div>
+    <div class="row"><span>v3 · rules</span><div class="bar c-coral" style="--w:52%"></div><span class="val">52</span></div>
+    <div class="row"><span>v4 · four examples</span><div class="bar c-purple" style="--w:67%"></div><span class="val">67</span></div>
+    <div class="row"><span>Larger model, v4</span><div class="bar c-amber" style="--w:94%"></div><span class="val">94</span></div>
+  </div>
+  <aside class="notes"><p>These six numbers are from the scripted stand-in, whose behaviour was written to react to what a prompt contains. Treat them as a worked example of the method, and write your room's numbers beside them. The shape to expect from real models: large early gains from the schema and the table, small gains from rules, and a gap to the larger model that words do not close.</p></aside>
+</section>
+
+<section class="slide" id="interval-on-100" data-label="Interval" data-lo="LO1" data-n="22" data-session="2">
+  <div class="kicker">How sure is 67 out of 100</div>
+  <h2>A score on 100 requests carries an interval of about ±10 points</h2>
+  <div class="cols cols-2 mid">
+    <div class="stat center"><div class="big">57 to 75</div><div class="lbl">95% Wilson interval for 67 right out of 100</div></div>
+    <ul class="bullets small">
+      <li>v2 scored 50 and v3 scored 52: two requests apart, well inside the noise</li>
+      <li>The interval answers "what would another hundred requests give?"</li>
+      <li>It does not compare two versions: the versions ran on the <b>same</b> requests, and Day 4 uses that pairing</li>
+    </ul>
+  </div>
+  <aside class="notes"><p>Participants know a paired test from the prerequisites. Here the point is smaller: never write a score without its n and its interval. In the lab they write the Wilson formula themselves; the check value is 50 of 100 giving 0.404 to 0.596.</p></aside>
+</section>
+
+<section class="slide" id="frozen-baseline" data-label="Frozen" data-lo="LO1" data-n="23" data-session="2">
+  <div class="kicker">What "frozen" means</div>
+  <h2>A baseline is three things that never change again</h2>
+  <div class="cols cols-3 gap-s">
+    <div class="card c-teal"><h4>The instructions</h4><p class="small mb0">Identified by a hash of their text and examples. One edited sentence is a new baseline.</p></div>
+    <div class="card c-cyan"><h4>The set</h4><p class="small mb0">The same file of requests, by name and by content.</p></div>
+    <div class="card c-coral"><h4>The score</h4><p class="small mb0">Right answers, n, and the interval. Recorded with the model's name and the day.</p></div>
+  </div>
+  <pre class="code s mt" data-file="artifacts/1.2/baseline.json"><code class="language-json"><span class="hljs-punctuation">{</span><span class="hljs-attr">&quot;prompt_sha256&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;bdf86a63…&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;n&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">100</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;correct&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">67</span><span class="hljs-punctuation">,</span>
+ <span class="hljs-attr">&quot;accuracy&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0.67</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;interval&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-number">0.573</span><span class="hljs-punctuation">,</span> <span class="hljs-number">0.754</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span>
+ <span class="hljs-attr">&quot;set&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;data/requests_100.jsonl&quot;</span><span class="hljs-punctuation">}</span></code></pre>
+  <aside class="notes"><p>The file is small and it ends arguments. On Day 4, when someone asks "better than what?", this is the answer. In the capstone the baseline file is committed before any training log, and the timestamps show it.</p></aside>
+</section>
+
+<section class="slide" id="what-remains" data-label="What remains" data-lo="LO1" data-n="24" data-session="2">
+  <div class="kicker">The case for tuning, stated honestly</div>
+  <h2>What the best prompt leaves behind is behaviour</h2>
+  <div class="cols cols-2">
+    <ul class="bullets">
+      <li>The schema is there, the table is there, the rules are written</li>
+      <li>The model still takes the partner's number, still renews where it should escalate</li>
+      <li>The larger model, same words: <b>94</b>. Room above the baseline: <b>27 requests in 100</b></li>
+    </ul>
+    <div class="callout tip"><b>Now tuning has a target.</b> Not "make it better": remove the behaviour failures that 33 requests in 100 still show, and reach towards 94.</div>
+  </div>
+  <aside class="notes"><p>If the residue had been small, the right decision would be to stop: ship the prompt. Say this explicitly. A course on adaptation must be willing to conclude "do not adapt". The capstone rubric gives full marks for a well-argued decision not to tune, if the baseline evidence supports it.</p></aside>
+</section>
+
+<section class="slide" id="check-baseline" data-lo="LO1" data-n="25" data-session="2">
+  <div class="kicker">Checkpoint</div>
+  <h2>Better than what?</h2>
+  <div class="quiz" data-type="single" data-lo="LO1" data-id="check-baseline-q1">
+    <p class="lead">A colleague reports: "Our adapter scores 84 on the 100 requests; the prompted model scored 27." The 27 is version 0. What does the report show?</p>
+    <div class="opts">
+      <div class="opt" data-ok data-k="A">Less than it claims: the adapter must be compared with the frozen baseline, 67</div>
+      <div class="opt" data-why="Takes the largest available difference as the effect of tuning, although 40 of those points came from words" data-k="B">That tuning gained 57 points</div>
+      <div class="opt" data-why="Rejects a valid measurement for the wrong reason: 100 requests give a wide interval, but the comparison is what is wrong" data-k="C">Nothing, because 100 requests are too few to measure anything</div>
+      <div class="opt" data-why="Confuses the instrument with the product: the larger model is not a deployable option for the chamber" data-k="D">That the adapter should be compared with the larger model only</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> The baseline is the best prompt on the same model. Against 67 the gain is 17 points, still to be tested as a paired difference on the test set.</div>
+  </div>
+  <aside class="notes"><p>Answer: A. Note that even 84 against 67 on the 100 requests is not the final word: those requests were used to write the prompt. The test set of 400 is opened on Day 4.</p></aside>
+</section>
+
+<section class="slide lab top" id="lab-1-2" data-auto="lab" data-lab="1.2" data-label="Lab 1.2" data-n="26" data-session="2">
+  <div class="cols cols-2 mid"><div><div class="lab-tag">Lab 1.2 · 25 min</div><h2>Freeze the baseline</h2><p class="lead small">Score five versions of the instructions on the same 100 requests, one change at a time, and freeze the best with its hash, its score and its interval as the baseline that tuning must beat.</p><a class="nb" href="../labs/D1_2_prompt_baseline.ipynb">D1_2_prompt_baseline.ipynb</a></div><ul class="checklist"><li>Score version 0 with an interval <span class="min">4 min</span></li><li>Add schema hints <span class="min">5 min</span></li><li>Add the code table and the rules <span class="min">6 min</span></li><li>Add four examples <span class="min">5 min</span></li><li>Freeze the baseline and list what remains <span class="min">5 min</span></li><li class="stretch">✱ Stretch: Run the frozen instructions on the larger model: how much room is left above the baseline?</li></ul></div>
+  <aside class="notes"><p>AI assistants may explain a library call or an error from here on; they do not write the pipeline. Watch for people who change two things at once in task 3: the function must return version 2 without the rules. With a real key, 100 requests times five versions is 500 calls on the small model: more than a fresh free key allows in a day. Share a cache per table, or run in quick order and let the cache fill. The lab starts from the supplied requests and prompt parts, not from Lab 1.1.</p></aside>
+</section>
+
+<!-- ======================= SESSION 3 ======================= -->
+<section class="slide section" id="s3" data-auto="section" data-session="3" data-n="27">
+  <div class="kicker">Session 3</div>
+  <h1>Licences and terms of open-weight models</h1>
+  <ul class="bullets outcomes"><li>Distinguish permission to adapt, to deploy and to distribute in a model licence</li><li>Find conditions that depend on who deploys and for what</li><li>Record which candidate models the chamber may adapt and deploy</li></ul>
+  <div class="sess-no">03</div>
+</section>
+
+<section class="slide" id="open-weights-not-one-licence" data-label="Licences" data-lo="LO6" data-n="28" data-session="3">
+  <div class="kicker">Before any training</div>
+  <h2>"Open weights" means you can download it, not what you may do with it</h2>
+  <div class="cols cols-2">
+    <ul class="bullets">
+      <li>Every model on the Hub has a licence file. The <b>tag</b> on the card is a label someone typed</li>
+      <li>Licences differ on purpose, on revenue, on field of use and on what you pass on</li>
+      <li>The check costs an hour <b>before</b> training and a project <b>after</b> deployment</li>
+    </ul>
+    <div class="card c-purple"><h4>Who decides</h4><p class="small mb0">You find the clause and the fact it depends on. <b>Zakariya Al-Mousa</b>, the chamber's counsel, decides. "Ask counsel" is a valid entry in your table.</p></div>
+  </div>
+  <aside class="notes"><p>The entry lists "licences before training" among the durable ideas, and model families and their licences among the things to refresh every run. The three sheets in the lab were read on the date written inside each; re-read the licence texts before the cohort. This session is not legal advice and says so: it trains engineers to bring counsel the right question.</p></aside>
+</section>
+
+<section class="slide" id="three-permissions" data-label="Three permissions" data-lo="LO6" data-n="29" data-session="3">
+  <div class="kicker">Read a licence with three questions</div>
+  <h2>Adapt, deploy and distribute are three separate permissions</h2>
+  <div class="cols cols-3 gap-s">
+    <div class="card c-teal"><h4>Adapt</h4><p class="small mb0">Fine-tune it. The result is a <b>derivative work</b> in most licences.</p></div>
+    <div class="card c-cyan"><h4>Deploy</h4><p class="small mb0">Run it in a service. Here licences ask <b>for what purpose</b> and <b>by whom</b>.</p></div>
+    <div class="card c-coral"><h4>Distribute</h4><p class="small mb0">Give the weights or the adapter to someone else. Conditions travel with it.</p></div>
+  </div>
+  <div class="callout note mt small"><b>The chamber's plan needs all three:</b> tune on its requests, run inside a service members pay fees for, give the adapter to two sister chambers.</div>
+  <aside class="notes"><p>Most restrictive licences allow adapting for research and restrict the other two. Teams discover this after training, when the adapter exists and cannot be used. Whether an adapter alone is a derivative work is a question licences answer differently: one more reason to read the text.</p></aside>
+</section>
+
+<section class="slide" id="three-licence-families" data-label="Three families" data-lo="LO6" data-n="30" data-session="3">
+  <div class="kicker">Lab 1.3 · read on 15 November 2026</div>
+  <h2>Three candidate models, three kinds of licence</h2>
+  <table class="t small">
+    <tr><th>Model</th><th>Licence</th><th>The clause that decides</th></tr>
+    <tr><td>Qwen3-0.6B</td><td>Apache License 2.0</td><td>Grants derivative works and redistribution; no clause on purpose or revenue</td></tr>
+    <tr><td>LFM3-1.7B</td><td>LFM Open License v1.0</td><td>Commercial use is licensed only below USD 10 million of annual revenue</td></tr>
+    <tr><td>Command R7B Arabic</td><td>CC BY-NC 4.0, gated</td><td>Every right is for non-commercial purposes; more conditions may sit behind the gate</td></tr>
+  </table>
+  <p class="small mt">Names are examples, not endorsements. The slot matters: a permissive licence, one that depends on who you are, one that depends on what for.</p>
+  <aside class="notes"><p>Facts checked on the date shown: the Qwen3-0.6B card's licence field and Apache 2.0 text; the LFM Open License file in the LFM3-1.7B repository, sections 1 and 5; the licence tag and gated status of the Command R7B Arabic repository, whose card the course authors could not read without accepting its conditions, so the sheet says so. Model families and licences are the most perishable facts in this course.</p><p>Sources: Qwen3-0.6B model card; LFM Open License v1.0; Command R7B Arabic model page; Apache License 2.0; CC BY-NC 4.0 legal code.</p></aside>
+</section>
+
+<section class="slide" id="conditions-need-facts" data-label="Facts" data-lo="LO6" data-n="31" data-session="3">
+  <div class="kicker">A licence table without facts is an opinion</div>
+  <h2>Two conditions turn on facts about the chamber</h2>
+  <div class="cols cols-2">
+    <div class="card c-coral"><h4>The revenue threshold</h4><p class="small mb0">The chamber's annual revenue is SAR 62 million, which is USD 16.5 million: <b>above</b> the threshold. Its use is licensed only if it is not "commercial use".</p></div>
+    <div class="card c-purple"><h4>The purpose</h4><p class="small mb0">The chamber is a non-profit body, and its service charges fees. Is that "primarily intended for commercial advantage or monetary compensation"? The text does not say.</p></div>
+  </div>
+  <div class="callout tip mt"><b>Write the question down now.</b> "Ask" in the table, with the clause and the fact, is a result. Finding out after deployment is not.</div>
+  <aside class="notes"><p>The chamber's revenue and legal form are fictional facts of the case, in data/chamber_facts.json. The conversion uses SAR 3.75 to the dollar. Make the room argue both sides of the fee question for two minutes; they will not agree, and that is the point: the engineer's job is to surface the question with its clause.</p></aside>
+</section>
+
+<section class="slide" id="tag-is-not-text" data-label="Tag and text" data-lo="LO6" data-n="32" data-session="3">
+  <div class="kicker">Three habits</div>
+  <h2>Read the text, record the day, look for a second document</h2>
+  <ul class="bullets">
+    <li><b>The text, not the tag.</b> Open the licence file in the repository; a card can say "other" and hide everything</li>
+    <li><b>The day you read it.</b> A later release of the same family can carry different terms</li>
+    <li><b>A second document.</b> An acceptable-use policy, or conditions on a gated page, bind you as well</li>
+    <li><b>The teacher too.</b> On Day 3 a larger model writes your training labels: its terms on using outputs to train another model belong in the same table</li>
+  </ul>
+  <aside class="notes"><p>The fourth bullet is the one teams forget. Check whether the terms say anything about training another model on the outputs. The course's teacher is an open-weight model reached through a hosted API: both the model's licence and the API provider's terms apply. Have the room name the two documents they would check.</p></aside>
+</section>
+
+<section class="slide" id="licence-line" data-label="The memo line" data-lo="LO6" data-n="33" data-session="3">
+  <div class="kicker">What Maysoon reads</div>
+  <h2>The decision memo carries one licence line</h2>
+  <div class="chat">
+    <div class="msg ai bad"><span class="who">Weak</span>All three models are open source, so licensing is not a concern.</div>
+    <div class="msg ai good"><span class="who">Usable</span>Take Qwen3-0.6B forward: Apache License 2.0, sections 2 and 4, allows adapting, deploying and passing on the adapter with the licence text and a notice of changes. LFM3-1.7B needs counsel's answer on section 5: the chamber is above the revenue threshold.</div>
+  </div>
+  <aside class="notes"><p>The usable line names the model, the licence, the sections and the open question. It can be checked by someone who was not in the room. Outcome 6 asks participants to weigh licence terms in the ship decision; this line is that weight, written on Day 1 so that Day 3 trains the right model.</p></aside>
+</section>
+
+<section class="slide" id="check-licence" data-lo="LO6" data-n="34" data-session="3">
+  <div class="kicker">Checkpoint</div>
+  <h2>May we deploy it?</h2>
+  <div class="quiz" data-type="single" data-lo="LO6" data-id="check-licence-q1">
+    <p class="lead">A model's licence allows commercial use only to organisations with annual revenue under USD 10 million. The chamber's revenue is above that, and its registration service charges fees. What goes in the "deploy" column?</p>
+    <div class="opts">
+      <div class="opt" data-why="Reads the download as the permission: the weights are public, the right to use them commercially is conditional" data-k="A">Yes: the weights are open, so use is free</div>
+      <div class="opt" data-why="Assumes a non-profit body can never make commercial use, which the licence's own definition does not say" data-k="B">Yes: a chamber is a non-profit body, so the limit cannot apply</div>
+      <div class="opt" data-why="Moves the problem instead of answering it: tuning makes a derivative work under the same licence" data-k="C">Yes, once the model is fine-tuned, because the adapter is ours</div>
+      <div class="opt" data-ok data-k="D">Ask: counsel must decide whether a fee-charging service is commercial use</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> The clause depends on a fact (above the threshold) and on a judgement (is the use commercial?). The engineer records both; counsel answers.</div>
+  </div>
+  <aside class="notes"><p>Answer: D. "No" is also defensible as the cautious entry, and the lab accepts it. The three "yes" answers are the three ways teams talk themselves past a licence.</p></aside>
+</section>
+
+<section class="slide lab top" id="lab-1-3" data-auto="lab" data-lab="1.3" data-label="Lab 1.3" data-n="35" data-session="3">
+  <div class="cols cols-2 mid"><div><div class="lab-tag">Lab 1.3 · 25 min</div><h2>Three licences</h2><p class="lead small">Read the licence sheets of three small models, check the chamber's facts against each condition, and record which models may be adapted and deployed, with the clause that decides.</p><a class="nb" href="../labs/D1_3_licences.ipynb">D1_3_licences.ipynb</a></div><ul class="checklist"><li>Read three licence sheets <span class="min">6 min</span></li><li>Record adapt, deploy and distribute for each <span class="min">8 min</span></li><li>Check the chamber's facts against each condition <span class="min">6 min</span></li><li>Write the licence line of the memo <span class="min">5 min</span></li><li class="stretch">✱ Stretch: Fill a sheet for a fourth model of your choice from its licence text on the Hub</li></ul></div>
+  <aside class="notes"><p>The sheets are reading aids written by the course; the addresses lead to the texts. Ask each table to open one licence file and find the section the sheet cites. The gated model's sheet says its page was not read: let the room decide what to write, and accept "ask" or "no". The lab needs nothing from Labs 1.1 and 1.2.</p></aside>
+</section>
+
+<!-- ======================= SESSION 4 ======================= -->
+<section class="slide section" id="s4" data-auto="section" data-session="4" data-n="36">
+  <div class="kicker">Session 4</div>
+  <h1>Cost and placement of the options</h1>
+  <ul class="bullets outcomes"><li>Estimate tokens and cost per request from measured requests</li><li>Compare a per-token price with an owned accelerator at a given volume</li><li>State where the data is processed under each option</li></ul>
+  <div class="sess-no">04</div>
+</section>
+
+<section class="slide" id="two-cost-shapes" data-label="Cost shapes" data-lo="LO6" data-n="37" data-session="4">
+  <div class="kicker">Two ways to pay for a model</div>
+  <h2>A hosted model costs per token; an owned accelerator costs per month</h2>
+  <div class="cols cols-2">
+    <div class="card c-teal"><h4>Hosted</h4><ul class="bullets small tight"><li>a price per million input and output tokens</li><li>cost grows with volume, starts at zero</li><li>the request leaves your servers</li></ul></div>
+    <div class="card c-coral"><h4>Owned</h4><ul class="bullets small tight"><li>purchase over its useful life, power, an engineer's hours</li><li>the same cost at one request or a million</li><li>the request stays where you put the machine</li></ul></div>
+  </div>
+  <div class="callout tip mt small"><b>Cost per thousand requests</b> is the unit that makes them comparable, and for the owned machine it depends entirely on volume.</div>
+  <aside class="notes"><p>AE-205 covers sizing and cost of a service in general. The addition here is the token: a prompted model pays for its instructions on every request, a tuned model does not. Keep the room to the two options the entry names: a large hosted model, and a tuned small model on the chamber's own accelerator.</p></aside>
+</section>
+
+<section class="slide" id="tokens-per-request" data-label="Tokens" data-lo="LO6" data-n="38" data-session="4">
+  <div class="kicker">Lab 1.4 · measured on the 100 requests</div>
+  <h2>A prompted request is mostly instructions</h2>
+  <div class="cols cols-3 mid">
+    <div class="stat center"><div class="big">623</div><div class="lbl">input tokens, prompted: instructions, table, rules, examples and the request</div></div>
+    <div class="stat center"><div class="big">30</div><div class="lbl">input tokens, tuned: the request alone</div></div>
+    <div class="stat center"><div class="big">33</div><div class="lbl">output tokens: one tool call</div></div>
+  </div>
+  <p class="small mt center">Counts are the lab's rough estimate (four characters of English, two and a half of Arabic to a token). A provider's own count replaces them.</p>
+  <aside class="notes"><p>The instructions are about 21 times the request. A tuned model moved the format and the behaviour into its weights, so only the request travels. One caveat to say aloud: the code table is knowledge and should stay in the context even for a tuned model, which adds tokens back. The hub tier's instructions keep it for that reason.</p></aside>
+</section>
+
+<section class="slide" id="cost-two-options" data-label="Two options" data-lo="LO6" data-n="39" data-session="4">
+  <div class="kicker">Lab 1.4 · prices read on 15 November 2026</div>
+  <h2>At the chamber's volume the hosted model is far cheaper</h2>
+  <table class="t">
+    <tr><th>Option</th><th class="num">SAR per 1,000 requests</th><th>Where a request is processed</th></tr>
+    <tr><td>Large hosted model</td><td class="num">0.52</td><td>The provider's servers</td></tr>
+    <tr class="hl"><td>Tuned small model, own accelerator</td><td class="num">141.38</td><td>The chamber's own servers</td></tr>
+  </table>
+  <div class="callout warn mt small"><b>Do not soften this.</b> SAR 5,655 a month for the machine, 40,000 requests a month. Break-even is about 11 million requests a month: 274 times the chamber's volume.</div>
+  <aside class="notes"><p>The hosted price is the published price of the larger reference model on the date shown (USD 0.20 and 0.40 per million tokens). The owned figures are fictional planning assumptions of the case, in data/onprem.json: purchase SAR 95,000 and SAR 45,000 for server and installation over four years, 0.45 kW, twelve engineer hours a month. Replace all of them with real quotes in a real project. The finding is unflattering to the small model, and it stays on the slide.</p><p>Sources: OpenRouter published prices, read 15 November 2026.</p></aside>
+</section>
+
+<section class="slide" id="placement-decides" data-label="Placement" data-lo="LO6" data-n="40" data-session="4">
+  <div class="kicker">What actually decides</div>
+  <h2>Cost argues for the hosted model; placement rules it out</h2>
+  <div class="cols cols-2">
+    <ul class="bullets">
+      <li>A request names an owner, a mobile number, sometimes an identity number: <b>personal data</b></li>
+      <li>The chamber classifies registration requests as <b>Restricted</b></li>
+      <li>Its requirement: they are processed on its <b>own servers</b></li>
+    </ul>
+    <div class="card c-teal"><h4>The honest sentence for the memo</h4><p class="small mb0">"The chamber pays a premium of about SAR 141 per thousand requests to keep members' data on its own servers. This is the premium, and this is why it is worth paying."</p></div>
+  </div>
+  <aside class="notes"><p>The Personal Data Protection Law's definition of personal data lists names, identification numbers and contact numbers among its examples. The Data Classification Policy defines the levels a public entity assigns, and the Generative AI Guideline for Government asks entities to keep information classified Restricted or higher out of prompts. The chamber is fictional and its requirement is the case study's; in a real project Anoud Al-Fuhaid, the data protection officer, states it, not the engineer.</p><p>Sources: Personal Data Protection Law; Data Classification Policy; Generative AI Guideline for Government.</p></aside>
+</section>
+
+<section class="slide" id="tuning-is-one-off" data-label="One-off" data-lo="LO6" data-n="41" data-session="4">
+  <div class="kicker">Three costs, three shapes</div>
+  <h2>Tuning is paid once; serving is paid every month</h2>
+  <table class="t small">
+    <tr><th>Cost</th><th>Shape</th><th>In the case</th></tr>
+    <tr><td>Tuning</td><td>Once per version of the adapter</td><td>SAR 13,260: 60 engineer hours and 10 GPU hours</td></tr>
+    <tr><td>Serving</td><td>Every month, whatever the volume</td><td>SAR 5,655</td></tr>
+    <tr><td>Per request</td><td>Serving divided by volume</td><td>SAR 0.14 at 40,000 requests a month</td></tr>
+  </table>
+  <div class="callout note mt small"><b>Tuning is paid back in quality, not money.</b> A prompted and a tuned small model cost the same to serve on the same machine. And the engineer costs more than the GPU.</div>
+  <aside class="notes"><p>Almost all of the one-off cost is the engineer's time building the data (Day 2), not the GPU hours. That is the realistic proportion, and it is why the rubric gives data quality 25 points and training 15. Every retraining pays the one-off cost again, in part: plan for it when the request mix changes.</p></aside>
+</section>
+
+<section class="slide" id="check-cost" data-lo="LO6" data-n="42" data-session="4">
+  <div class="kicker">Checkpoint</div>
+  <h2>The volume doubles</h2>
+  <div class="quiz" data-type="single" data-lo="LO6" data-id="check-cost-q1">
+    <p class="lead">The chamber's requests double to 80,000 a month. The accelerator still has spare capacity. What happens to the cost per thousand requests?</p>
+    <div class="opts">
+      <div class="opt" data-why="Applies the shape of a per-token price to a machine whose cost is fixed" data-k="A">Both options stay the same</div>
+      <div class="opt" data-ok data-k="B">Hosted stays the same; the owned accelerator's halves</div>
+      <div class="opt" data-why="Assumes a volume discount that a published per-token price does not contain" data-k="C">Hosted halves; the owned accelerator's stays the same</div>
+      <div class="opt" data-why="Treats a fixed monthly cost as if it grew with use" data-k="D">Both double</div>
+    </div>
+    <div class="callout tip why"><b>Why.</b> A per-token price does not depend on volume. A fixed monthly cost divided by twice the requests is half the cost per request.</div>
+  </div>
+  <aside class="notes"><p>Answer: B. Follow-up for the room: at what volume does the accelerator run out of capacity, and what happens to the cost then? It steps up by one more machine. Lab 4.3 measures the capacity that today's lab assumes.</p></aside>
+</section>
+
+<section class="slide lab top" id="lab-1-4" data-auto="lab" data-lab="1.4" data-label="Lab 1.4" data-n="43" data-session="4">
+  <div class="cols cols-2 mid"><div><div class="lab-tag">Lab 1.4 · 25 min</div><h2>Cost of two options</h2><p class="lead small">Estimate tuning, serving and per-request cost for a large hosted model and for a tuned small model on the chamber's own accelerator, and find the volume at which they break even.</p><a class="nb" href="../labs/D1_4_cost_placement.ipynb">D1_4_cost_placement.ipynb</a></div><ul class="checklist"><li>Measure tokens per request <span class="min">5 min</span></li><li>Cost per thousand requests on a hosted model <span class="min">5 min</span></li><li>Cost per thousand on an owned accelerator <span class="min">7 min</span></li><li>Break-even volume and placement <span class="min">8 min</span></li><li class="stretch">✱ Stretch: Add the one-off cost of tuning and find the month in which it is paid back</li></ul></div>
+  <aside class="notes"><p>Pure arithmetic on supplied figures; no model is called. Watch task 3: people forget to spread the purchase over months, or count 720 hours where the task says 730. The reading cell after task 4 is the point of the lab: do not let anyone leave believing the small model is the cheap option. Nothing from an earlier lab is needed.</p></aside>
+</section>
+
+<!-- ======================= CLOSE ======================= -->
+<section class="slide" id="wrap-up" data-label="Day 1 in three lines" data-n="44" data-session="4">
+  <div class="kicker">Day 1</div>
+  <h2>Three things to keep</h2>
+  <div class="cols cols-3">
+    <div class="card c-teal"><h4>Sort before you train</h4><p class="small mb0">Knowledge goes to the context, format to the prompt first, behaviour to tuning or distillation. With counts.</p></div>
+    <div class="card c-coral"><h4>Freeze a strong baseline</h4><p class="small mb0">The adapter is compared with the best prompt on the same model, never with the first one.</p></div>
+    <div class="card c-purple"><h4>Licence and cost come first</h4><p class="small mb0">Read the text before training. State what the option costs and why it is chosen anyway.</p></div>
+  </div>
+  <aside class="notes"><p>Ask each table for the one number from today they would put in a memo. Collect them. Then say what today produced: a decision table, a frozen baseline, a licence line and a cost table. Four of the six sections of Lab 4.4's memo already exist.</p></aside>
+</section>
+
+<section class="slide dark" id="next" data-label="Next" data-n="45" data-session="4">
+  <div class="kicker">Tomorrow</div>
+  <h1>Day 2 · Data for tuning</h1>
+  <p class="lead">500 pilot traces, the registry desk's corrections and a larger model's labels become one clean tuning set.</p>
+  <ul class="bullets">
+    <li>Guided self-study before tomorrow: read your model's chat template on its model card, and find where a tool call goes</li>
+    <li>Keep today's four files in <code>labs/artifacts/</code>; tomorrow's labs start from supplied files either way</li>
+  </ul>
+  <aside class="notes"><p>The pre-work is short on purpose: participants who have looked at one real chat template get through Lab 2.3 twice as fast. Remind the room that every lab tomorrow starts from supplied data, so nobody is behind.</p></aside>
+</section>
+</div>
+<script type="application/json" id="academy-data">{"v":1,"engine":"1.0.0","build":{"at":"2026-11-17T11:39:02Z","version":"2027.1.0","commit":"bacd51b"},"course":{"id":"ae-310","code":"AE-310","title":"Model Adaptation: Fine-Tuning, Distillation and Small Models","track":"ai-engineering","lang":"en","dir":"ltr","url":"https://sdaiaacademy.github.io/ae-310/","repo":"SDAIAAcademy/ae-310","home":"../index.html"},"deck":{"id":"day1","kind":"day","day":1,"label":"Day 1","title":"Decide whether to adapt","prev":null,"next":"day2.html","md":"day1.md","alt":{}},"sessions":[{"n":1,"label":"Session 1","title":"Prompt, retrieve, tune or distil","slide":"s1","outcomes":["Name what prompting, retrieval, tuning and distillation each change in a system","Sort the failures of a prompted model into knowledge, format and behaviour","Assign each failure class to an approach, with counts"],"minutes":50,"lab":{"id":"1.1","title":"Sort the failures","minutes":25,"href":"../labs/D1_1_failure_sort.ipynb"}},{"n":2,"label":"Session 2","title":"The baseline tuning must beat","slide":"s2","outcomes":["Improve a prompt with schema hints, context and examples, one change at a time","Report a score on 100 requests with an interval","Freeze a baseline: the prompt, the set and the score"],"minutes":50,"lab":{"id":"1.2","title":"Freeze the baseline","minutes":25,"href":"../labs/D1_2_prompt_baseline.ipynb"}},{"n":3,"label":"Session 3","title":"Licences and terms of open-weight models","slide":"s3","outcomes":["Distinguish permission to adapt, to deploy and to distribute in a model licence","Find conditions that depend on who deploys and for what","Record which candidate models the chamber may adapt and deploy"],"minutes":50,"lab":{"id":"1.3","title":"Three licences","minutes":25,"href":"../labs/D1_3_licences.ipynb"}},{"n":4,"label":"Session 4","title":"Cost and placement of the options","slide":"s4","outcomes":["Estimate tokens and cost per request from measured requests","Compare a per-token price with an owned accelerator at a given volume","State where the data is processed under each option"],"minutes":50,"lab":{"id":"1.4","title":"Cost of two options","minutes":25,"href":"../labs/D1_4_cost_placement.ipynb"}}],"slides":[{"id":"title","n":1,"title":"Decide whether to adapt","kind":"title","session":0,"hash":"7a50c701","md":"#### [day1#title] Decide whether to adapt\n\n*SDAIA Academy · Model Adaptation: Fine-Tuning, Distillation and Small Models*\n\nDay 1: Sort the failures, freeze the baseline, read the licences and count the cost before any training\n\nAI Engineering Track · 4 teaching days + capstone day · 4 sessions · 4 labs · AE-310","notes":"Welcome. Ask the room one calibrating question: who has fine-tuned a language model, and who can say what it was compared with? Most hands drop at the second half. That gap is this course. Rhythm: four sessions a day, each about 25 minutes of concepts and a 25-minute lab. The entry check (supervised, no AI assistance, on adaptation choices, data faults and memory arithmetic) is taken before session 1.","minutes":null,"lo":[]},{"id":"agenda","n":2,"title":"Decide whether to adapt","kind":"content","session":0,"hash":"3dbc64df","md":"#### [day1#agenda] Decide whether to adapt\n\n*Today*\n\n- **Session 1 · Prompt, retrieve, tune or distil**: Four ways to change what a model does, and which failures each one can fix\n- **Session 2 · The baseline tuning must beat**: A weak prompt flatters tuning: improve the prompt first, then freeze it with its score\n- **Session 3 · Licences and terms of open-weight models**: Open weights are not one licence: what you may adapt, deploy and distribute depends on the text\n- **Session 4 · Cost and placement of the options**: What each option costs per thousand requests, and where the data is processed","notes":"","minutes":null,"lo":[]},{"id":"five-days","n":3,"title":"Decide, build the data, train, prove it, then defend the decision","kind":"content","session":0,"hash":"65a97d7e","md":"#### [day1#five-days] Decide, build the data, train, prove it, then defend the decision\n\n*The course in one line per day*\n\n1. **Day 1**: Decide whether to adapt (failures, baseline, licence, cost)\n2. **Day 2**: Data for tuning (traces, teacher, templates, cleaning)\n3. **Day 3**: Train adapters and distil (16-bit, 4-bit, settings, a behaviour)\n4. **Day 4**: Evaluate and serve (paired tests, regressions, load)\n5. **Day 5**: Capstone (your own adapted model, defended)","notes":"Point out the order: a full day passes before any weight changes, and a full day follows training. Most failed fine-tuning projects skipped Day 1 or Day 4. The capstone repeats the whole path on a task each participant chooses in Lab 4.4.","minutes":null,"lo":["LO1","LO2","LO3","LO4","LO5","LO6"]},{"id":"case-al-bayraq","n":4,"title":"Al-Bayraq Chamber of Commerce and its assistant, Qayd","kind":"content","session":0,"hash":"785a811e","md":"#### [day1#case-al-bayraq] Al-Bayraq Chamber of Commerce and its assistant, Qayd\n\n*The case study · fictional, synthetic data*\n\n- Members write in **Arabic and English**: new memberships, renewals, record changes, certificates\n- **Qayd** turns each request into one call to the registry\n- Requests carry personal data and are classified **Restricted**: they stay on the chamber's own servers\n- So Qayd runs on a **small open-weight model**, and prompted alone it fails too often\n\n- **The people you work for.** **Maysoon Al-Dabbagh** signs the decision. **Khuzama Al-Rumaizan**'s registry desk corrects Qayd. **Jarrah Al-Suhaim** owns the one accelerator. **Anoud Al-Fuhaid** protects the data, **Zakariya Al-Mousa** reads the licences. You are **Dhay Al-Shuwaier**, the engineer.","notes":"Everything is synthetic: 520 invented companies, invented owners, phone numbers and identity numbers generated with a fixed seed. Say it once and plainly. The placement requirement comes from the chamber's own classification: the national Data Classification Policy defines the levels, and SDAIA's Generative AI Guideline for Government tells entities to keep information classified Restricted or higher out of prompts sent to public tools.\n\nSources: Data Classification Policy; Generative AI Guideline for Government (both SDAIA).","minutes":null,"lo":["LO1"]},{"id":"setup-check","n":5,"title":"Setup check: one notebook proves your environment","kind":"content","session":0,"hash":"2b3b91e1","md":"#### [day1#setup-check] Setup check: one notebook proves your environment\n\n*Before session 1*\n\n- Open `labs/00_setup_check.ipynb`, in Colab or locally with `uv`\n- It imports every library, reads one data file and loads the course model\n- With a key, it asks each hosted model one question\n- Without a key, a **scripted stand-in** answers, and every lab says so on its first line\n\n- **Two kinds of model in this course.** Days 1 and 2 **call** free hosted models. Days 3 and 4 **train**: the course's own small model on any processor, or an open-weight model on a notebook GPU.","notes":"Run it on the projector. Typical problems: no key in the Colab Secrets panel (the stand-in takes over, which is fine for today); a long folder path on Windows (set UV_PROJECT_ENVIRONMENT to a short folder, as the labs README says). The stand-in is a script, not a model: its numbers let every cell run and say nothing about a real model. The numbers on today's slides come from it, because the course was built without a working key; replace them with your room's.","minutes":null,"lo":[]},{"id":"s1","n":6,"title":"Prompt, retrieve, tune or distil","kind":"section","session":1,"hash":"713a7a0d","md":"#### [day1#s1] Prompt, retrieve, tune or distil\n\n*Session 1*\n\n- Name what prompting, retrieval, tuning and distillation each change in a system\n- Sort the failures of a prompted model into knowledge, format and behaviour\n- Assign each failure class to an approach, with counts","notes":"","minutes":null,"lo":["LO1"]},{"id":"four-levers","n":7,"title":"Each lever changes a different part of the system","kind":"content","session":1,"hash":"659f15ef","md":"#### [day1#four-levers] Each lever changes a different part of the system\n\n*Four ways to change what a model does*\n\n- **Prompt.** Changes the **instructions**. Minutes to try, read again on every request.\n- **Retrieve.** Changes what the model **is shown**: a table, a document, a record.\n- **Tune.** Changes the **weights**, from your examples. Days of work, then no extra tokens.\n- **Distil.** Tuning whose examples come from a **larger model**.\n\n> **Order of cost.** Try them left to right. Each one you skip is a cheaper fix you never tested.","notes":"The durable idea of the day: adapt only after a stronger prompt fails. Ask who has seen a team fine-tune a model to fix something a schema hint would have fixed. Distillation is a kind of tuning; it gets its own card because where the examples come from changes the licence question (session 3) and the errors you inherit (Day 3).","minutes":null,"lo":["LO1"]},{"id":"behaviour-not-knowledge","n":8,"title":"Tuning changes behaviour more than knowledge","kind":"content","session":1,"hash":"92f415a9","md":"#### [day1#behaviour-not-knowledge] Tuning changes behaviour more than knowledge\n\n*What tuning is good at*\n\n- **Tuning teaches well.**\n  - a format, exactly and every time\n  - which tool to choose\n  - when to stop and hand over to a person\n  - a register, a language, a house style\n- **Tuning teaches badly.**\n  - facts that change: a code table, a fee, a deadline\n  - facts seen once in the training set\n  - anything you must be able to correct tomorrow\n\nA fact in the weights cannot be edited, cited or dated. A fact in the context can.","notes":"Use the chamber's activity codes: twelve codes, revised every year. A tuned model can memorise twelve rows, and in January it will still answer with last year's. The course's own small model does memorise them, and Day 4 names that as a limit. Rule of thumb for the room: if the fix is \"the model should know X\", think retrieval; if it is \"the model should do Y\", think tuning.","minutes":null,"lo":["LO1"]},{"id":"narrow-tasks","n":9,"title":"Small models suit narrow tasks, not multi-step work","kind":"content","session":1,"hash":"3593513c","md":"#### [day1#narrow-tasks] Small models suit narrow tasks, not multi-step work\n\n*Where a small model belongs*\n\n| A small tuned model fits | It does not fit |\n| --- | --- |\n| One request in, one structured answer out | A plan of several steps that depend on each other |\n| A fixed set of tools and fields | Tools it has never seen |\n| Thousands of similar requests | Rare requests that each need judgement |\n| An answer a program can check | An answer only an expert can check |\n\n> **Qayd is on the left.** One request, one of five tools, fields a schema can verify. The rare and the odd go to the registry desk through `escalate_to_staff`.","notes":"The LFM3-1.7B model card says the same of its own model in its own words: designed for tool calling and fine-tuning, not recommended for complex multi-step reasoning. A small model that escalates well is worth more than one that tries everything.\n\nSources: LFM3-1.7B model card.","minutes":null,"lo":["LO1"]},{"id":"request-to-call","n":10,"title":"One request in, exactly one tool call out","kind":"content","session":1,"hash":"5b42b957","md":"#### [day1#request-to-call] One request in, exactly one tool call out\n\n*The task, once*\n\n- member: We moved our head office to Abha. Please update the record of CR 4064749760. Our partner company holds CR 4071506418; do not change their record.\n- tool call: `{\"name\": \"update_record\", \"arguments\": {\"cr_number\": \"4064749760\", \"field\": \"city\", \"value\": \"Abha\"}}`\n- graded by code: the same tool and the same arguments as the correct call, or it is wrong\n\nFive tools: `create_membership`, `renew_membership`, `update_record`, `issue_certificate`, `escalate_to_staff`.","notes":"Read the request aloud and ask what could go wrong. Collect answers: the partner's number, Arabic-Indic digits, a code fence around the JSON, renewing instead of updating, no number at all. Every one of those is planted in the data. Exact match is strict on purpose: the registry service will not accept a nearly right call.","minutes":null,"lo":["LO1"]},{"id":"three-failure-classes","n":11,"title":"Three classes, because three different levers fix them","kind":"content","session":1,"hash":"076748de","md":"#### [day1#three-failure-classes] Three classes, because three different levers fix them\n\n*Sorting failures*\n\n| Class | What you see | Example in Qayd's answers |\n| --- | --- | --- |\n| **Knowledge** | Right call, wrong fact the model was never given | `\"activity_code\": \"4711\"` for information technology |\n| **Format** | No call that parses, or one the interface rejects | a sentence, a code fence, a Python dictionary, digits left as ٤٠… |\n| **Behaviour** | A valid call that is the wrong decision | renews with an invented number where it should escalate |","notes":"AE-303 teaches how to discover a failure taxonomy from traces by open coding. Here the three classes are given, because the question is narrower: which lever does each failure need? If participants have their own finer taxonomy from AE-303, each of its codes still lands in one of these three.","minutes":null,"lo":["LO1"]},{"id":"larger-model-instrument","n":12,"title":"The larger model is an instrument: it shows what capability can fix","kind":"content","session":1,"hash":"f3d23f33","md":"#### [day1#larger-model-instrument] The larger model is an instrument: it shows what capability can fix\n\n*Why run a larger model you will not deploy*\n\n| Item | Value |\n| --- | --- |\n| Small model, right | 27 |\n| Larger model, right | 63 |\n| Larger model, knowledge failures | 23 |\n\nLab 1.1, 100 requests, instructions version 0. Stand-in run.\n\n- Where the larger model **also fails**, capability is not the problem: give the model the fact\n- Where it **succeeds**, the behaviour exists and can be taught to the small model\n- Where both fail on behaviour, look at the task before the model","notes":"The larger model cannot be deployed for the chamber: it runs on someone else's servers. It is used on synthetic requests only, as a measuring instrument and later as a teacher. The 23 knowledge failures of the larger model are the proof that no amount of tuning the small one will produce the code table.","minutes":null,"lo":["LO1"]},{"id":"class-to-lever","n":13,"title":"The decision table assigns each class to a lever, with counts","kind":"content","session":1,"hash":"ea93ba43","md":"#### [day1#class-to-lever] The decision table assigns each class to a lever, with counts\n\n*The evidence for outcome 1*\n\n| Class | Small | Larger | Approach |\n| --- | --- | --- | --- |\n| Knowledge | 10 | 23 | Retrieval: put the code table in the context |\n| Format | 37 | 9 | Prompting first; tuning for what remains |\n| Behaviour | 26 | 5 | Tuning, or distillation from the larger model |\n\n> **Read the knowledge row twice.** The rule sorts format first, so the small model's knowledge failures hide behind its format failures. Fix the format and they appear.","notes":"Numbers are from the stand-in run of Lab 1.1. A table like this, with the room's own counts, is what the capstone rubric's first criterion (adaptation decision, 15 points) asks for. A decision table without counts is an opinion.","minutes":null,"lo":["LO1"]},{"id":"check-failure-class","n":14,"title":"Which lever?","kind":"quiz","session":1,"hash":"97e2a782","md":"#### [day1#check-failure-class] Which lever?\n\n*Checkpoint*\n\n**Question:** Qayd writes valid calls, but for \"building materials\" it answers with activity code `G-46`. The larger model, with the same instructions, makes the same mistake. What do you try first?\n\n- A. Tune the small model on examples that contain the codes\n- B. Replace the small model with a larger one\n- C. Put the chamber's code table in the context\n- D. Add a stricter output schema","notes":"Answer: C. If the room chooses A, ask what happens when the table is revised next year. If it chooses D, show that the schema's list of allowed codes rejects G-46 but cannot tell the model which code is right.","minutes":null,"lo":["LO1"]},{"id":"lab-1-1","n":15,"title":"Sort the failures","kind":"lab","session":1,"hash":"179c728c","md":"#### [day1#lab-1-1] Sort the failures\n\nLab 1.1 · 25 min\n\nRun the small model and the larger reference model on 100 requests, grade every answer by code, sort the failures into knowledge, format and behaviour, and fill the decision table. Assistants are off in this lab.\n\n[D1_1_failure_sort.ipynb](https://sdaiaacademy.github.io/ae-310/labs/D1_1_failure_sort.ipynb)\n\n- [ ] Run both models on 100 requests (4 min)\n- [ ] Grade by code and read ten failures (6 min)\n- [ ] Write the rule that sorts a failure (8 min)\n- [ ] Fill the decision table (7 min)\n- [ ] ✱ Stretch: Split the behaviour failures by language: is one language carrying them?","notes":"Assistants are off for this lab: the entry's policy keeps the first failure analysis unaided. Walk the room during task 2 and make people say a word for each failure before they write the rule. Typical problem in task 3: testing the interface before the knowledge patch, which sends every invented code to format. The sorting order is in the task text. Nobody needs an earlier lab: this is the first.","minutes":null,"lo":[]},{"id":"s2","n":16,"title":"The baseline tuning must beat","kind":"section","session":2,"hash":"e7043af7","md":"#### [day1#s2] The baseline tuning must beat\n\n*Session 2*\n\n- Improve a prompt with schema hints, context and examples, one change at a time\n- Report a score on 100 requests with an interval\n- Freeze a baseline: the prompt, the set and the score","notes":"","minutes":null,"lo":["LO1"]},{"id":"weak-baseline-flatters","n":17,"title":"A weak prompt flatters tuning","kind":"content","session":2,"hash":"bdf58a15","md":"#### [day1#weak-baseline-flatters] A weak prompt flatters tuning\n\n*The most common false result in fine-tuning*\n\n- \"Our tuned model went from 27 to 85\" compares a week of work with **one careless sentence**\n- Half of that gain may be available in an afternoon, with no training at all\n- The honest comparison is against the **best prompt you could write**\n\n- **What the baseline is for.** It is the number the adapter must beat on Day 4. If the adapter cannot beat a good prompt on the same model, the project ends here, cheaply.","notes":"This is the first durable idea in the entry: adapt only after a stronger prompt fails. Ask: who decides that the prompt is \"the best you could write\"? Nobody can prove it. What you can do is show the steps you took, one change at a time, with scores. That record is what a reviewer accepts.","minutes":null,"lo":["LO1"]},{"id":"one-change-at-a-time","n":18,"title":"One change at a time, each scored on the same 100 requests","kind":"content","session":2,"hash":"8ff7d7b1","md":"#### [day1#one-change-at-a-time] One change at a time, each scored on the same 100 requests\n\n*Method*\n\n**v0** one sentence → **v1** schema hints → **v2** the code table → **v3** the rules → **v4** four examples\n\n> **Each change targets a class.** Schema hints: format. The table: knowledge. Rules and examples: behaviour, as far as words can reach it.","notes":"Prompts as versioned code is AE-203, day 1; nothing new there. What is new is the purpose: the versions are an argument. Each step shows which class of failure words alone can remove.","minutes":null,"lo":["LO1"]},{"id":"schema-hint","n":19,"title":"A schema hint tells the model what a call looks like","kind":"content","session":2,"hash":"e72481a8","md":"#### [day1#schema-hint] A schema hint tells the model what a call looks like\n\n*Version 1*\n\nPrompt for prompts.SCHEMA_HINT:\n\n```text\nAnswer with exactly one tool call and nothing else, in this form: \u003ctool_call> {\"name\": \"\u003ctool>\", \"arguments\": {...}} \u003c/tool_call>\nTools: create_membership(company_name, cr_number, city, activity_code) … escalate_to_staff(reason)\ncr_number is 10 Western digits (convert Arabic-Indic digits). company_name is copied as written. city is the English name.\n```\n\nThe wrapper · The interface · How to write each field","notes":"Each sentence answers a failure seen in Lab 1.1: prose and code fences (the wrapper), wrong key names (the interface), digits and translated names (the field rules). A server can also force the form with constrained decoding; that removes parse errors, not wrong decisions, and it must then be used in training and serving alike.","minutes":null,"lo":["LO1"]},{"id":"examples-from-validation","n":20,"title":"Examples come from validation requests, never from the test set","kind":"content","session":2,"hash":"bfed3826","md":"#### [day1#examples-from-validation] Examples come from validation requests, never from the test set\n\n*Version 4*\n\n- **Validation set.** 120 requests. The source of the four examples, and of every choice on Day 3.\n- **The 100 requests.** Analysis and the baseline score. An example taken from here is an answer shown in advance.\n- **Test set.** 400 requests from companies no other set contains. Opened on Day 4, once.\n\n> **No personal data in an example.** An example is sent with every request, for as long as the prompt lives.","notes":"The split is by company: no company of the test set appears in the traces, the pool or the validation set. Day 2 shows what happens when that is violated (23 planted leaks). The four examples were chosen to cover a new membership, an Arabic certificate request, a missing number and an out-of-scope question, and none carries a contact line.","minutes":null,"lo":["LO1"]},{"id":"prompt-scores","n":21,"title":"Words alone took the small model from 27 to 67 in 100","kind":"content","session":2,"hash":"da7fabed","md":"#### [day1#prompt-scores] Words alone took the small model from 27 to 67 in 100\n\n*Lab 1.2 · stand-in run*\n\n| Item | Value |\n| --- | --- |\n| v0 · one sentence | 27 |\n| v1 · schema hints | 35 |\n| v2 · code table | 50 |\n| v3 · rules | 52 |\n| v4 · four examples | 67 |\n| Larger model, v4 | 94 |","notes":"These six numbers are from the scripted stand-in, whose behaviour was written to react to what a prompt contains. Treat them as a worked example of the method, and write your room's numbers beside them. The shape to expect from real models: large early gains from the schema and the table, small gains from rules, and a gap to the larger model that words do not close.","minutes":null,"lo":["LO1"]},{"id":"interval-on-100","n":22,"title":"A score on 100 requests carries an interval of about ±10 points","kind":"content","session":2,"hash":"c3c037e5","md":"#### [day1#interval-on-100] A score on 100 requests carries an interval of about ±10 points\n\n*How sure is 67 out of 100*\n\n**57 to 75** 95% Wilson interval for 67 right out of 100\n\n- v2 scored 50 and v3 scored 52: two requests apart, well inside the noise\n- The interval answers \"what would another hundred requests give?\"\n- It does not compare two versions: the versions ran on the **same** requests, and Day 4 uses that pairing","notes":"Participants know a paired test from the prerequisites. Here the point is smaller: never write a score without its n and its interval. In the lab they write the Wilson formula themselves; the check value is 50 of 100 giving 0.404 to 0.596.","minutes":null,"lo":["LO1"]},{"id":"frozen-baseline","n":23,"title":"A baseline is three things that never change again","kind":"content","session":2,"hash":"17836579","md":"#### [day1#frozen-baseline] A baseline is three things that never change again\n\n*What \"frozen\" means*\n\n- **The instructions.** Identified by a hash of their text and examples. One edited sentence is a new baseline.\n- **The set.** The same file of requests, by name and by content.\n- **The score.** Right answers, n, and the interval. Recorded with the model's name and the day.\n\n```json\n// file: artifacts/1.2/baseline.json\n{\"prompt_sha256\": \"bdf86a63…\", \"n\": 100, \"correct\": 67,\n \"accuracy\": 0.67, \"interval\": [0.573, 0.754],\n \"set\": \"data/requests_100.jsonl\"}\n```","notes":"The file is small and it ends arguments. On Day 4, when someone asks \"better than what?\", this is the answer. In the capstone the baseline file is committed before any training log, and the timestamps show it.","minutes":null,"lo":["LO1"]},{"id":"what-remains","n":24,"title":"What the best prompt leaves behind is behaviour","kind":"content","session":2,"hash":"84b68abb","md":"#### [day1#what-remains] What the best prompt leaves behind is behaviour\n\n*The case for tuning, stated honestly*\n\n- The schema is there, the table is there, the rules are written\n- The model still takes the partner's number, still renews where it should escalate\n- The larger model, same words: **94**. Room above the baseline: **27 requests in 100**\n\n> **Now tuning has a target.** Not \"make it better\": remove the behaviour failures that 33 requests in 100 still show, and reach towards 94.","notes":"If the residue had been small, the right decision would be to stop: ship the prompt. Say this explicitly. A course on adaptation must be willing to conclude \"do not adapt\". The capstone rubric gives full marks for a well-argued decision not to tune, if the baseline evidence supports it.","minutes":null,"lo":["LO1"]},{"id":"check-baseline","n":25,"title":"Better than what?","kind":"quiz","session":2,"hash":"faf9d9d2","md":"#### [day1#check-baseline] Better than what?\n\n*Checkpoint*\n\n**Question:** A colleague reports: \"Our adapter scores 84 on the 100 requests; the prompted model scored 27.\" The 27 is version 0. What does the report show?\n\n- A. Less than it claims: the adapter must be compared with the frozen baseline, 67\n- B. That tuning gained 57 points\n- C. Nothing, because 100 requests are too few to measure anything\n- D. That the adapter should be compared with the larger model only","notes":"Answer: A. Note that even 84 against 67 on the 100 requests is not the final word: those requests were used to write the prompt. The test set of 400 is opened on Day 4.","minutes":null,"lo":["LO1"]},{"id":"lab-1-2","n":26,"title":"Freeze the baseline","kind":"lab","session":2,"hash":"383cb165","md":"#### [day1#lab-1-2] Freeze the baseline\n\nLab 1.2 · 25 min\n\nScore five versions of the instructions on the same 100 requests, one change at a time, and freeze the best with its hash, its score and its interval as the baseline that tuning must beat.\n\n[D1_2_prompt_baseline.ipynb](https://sdaiaacademy.github.io/ae-310/labs/D1_2_prompt_baseline.ipynb)\n\n- [ ] Score version 0 with an interval (4 min)\n- [ ] Add schema hints (5 min)\n- [ ] Add the code table and the rules (6 min)\n- [ ] Add four examples (5 min)\n- [ ] Freeze the baseline and list what remains (5 min)\n- [ ] ✱ Stretch: Run the frozen instructions on the larger model: how much room is left above the baseline?","notes":"AI assistants may explain a library call or an error from here on; they do not write the pipeline. Watch for people who change two things at once in task 3: the function must return version 2 without the rules. With a real key, 100 requests times five versions is 500 calls on the small model: more than a fresh free key allows in a day. Share a cache per table, or run in quick order and let the cache fill. The lab starts from the supplied requests and prompt parts, not from Lab 1.1.","minutes":null,"lo":[]},{"id":"s3","n":27,"title":"Licences and terms of open-weight models","kind":"section","session":3,"hash":"e05b0cc5","md":"#### [day1#s3] Licences and terms of open-weight models\n\n*Session 3*\n\n- Distinguish permission to adapt, to deploy and to distribute in a model licence\n- Find conditions that depend on who deploys and for what\n- Record which candidate models the chamber may adapt and deploy","notes":"","minutes":null,"lo":["LO6"]},{"id":"open-weights-not-one-licence","n":28,"title":"\"Open weights\" means you can download it, not what you may do with it","kind":"content","session":3,"hash":"f238f3c9","md":"#### [day1#open-weights-not-one-licence] \"Open weights\" means you can download it, not what you may do with it\n\n*Before any training*\n\n- Every model on the Hub has a licence file. The **tag** on the card is a label someone typed\n- Licences differ on purpose, on revenue, on field of use and on what you pass on\n- The check costs an hour **before** training and a project **after** deployment\n\n- **Who decides.** You find the clause and the fact it depends on. **Zakariya Al-Mousa**, the chamber's counsel, decides. \"Ask counsel\" is a valid entry in your table.","notes":"The entry lists \"licences before training\" among the durable ideas, and model families and their licences among the things to refresh every run. The three sheets in the lab were read on the date written inside each; re-read the licence texts before the cohort. This session is not legal advice and says so: it trains engineers to bring counsel the right question.","minutes":null,"lo":["LO6"]},{"id":"three-permissions","n":29,"title":"Adapt, deploy and distribute are three separate permissions","kind":"content","session":3,"hash":"4e94ee54","md":"#### [day1#three-permissions] Adapt, deploy and distribute are three separate permissions\n\n*Read a licence with three questions*\n\n- **Adapt.** Fine-tune it. The result is a **derivative work** in most licences.\n- **Deploy.** Run it in a service. Here licences ask **for what purpose** and **by whom**.\n- **Distribute.** Give the weights or the adapter to someone else. Conditions travel with it.\n\n> **The chamber's plan needs all three:** tune on its requests, run inside a service members pay fees for, give the adapter to two sister chambers.","notes":"Most restrictive licences allow adapting for research and restrict the other two. Teams discover this after training, when the adapter exists and cannot be used. Whether an adapter alone is a derivative work is a question licences answer differently: one more reason to read the text.","minutes":null,"lo":["LO6"]},{"id":"three-licence-families","n":30,"title":"Three candidate models, three kinds of licence","kind":"content","session":3,"hash":"6a535308","md":"#### [day1#three-licence-families] Three candidate models, three kinds of licence\n\n*Lab 1.3 · read on 15 November 2026*\n\n| Model | Licence | The clause that decides |\n| --- | --- | --- |\n| Qwen3-0.6B | Apache License 2.0 | Grants derivative works and redistribution; no clause on purpose or revenue |\n| LFM3-1.7B | LFM Open License v1.0 | Commercial use is licensed only below USD 10 million of annual revenue |\n| Command R7B Arabic | CC BY-NC 4.0, gated | Every right is for non-commercial purposes; more conditions may sit behind the gate |\n\nNames are examples, not endorsements. The slot matters: a permissive licence, one that depends on who you are, one that depends on what for.","notes":"Facts checked on the date shown: the Qwen3-0.6B card's licence field and Apache 2.0 text; the LFM Open License file in the LFM3-1.7B repository, sections 1 and 5; the licence tag and gated status of the Command R7B Arabic repository, whose card the course authors could not read without accepting its conditions, so the sheet says so. Model families and licences are the most perishable facts in this course.\n\nSources: Qwen3-0.6B model card; LFM Open License v1.0; Command R7B Arabic model page; Apache License 2.0; CC BY-NC 4.0 legal code.","minutes":null,"lo":["LO6"]},{"id":"conditions-need-facts","n":31,"title":"Two conditions turn on facts about the chamber","kind":"content","session":3,"hash":"156eb1c6","md":"#### [day1#conditions-need-facts] Two conditions turn on facts about the chamber\n\n*A licence table without facts is an opinion*\n\n- **The revenue threshold.** The chamber's annual revenue is SAR 62 million, which is USD 16.5 million: **above** the threshold. Its use is licensed only if it is not \"commercial use\".\n- **The purpose.** The chamber is a non-profit body, and its service charges fees. Is that \"primarily intended for commercial advantage or monetary compensation\"? The text does not say.\n\n> **Write the question down now.** \"Ask\" in the table, with the clause and the fact, is a result. Finding out after deployment is not.","notes":"The chamber's revenue and legal form are fictional facts of the case, in data/chamber_facts.json. The conversion uses SAR 3.75 to the dollar. Make the room argue both sides of the fee question for two minutes; they will not agree, and that is the point: the engineer's job is to surface the question with its clause.","minutes":null,"lo":["LO6"]},{"id":"tag-is-not-text","n":32,"title":"Read the text, record the day, look for a second document","kind":"content","session":3,"hash":"2fdc9581","md":"#### [day1#tag-is-not-text] Read the text, record the day, look for a second document\n\n*Three habits*\n\n- **The text, not the tag.** Open the licence file in the repository; a card can say \"other\" and hide everything\n- **The day you read it.** A later release of the same family can carry different terms\n- **A second document.** An acceptable-use policy, or conditions on a gated page, bind you as well\n- **The teacher too.** On Day 3 a larger model writes your training labels: its terms on using outputs to train another model belong in the same table","notes":"The fourth bullet is the one teams forget. Check whether the terms say anything about training another model on the outputs. The course's teacher is an open-weight model reached through a hosted API: both the model's licence and the API provider's terms apply. Have the room name the two documents they would check.","minutes":null,"lo":["LO6"]},{"id":"licence-line","n":33,"title":"The decision memo carries one licence line","kind":"content","session":3,"hash":"fd537d8d","md":"#### [day1#licence-line] The decision memo carries one licence line\n\n*What Maysoon reads*\n\n**Weak (weak example):** All three models are open source, so licensing is not a concern.\n\n**Usable (good example):** Take Qwen3-0.6B forward: Apache License 2.0, sections 2 and 4, allows adapting, deploying and passing on the adapter with the licence text and a notice of changes. LFM3-1.7B needs counsel's answer on section 5: the chamber is above the revenue threshold.","notes":"The usable line names the model, the licence, the sections and the open question. It can be checked by someone who was not in the room. Outcome 6 asks participants to weigh licence terms in the ship decision; this line is that weight, written on Day 1 so that Day 3 trains the right model.","minutes":null,"lo":["LO6"]},{"id":"check-licence","n":34,"title":"May we deploy it?","kind":"quiz","session":3,"hash":"2429d5f9","md":"#### [day1#check-licence] May we deploy it?\n\n*Checkpoint*\n\n**Question:** A model's licence allows commercial use only to organisations with annual revenue under USD 10 million. The chamber's revenue is above that, and its registration service charges fees. What goes in the \"deploy\" column?\n\n- A. Yes: the weights are open, so use is free\n- B. Yes: a chamber is a non-profit body, so the limit cannot apply\n- C. Yes, once the model is fine-tuned, because the adapter is ours\n- D. Ask: counsel must decide whether a fee-charging service is commercial use","notes":"Answer: D. \"No\" is also defensible as the cautious entry, and the lab accepts it. The three \"yes\" answers are the three ways teams talk themselves past a licence.","minutes":null,"lo":["LO6"]},{"id":"lab-1-3","n":35,"title":"Three licences","kind":"lab","session":3,"hash":"ba9c1c70","md":"#### [day1#lab-1-3] Three licences\n\nLab 1.3 · 25 min\n\nRead the licence sheets of three small models, check the chamber's facts against each condition, and record which models may be adapted and deployed, with the clause that decides.\n\n[D1_3_licences.ipynb](https://sdaiaacademy.github.io/ae-310/labs/D1_3_licences.ipynb)\n\n- [ ] Read three licence sheets (6 min)\n- [ ] Record adapt, deploy and distribute for each (8 min)\n- [ ] Check the chamber's facts against each condition (6 min)\n- [ ] Write the licence line of the memo (5 min)\n- [ ] ✱ Stretch: Fill a sheet for a fourth model of your choice from its licence text on the Hub","notes":"The sheets are reading aids written by the course; the addresses lead to the texts. Ask each table to open one licence file and find the section the sheet cites. The gated model's sheet says its page was not read: let the room decide what to write, and accept \"ask\" or \"no\". The lab needs nothing from Labs 1.1 and 1.2.","minutes":null,"lo":[]},{"id":"s4","n":36,"title":"Cost and placement of the options","kind":"section","session":4,"hash":"bd281a3f","md":"#### [day1#s4] Cost and placement of the options\n\n*Session 4*\n\n- Estimate tokens and cost per request from measured requests\n- Compare a per-token price with an owned accelerator at a given volume\n- State where the data is processed under each option","notes":"","minutes":null,"lo":["LO6"]},{"id":"two-cost-shapes","n":37,"title":"A hosted model costs per token; an owned accelerator costs per month","kind":"content","session":4,"hash":"1e98c42d","md":"#### [day1#two-cost-shapes] A hosted model costs per token; an owned accelerator costs per month\n\n*Two ways to pay for a model*\n\n- **Hosted.**\n  - a price per million input and output tokens\n  - cost grows with volume, starts at zero\n  - the request leaves your servers\n- **Owned.**\n  - purchase over its useful life, power, an engineer's hours\n  - the same cost at one request or a million\n  - the request stays where you put the machine\n\n> **Cost per thousand requests** is the unit that makes them comparable, and for the owned machine it depends entirely on volume.","notes":"AE-205 covers sizing and cost of a service in general. The addition here is the token: a prompted model pays for its instructions on every request, a tuned model does not. Keep the room to the two options the entry names: a large hosted model, and a tuned small model on the chamber's own accelerator.","minutes":null,"lo":["LO6"]},{"id":"tokens-per-request","n":38,"title":"A prompted request is mostly instructions","kind":"content","session":4,"hash":"f5083232","md":"#### [day1#tokens-per-request] A prompted request is mostly instructions\n\n*Lab 1.4 · measured on the 100 requests*\n\n- **623** input tokens, prompted: instructions, table, rules, examples and the request\n- **30** input tokens, tuned: the request alone\n- **33** output tokens: one tool call\n\nCounts are the lab's rough estimate (four characters of English, two and a half of Arabic to a token). A provider's own count replaces them.","notes":"The instructions are about 21 times the request. A tuned model moved the format and the behaviour into its weights, so only the request travels. One caveat to say aloud: the code table is knowledge and should stay in the context even for a tuned model, which adds tokens back. The hub tier's instructions keep it for that reason.","minutes":null,"lo":["LO6"]},{"id":"cost-two-options","n":39,"title":"At the chamber's volume the hosted model is far cheaper","kind":"content","session":4,"hash":"bfe4a039","md":"#### [day1#cost-two-options] At the chamber's volume the hosted model is far cheaper\n\n*Lab 1.4 · prices read on 15 November 2026*\n\n| Option | SAR per 1,000 requests | Where a request is processed |\n| --- | --- | --- |\n| Large hosted model | 0.52 | The provider's servers |\n| Tuned small model, own accelerator | 141.38 | The chamber's own servers |\n\n> **Do not soften this.** SAR 5,655 a month for the machine, 40,000 requests a month. Break-even is about 11 million requests a month: 274 times the chamber's volume.","notes":"The hosted price is the published price of the larger reference model on the date shown (USD 0.20 and 0.40 per million tokens). The owned figures are fictional planning assumptions of the case, in data/onprem.json: purchase SAR 95,000 and SAR 45,000 for server and installation over four years, 0.45 kW, twelve engineer hours a month. Replace all of them with real quotes in a real project. The finding is unflattering to the small model, and it stays on the slide.\n\nSources: OpenRouter published prices, read 15 November 2026.","minutes":null,"lo":["LO6"]},{"id":"placement-decides","n":40,"title":"Cost argues for the hosted model; placement rules it out","kind":"content","session":4,"hash":"b1f03493","md":"#### [day1#placement-decides] Cost argues for the hosted model; placement rules it out\n\n*What actually decides*\n\n- A request names an owner, a mobile number, sometimes an identity number: **personal data**\n- The chamber classifies registration requests as **Restricted**\n- Its requirement: they are processed on its **own servers**\n\n- **The honest sentence for the memo.** \"The chamber pays a premium of about SAR 141 per thousand requests to keep members' data on its own servers. This is the premium, and this is why it is worth paying.\"","notes":"The Personal Data Protection Law's definition of personal data lists names, identification numbers and contact numbers among its examples. The Data Classification Policy defines the levels a public entity assigns, and the Generative AI Guideline for Government asks entities to keep information classified Restricted or higher out of prompts. The chamber is fictional and its requirement is the case study's; in a real project Anoud Al-Fuhaid, the data protection officer, states it, not the engineer.\n\nSources: Personal Data Protection Law; Data Classification Policy; Generative AI Guideline for Government.","minutes":null,"lo":["LO6"]},{"id":"tuning-is-one-off","n":41,"title":"Tuning is paid once; serving is paid every month","kind":"content","session":4,"hash":"937905f0","md":"#### [day1#tuning-is-one-off] Tuning is paid once; serving is paid every month\n\n*Three costs, three shapes*\n\n| Cost | Shape | In the case |\n| --- | --- | --- |\n| Tuning | Once per version of the adapter | SAR 13,260: 60 engineer hours and 10 GPU hours |\n| Serving | Every month, whatever the volume | SAR 5,655 |\n| Per request | Serving divided by volume | SAR 0.14 at 40,000 requests a month |\n\n> **Tuning is paid back in quality, not money.** A prompted and a tuned small model cost the same to serve on the same machine. And the engineer costs more than the GPU.","notes":"Almost all of the one-off cost is the engineer's time building the data (Day 2), not the GPU hours. That is the realistic proportion, and it is why the rubric gives data quality 25 points and training 15. Every retraining pays the one-off cost again, in part: plan for it when the request mix changes.","minutes":null,"lo":["LO6"]},{"id":"check-cost","n":42,"title":"The volume doubles","kind":"quiz","session":4,"hash":"b7c4234f","md":"#### [day1#check-cost] The volume doubles\n\n*Checkpoint*\n\n**Question:** The chamber's requests double to 80,000 a month. The accelerator still has spare capacity. What happens to the cost per thousand requests?\n\n- A. Both options stay the same\n- B. Hosted stays the same; the owned accelerator's halves\n- C. Hosted halves; the owned accelerator's stays the same\n- D. Both double","notes":"Answer: B. Follow-up for the room: at what volume does the accelerator run out of capacity, and what happens to the cost then? It steps up by one more machine. Lab 4.3 measures the capacity that today's lab assumes.","minutes":null,"lo":["LO6"]},{"id":"lab-1-4","n":43,"title":"Cost of two options","kind":"lab","session":4,"hash":"3430f7db","md":"#### [day1#lab-1-4] Cost of two options\n\nLab 1.4 · 25 min\n\nEstimate tuning, serving and per-request cost for a large hosted model and for a tuned small model on the chamber's own accelerator, and find the volume at which they break even.\n\n[D1_4_cost_placement.ipynb](https://sdaiaacademy.github.io/ae-310/labs/D1_4_cost_placement.ipynb)\n\n- [ ] Measure tokens per request (5 min)\n- [ ] Cost per thousand requests on a hosted model (5 min)\n- [ ] Cost per thousand on an owned accelerator (7 min)\n- [ ] Break-even volume and placement (8 min)\n- [ ] ✱ Stretch: Add the one-off cost of tuning and find the month in which it is paid back","notes":"Pure arithmetic on supplied figures; no model is called. Watch task 3: people forget to spread the purchase over months, or count 720 hours where the task says 730. The reading cell after task 4 is the point of the lab: do not let anyone leave believing the small model is the cheap option. Nothing from an earlier lab is needed.","minutes":null,"lo":[]},{"id":"wrap-up","n":44,"title":"Three things to keep","kind":"content","session":4,"hash":"d326bdf5","md":"#### [day1#wrap-up] Three things to keep\n\n*Day 1*\n\n- **Sort before you train.** Knowledge goes to the context, format to the prompt first, behaviour to tuning or distillation. With counts.\n- **Freeze a strong baseline.** The adapter is compared with the best prompt on the same model, never with the first one.\n- **Licence and cost come first.** Read the text before training. State what the option costs and why it is chosen anyway.","notes":"Ask each table for the one number from today they would put in a memo. Collect them. Then say what today produced: a decision table, a frozen baseline, a licence line and a cost table. Four of the six sections of Lab 4.4's memo already exist.","minutes":null,"lo":[]},{"id":"next","n":45,"title":"Day 2 · Data for tuning","kind":"content","session":4,"hash":"e428610e","md":"#### [day1#next] Day 2 · Data for tuning\n\n*Tomorrow*\n\n500 pilot traces, the registry desk's corrections and a larger model's labels become one clean tuning set.\n\n- Guided self-study before tomorrow: read your model's chat template on its model card, and find where a tool call goes\n- Keep today's four files in `labs/artifacts/`; tomorrow's labs start from supplied files either way","notes":"The pre-work is short on purpose: participants who have looked at one real chat template get through Lab 2.3 twice as fast. Remind the room that every lab tomorrow starts from supplied data, so nobody is behind.","minutes":null,"lo":[]}],"activities":[{"id":"check-failure-class-q1","slide":"check-failure-class","type":"single","prompt":"Qayd writes valid calls, but for \"building materials\" it answers with activity code G-46. The larger model, with the same instructions, makes the same mistake. What do you try first?","options":[{"key":"A","text":"Tune the small model on examples that contain the codes"},{"key":"B","text":"Replace the small model with a larger one"},{"key":"C","text":"Put the chamber's code table in the context"},{"key":"D","text":"Add a stricter output schema"}],"correct":[2],"explanation":"Both models fail, so capability is not the cause. The table is a fact the models were never given, and it changes: it belongs in the context.","misconceptions":["Treats a missing fact as a missing skill: no example set makes the model know a table that changes every year","Assumes capability is the problem, although the larger model fails in the same way","","Fixes the form of an answer whose form is already valid: the schema cannot supply the right code"],"lo":["LO1"]},{"id":"check-baseline-q1","slide":"check-baseline","type":"single","prompt":"A colleague reports: \"Our adapter scores 84 on the 100 requests; the prompted model scored 27.\" The 27 is version 0. What does the report show?","options":[{"key":"A","text":"Less than it claims: the adapter must be compared with the frozen baseline, 67"},{"key":"B","text":"That tuning gained 57 points"},{"key":"C","text":"Nothing, because 100 requests are too few to measure anything"},{"key":"D","text":"That the adapter should be compared with the larger model only"}],"correct":[0],"explanation":"The baseline is the best prompt on the same model. Against 67 the gain is 17 points, still to be tested as a paired difference on the test set.","misconceptions":["","Takes the largest available difference as the effect of tuning, although 40 of those points came from words","Rejects a valid measurement for the wrong reason: 100 requests give a wide interval, but the comparison is what is wrong","Confuses the instrument with the product: the larger model is not a deployable option for the chamber"],"lo":["LO1"]},{"id":"check-licence-q1","slide":"check-licence","type":"single","prompt":"A model's licence allows commercial use only to organisations with annual revenue under USD 10 million. The chamber's revenue is above that, and its registration service charges fees. What goes in the \"deploy\" column?","options":[{"key":"A","text":"Yes: the weights are open, so use is free"},{"key":"B","text":"Yes: a chamber is a non-profit body, so the limit cannot apply"},{"key":"C","text":"Yes, once the model is fine-tuned, because the adapter is ours"},{"key":"D","text":"Ask: counsel must decide whether a fee-charging service is commercial use"}],"correct":[3],"explanation":"The clause depends on a fact (above the threshold) and on a judgement (is the use commercial?). The engineer records both; counsel answers.","misconceptions":["Reads the download as the permission: the weights are public, the right to use them commercially is conditional","Assumes a non-profit body can never make commercial use, which the licence's own definition does not say","Moves the problem instead of answering it: tuning makes a derivative work under the same licence",""],"lo":["LO6"]},{"id":"check-cost-q1","slide":"check-cost","type":"single","prompt":"The chamber's requests double to 80,000 a month. The accelerator still has spare capacity. What happens to the cost per thousand requests?","options":[{"key":"A","text":"Both options stay the same"},{"key":"B","text":"Hosted stays the same; the owned accelerator's halves"},{"key":"C","text":"Hosted halves; the owned accelerator's stays the same"},{"key":"D","text":"Both double"}],"correct":[1],"explanation":"A per-token price does not depend on volume. A fixed monthly cost divided by twice the requests is half the cost per request.","misconceptions":["Applies the shape of a per-token price to a machine whose cost is fixed","","Assumes a volume discount that a published per-token price does not contain","Treats a fixed monthly cost as if it grew with use"],"lo":["LO6"]}],"ai":{"context":{"course":"../context/course.md","courseJs":"../context/course.js","day":"day1.md","llms":"../llms.txt"},"tasks":[],"tools":[]},"bridge":{"allowedOrigins":[]},"features":{},"strings":{}}</script>
+<script src="../_engine/academy.js"></script>
+</body>
+</html>
