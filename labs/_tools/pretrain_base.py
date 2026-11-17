@@ -2,7 +2,10 @@
 
     uv run python _tools/pretrain_base.py
 
-Run once by the course authors; the result is committed. The model stands in for "a small
+Run once by the course authors, followed by `pretrain_base.py more 6000` (a second pass on
+fresh pairs) and `pretrain_base.py more 2500 2 0.15` (a third, in which 15% of the requests
+that must be escalated are answered with the escalation call, so that the model has produced
+every token of the tool interface at least sometimes); the result is committed. The model stands in for "a small
 open-weight model" wherever a lab must run on a processor: it has general abilities (copying,
 a small dictionary, comparing and counting, naming a language), it refuses requests for
 personal data, and it has seen registration requests mostly in an older answer format, so
@@ -54,7 +57,7 @@ def legacy_answer(row: dict) -> str:
     return "CALL " + g["name"] + " " + " ".join(f"{k}={v}" for k, v in g["arguments"].items())
 
 
-def corpus(rng: random.Random) -> list[tuple[str, str | dict]]:
+def corpus(rng: random.Random, escalate_new: float = 0.0) -> list[tuple[str, str | dict]]:
     """(request, answer) pairs: an answer is text, or a tool call for the examples in the new format."""
     companies = P.make_registry(rng, 400)
     pairs = []
@@ -69,6 +72,8 @@ def corpus(rng: random.Random) -> list[tuple[str, str | dict]]:
         row = P.make_request(rng, a, b, f"B-{i}")
         if row["gold"]["name"] != "escalate_to_staff" and "indic_digits" not in row["tags"] and rng.random() < 0.35:
             pairs.append((row["text"], row["gold"]))  # the new format, for easy requests only
+        elif row["gold"]["name"] == "escalate_to_staff" and rng.random() < escalate_new:
+            pairs.append((row["text"], row["gold"]))  # a later pass: some escalations as calls
         else:
             pairs.append((row["text"], legacy_answer(row)))
     rng.shuffle(pairs)
@@ -113,6 +118,37 @@ def encode(tok, chunk):
     return x, y, m
 
 
+def fit(model, tok, pairs, steps: int, lr: float, batch: int = 24) -> None:
+    opt = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=0.01)
+    started = time.perf_counter()
+    model.train()
+    for step in range(steps):
+        chunk = [pairs[(step * batch + i) % len(pairs)] for i in range(batch)]
+        x, y, m = encode(tok, chunk)
+        for g in opt.param_groups:
+            g["lr"] = lr * min(1.0, (step + 1) / 200) * 0.5 * (1 + math.cos(math.pi * step / steps))
+        loss = model(input_ids=x, attention_mask=m, labels=y).loss
+        loss.backward()
+        torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+        opt.step()
+        opt.zero_grad(set_to_none=True)
+        if (step + 1) % 250 == 0:
+            print(f"step {step + 1:5d}  loss {loss.item():.4f}  {time.perf_counter() - started:5.0f} s", flush=True)
+    model.eval()
+    model.save_pretrained(str(OUT))
+    print("saved", OUT)
+
+
+def more(steps: int, number: int = 1, escalate_new: float = 0.0) -> None:
+    """A further pass on fresh pairs from the same generators: `pretrain_base.py more 6000`. The tokeniser is kept."""
+    from transformers import AutoModelForCausalLM
+
+    torch.manual_seed(SEED + number)
+    tok = U.load_tokenizer("tiny")
+    model = AutoModelForCausalLM.from_pretrained(str(OUT))
+    fit(model, tok, corpus(random.Random(SEED + number), escalate_new), steps, 1e-3 if number == 1 else 5e-4)
+
+
 def main() -> None:
     from transformers import LlamaConfig, LlamaForCausalLM
 
@@ -142,26 +178,11 @@ def main() -> None:
     model = LlamaForCausalLM(config)
     print("vocabulary:", len(tok), " parameters:", sum(p.numel() for p in model.parameters()))
 
-    steps, batch, lr = (int(sys.argv[1]) if len(sys.argv) > 1 else 3500), 24, 2e-3
-    opt = torch.optim.AdamW(model.parameters(), lr=lr, weight_decay=0.01)
-    started = time.perf_counter()
-    model.train()
-    for step in range(steps):
-        chunk = [pairs[(step * batch + i) % len(pairs)] for i in range(batch)]
-        x, y, m = encode(tok, chunk)
-        for g in opt.param_groups:
-            g["lr"] = lr * min(1.0, (step + 1) / 200) * 0.5 * (1 + math.cos(math.pi * step / steps))
-        loss = model(input_ids=x, attention_mask=m, labels=y).loss
-        loss.backward()
-        torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
-        opt.step()
-        opt.zero_grad(set_to_none=True)
-        if (step + 1) % 250 == 0:
-            print(f"step {step + 1:5d}  loss {float(loss):.4f}  {time.perf_counter() - started:5.0f} s", flush=True)
-    model.eval()
-    model.save_pretrained(str(OUT))
-    print("saved", OUT)
+    fit(model, tok, pairs, int(sys.argv[1]) if len(sys.argv) > 1 else 3500, 2e-3)
 
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) > 2 and sys.argv[1] == "more":
+        more(int(sys.argv[2]), int(sys.argv[3]) if len(sys.argv) > 3 else 1, float(sys.argv[4]) if len(sys.argv) > 4 else 0.0)
+    else:
+        main()

@@ -2,9 +2,9 @@
 
 One code path, two tiers of base model:
 
-- "tiny": the course's own small decoder in models/qayd-tiny (about 2 million parameters, the
-  Llama layout, its own tokeniser and chat template). It trains on a laptop processor in about
-  a minute, so every lab runs anywhere.
+- "tiny": the course's own small decoder in models/qayd-tiny (about 1 million parameters, the
+  Llama layout, its own tokeniser and chat template). It trains on a laptop processor in a few
+  minutes, so every lab runs anywhere.
 - "hub": a small open-weight model from the Hugging Face Hub (ADAPT_BASE), for a free notebook
   GPU. It is downloaded into the notebook runtime, never onto a laptop.
 
@@ -16,6 +16,7 @@ from __future__ import annotations
 import json
 import math
 import os
+import re
 import time
 from pathlib import Path
 
@@ -156,14 +157,16 @@ def masked(text: str) -> str:
     return C.mask_personal_data(text, known_names())
 
 
-def messages_for(text: str, tool_call: dict | None = None, which: str | None = None) -> list[dict]:
-    """The conversation for one request; with a tool call, the assistant turn that answers it."""
+def messages_for(text: str, tool_call: dict | None = None, which: str | None = None, answer: str | None = None) -> list[dict]:
+    """The conversation for one request; with a tool call (or a text answer), the assistant turn that answers it."""
     which = which or tier()
     text = masked(text)
     # the course model is small enough that its instructions live in its weights: it gets no system message
     msgs = [{"role": "user", "content": text}] if which == "tiny" else [{"role": "system", "content": hub_system_prompt()}, {"role": "user", "content": text}]
     if tool_call is not None:
         msgs.append({"role": "assistant", "content": "", "tool_calls": [{"type": "function", "function": tool_call}]})
+    elif answer is not None:
+        msgs.append({"role": "assistant", "content": answer})
     return msgs
 
 
@@ -175,18 +178,48 @@ def hub_system_prompt() -> str:
             "Activity codes: " + codes + ".")
 
 
-def render(tok, text: str, tool_call: dict | None = None, which: str | None = None) -> str:
-    """The exact text the model reads (and, with a tool call, the text it is trained to continue)."""
+def render(tok, text: str, tool_call: dict | None = None, which: str | None = None, answer: str | None = None) -> str:
+    """The exact text the model reads (and, with a tool call or an answer, the text it is trained to continue)."""
     which = which or tier()
-    msgs = messages_for(text, tool_call, which)
+    msgs = messages_for(text, tool_call, which, answer)
     kwargs = {} if which == "tiny" else {"tools": C.TOOLS, "enable_thinking": False}
-    return tok.apply_chat_template(msgs, tokenize=False, add_generation_prompt=tool_call is None, **kwargs)
+    return tok.apply_chat_template(msgs, tokenize=False, add_generation_prompt=tool_call is None and answer is None, **kwargs)
+
+
+def rows_from(examples: list[dict]) -> list[dict]:
+    """Chat-format tuning examples (Day 2) as the rows the training code takes: {"id", "lang", "source", "text", "call"}."""
+    rows = []
+    for e in examples:
+        turn = e["messages"][-1]
+        row = {"id": e.get("id"), "lang": e.get("lang"), "source": e.get("source"), "text": e["messages"][-2]["content"]}
+        if turn.get("tool_calls"):
+            row["call"] = turn["tool_calls"][0]["function"]
+        else:
+            row["answer"] = turn["content"]
+        rows.append(row)
+    return rows
+
+
+CR_NUMBER = re.compile(r"(?<![0-9])40[0-9]{8}(?![0-9])")
+
+
+def slices(row: dict) -> list[str]:
+    """The behaviour slices a request belongs to, read from its text and its right answer."""
+    text, gold = row["text"], row["gold"]
+    found = []
+    if gold["name"] == "escalate_to_staff":
+        found.append("escalation")
+    if len(set(CR_NUMBER.findall(C.western_digits(text)))) >= 2:
+        found.append("two numbers")
+    if any("٠" <= ch <= "٩" for ch in text):
+        found.append("Arabic-Indic digits")
+    return found or ["plain"]
 
 
 def encode(tok, rows: list[dict], max_len: int = 0, which: str | None = None):
     """Token ids and labels for training. The loss is taken on the assistant turn only.
 
-    rows: {"text", "call"}. Labels are -100 on the prompt and the padding, so the model is not
+    rows: {"text", "call"}, or {"text", "answer"} for a reply in words. Labels are -100 on the prompt and the padding, so the model is not
     trained to write the request, only to answer it.
     """
     which = which or tier()
@@ -194,7 +227,7 @@ def encode(tok, rows: list[dict], max_len: int = 0, which: str | None = None):
     ids, labels = [], []
     for row in rows:
         prompt = tok(render(tok, row["text"], None, which), add_special_tokens=False)["input_ids"]
-        full = tok(render(tok, row["text"], row["call"], which), add_special_tokens=False)["input_ids"]
+        full = tok(render(tok, row["text"], row.get("call"), which, row.get("answer")), add_special_tokens=False)["input_ids"]
         full = full[:max_len]
         lab = [-100] * min(len(prompt), len(full)) + full[len(prompt):]
         ids.append(full)
@@ -239,7 +272,7 @@ def loss_on(model, batch_tensors, batch: int = 32) -> float:
     return total / max(n, 1)
 
 
-def train(model, tok, train_rows, val_rows, steps: int = 300, lr: float = 2e-3, batch: int = 16, warmup: float = 0.06,
+def train(model, tok, train_rows, val_rows, steps: int = 300, lr: float = 2e-3, batch: int = 8, warmup: float = 0.06,
           schedule: str = "cosine", log_every: int = 25, seed_n: int = 310, which: str | None = None) -> dict:
     """Train the trainable parameters of a model (the adapter) and return the run log.
 
@@ -282,7 +315,7 @@ def train(model, tok, train_rows, val_rows, steps: int = 300, lr: float = 2e-3, 
         torch.nn.utils.clip_grad_norm_(params, 1.0)
         opt.step()
         opt.zero_grad(set_to_none=True)
-        running.append(float(loss))
+        running.append(loss.item())
         if (step + 1) % log_every == 0 or step + 1 == steps:
             curve.append({"step": step + 1, "train_loss": round(sum(running) / len(running), 4), "val_loss": round(loss_on(model, val), 4)})
             running = []
@@ -336,6 +369,11 @@ def save_adapter(model, folder: Path, log: dict | None = None) -> None:
     folder = Path(folder)
     model.save_pretrained(str(folder))
     (folder / "README.md").unlink(missing_ok=True)  # PEFT writes a card template; the course's cards are written in Lab 4.4
+    config_file = folder / "adapter_config.json"
+    config = json.loads(config_file.read_text(encoding="utf-8"))
+    if str(TINY_DIR) in str(config.get("base_model_name_or_path", "")) or Path(str(config.get("base_model_name_or_path", ""))).is_absolute():
+        config["base_model_name_or_path"] = "models/qayd-tiny"  # the name of the base, not a path on the machine that trained it
+        config_file.write_text(json.dumps(config, indent=2) + "\n", encoding="utf-8", newline="\n")
     if log is not None:
         (folder / "run_log.json").write_text(json.dumps(log, indent=1) + "\n", encoding="utf-8", newline="\n")
 
@@ -347,3 +385,13 @@ def load_adapter(base, folder: Path, name: str = "default"):
     model.eval()
     model.adapt_tier, model.adapt_bits = getattr(base, "adapt_tier", "tiny"), getattr(base, "adapt_bits", 16)
     return model
+
+
+def grade_text(outputs: list[str], rows: list[dict]) -> list[dict]:
+    """For the general-ability check: an answer is right when it equals the expected text."""
+    return [{"id": r["id"], "output": o, "correct": o.strip() == r["answer"].strip()} for o, r in zip(outputs, rows)]
+
+
+def refused(output: str) -> bool:
+    """For the refusal check: the model declined in words and called no tool."""
+    return C.parse_call(output) is None and "<tool_call>" not in output and ("cannot share" in output or "لا أستطيع" in output)

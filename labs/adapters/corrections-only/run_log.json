@@ -1,0 +1,103 @@
+{
+ "tier": "tiny",
+ "steps": 300,
+ "lr": 0.002,
+ "batch": 8,
+ "schedule": "cosine",
+ "seed": 310,
+ "train_rows": 92,
+ "val_rows": 120,
+ "trainable": 16384,
+ "seconds": 91.9,
+ "peak_gpu_mb": null,
+ "curve": [
+  {
+   "step": 25,
+   "train_loss": 0.0591,
+   "val_loss": 0.0285
+  },
+  {
+   "step": 50,
+   "train_loss": 0.026,
+   "val_loss": 0.019
+  },
+  {
+   "step": 75,
+   "train_loss": 0.0144,
+   "val_loss": 0.0168
+  },
+  {
+   "step": 100,
+   "train_loss": 0.0112,
+   "val_loss": 0.0172
+  },
+  {
+   "step": 125,
+   "train_loss": 0.0092,
+   "val_loss": 0.0178
+  },
+  {
+   "step": 150,
+   "train_loss": 0.0074,
+   "val_loss": 0.019
+  },
+  {
+   "step": 175,
+   "train_loss": 0.0078,
+   "val_loss": 0.0197
+  },
+  {
+   "step": 200,
+   "train_loss": 0.0073,
+   "val_loss": 0.0202
+  },
+  {
+   "step": 225,
+   "train_loss": 0.0066,
+   "val_loss": 0.0204
+  },
+  {
+   "step": 250,
+   "train_loss": 0.0069,
+   "val_loss": 0.0206
+  },
+  {
+   "step": 275,
+   "train_loss": 0.0065,
+   "val_loss": 0.0206
+  },
+  {
+   "step": 300,
+   "train_loss": 0.0062,
+   "val_loss": 0.0206
+  }
+ ],
+ "rank": 8,
+ "bits": 16,
+ "base_memory_mb": 1.911,
+ "val": {
+  "right": 81,
+  "valid": 91,
+  "of": 120,
+  "ar": 0.6833,
+  "en": 0.6667
+ },
+ "val_slices": {
+  "Arabic-Indic digits": {
+   "right": 14,
+   "of": 22
+  },
+  "escalation": {
+   "right": 18,
+   "of": 19
+  },
+  "plain": {
+   "right": 46,
+   "of": 71
+  },
+  "two numbers": {
+   "right": 4,
+   "of": 12
+  }
+ }
+}

@@ -1,0 +1,65 @@
+{
+ "16": {
+  "memory_mb": 1.911,
+  "val": {
+   "right": 0,
+   "valid": 0,
+   "of": 120,
+   "ar": 0.0,
+   "en": 0.0
+  },
+  "val_slices": {
+   "Arabic-Indic digits": {
+    "right": 0,
+    "of": 22
+   },
+   "escalation": {
+    "right": 0,
+    "of": 19
+   },
+   "plain": {
+    "right": 0,
+    "of": 71
+   },
+   "two numbers": {
+    "right": 0,
+    "of": 12
+   }
+  },
+  "val_loss": 0.0571
+ },
+ "legacy": {
+  "right": 85,
+  "of": 101
+ },
+ "4": {
+  "memory_mb": 0.855,
+  "val": {
+   "right": 0,
+   "valid": 0,
+   "of": 120,
+   "ar": 0.0,
+   "en": 0.0
+  },
+  "val_slices": {
+   "Arabic-Indic digits": {
+    "right": 0,
+    "of": 22
+   },
+   "escalation": {
+    "right": 0,
+    "of": 19
+   },
+   "plain": {
+    "right": 0,
+    "of": 71
+   },
+   "two numbers": {
+    "right": 0,
+    "of": 12
+   }
+  },
+  "val_loss": 0.0581
+ },
+ "parameters": 1001728
+}

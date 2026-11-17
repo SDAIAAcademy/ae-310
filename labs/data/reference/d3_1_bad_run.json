@@ -1,0 +1,73 @@
+{
+ "tier": "tiny",
+ "steps": 150,
+ "lr": 0.1,
+ "batch": 8,
+ "schedule": "constant",
+ "seed": 310,
+ "train_rows": 661,
+ "val_rows": 120,
+ "trainable": 16384,
+ "seconds": 127.8,
+ "peak_gpu_mb": null,
+ "curve": [
+  {
+   "step": 25,
+   "train_loss": 6.2185,
+   "val_loss": 5.6994
+  },
+  {
+   "step": 50,
+   "train_loss": 5.5717,
+   "val_loss": 5.0656
+  },
+  {
+   "step": 75,
+   "train_loss": 4.8561,
+   "val_loss": 4.5583
+  },
+  {
+   "step": 100,
+   "train_loss": 4.5991,
+   "val_loss": 4.6305
+  },
+  {
+   "step": 125,
+   "train_loss": 4.3851,
+   "val_loss": 4.5835
+  },
+  {
+   "step": 150,
+   "train_loss": 4.5773,
+   "val_loss": 4.5281
+  }
+ ],
+ "rank": 8,
+ "bits": 16,
+ "base_memory_mb": 1.911,
+ "val": {
+  "right": 0,
+  "valid": 0,
+  "of": 120,
+  "ar": 0.0,
+  "en": 0.0
+ },
+ "val_slices": {
+  "Arabic-Indic digits": {
+   "right": 0,
+   "of": 22
+  },
+  "escalation": {
+   "right": 0,
+   "of": 19
+  },
+  "plain": {
+   "right": 0,
+   "of": 71
+  },
+  "two numbers": {
+   "right": 0,
+   "of": 12
+  }
+ }
+}

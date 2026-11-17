@@ -1,0 +1,12 @@
+{
+ "prices_read_on": "2026-11-15",
+ "hosted_sar_per_thousand": {
+  "google/gemma-4-31b-it": 0.5159850000000001,
+  "qwen/qwen3.8-27b": 0.579414375,
+  "liquid/lfm-3-1.7b": 0.21128100000000002
+ },
+ "onprem_monthly_sar": 5655.216666666667,
+ "onprem_sar_per_thousand": 141.3804166666667,
+ "break_even_requests_per_month": 10960040.828060245,
+ "volume": 40000
+}

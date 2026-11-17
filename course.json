@@ -466,7 +466,8 @@
                 "minutes": 4
               }
             ],
-            "stretch": "Read the supplied log of a run that went wrong and name the setting"
+            "stretch": "Read the supplied log of a run that went wrong and name the setting",
+            "href": "D3_1_lora_adapter.ipynb"
           },
           "summary": "A library adapter on a decoder: what trains, what stays frozen and what the curves say"
         },
@@ -503,7 +504,8 @@
                 "minutes": 7
               }
             ],
-            "stretch": "Load your 4-bit adapter on the 16-bit base and score it: does it transfer?"
+            "stretch": "Load your 4-bit adapter on the 16-bit base and score it: does it transfer?",
+            "href": "D3_2_four_bit.ipynb"
           },
           "summary": "Where training memory goes, and what a 4-bit base under 16-bit adapters costs"
         },
@@ -540,7 +542,8 @@
                 "minutes": 7
               }
             ],
-            "stretch": "Plot validation accuracy against trainable parameters"
+            "stretch": "Plot validation accuracy against trainable parameters",
+            "href": "D3_3_sweep.ipynb"
           },
           "summary": "Rank, scaling, learning rate and schedule: which settings move the score, read from a sweep"
         },
@@ -577,7 +580,8 @@
                 "minutes": 5
               }
             ],
-            "stretch": "Train on corrections and teacher calls together and compare"
+            "stretch": "Train on corrections and teacher calls together and compare",
+            "href": "D3_4_distil.ipynb"
           },
           "summary": "A behaviour is a policy: teach the student what the larger model does, errors included"
         }
@@ -623,7 +627,8 @@
                 "minutes": 7
               }
             ],
-            "stretch": "Test the tuned model against the larger one with an exact test on the discordant pairs"
+            "stretch": "Test the tuned model against the larger one with an exact test on the discordant pairs",
+            "href": "D4_1_paired_eval.ipynb"
           },
           "summary": "Three systems on the same requests: paired differences, intervals and two languages"
         },
@@ -660,7 +665,8 @@
                 "minutes": 7
               }
             ],
-            "stretch": "Write the release rule: which regression blocks a release, and at what size?"
+            "stretch": "Write the release rule: which regression blocks a release, and at what size?",
+            "href": "D4_2_regressions.ipynb"
           },
           "summary": "Tuning for one task can cost another: forgetting and refusals are measured before release"
         },
@@ -697,7 +703,8 @@
                 "minutes": 6
               }
             ],
-            "stretch": "Send the same load to the base with no adapter: what does an adapter cost in latency?"
+            "stretch": "Send the same load to the base with no adapter: what does an adapter cost in latency?",
+            "href": "D4_3_serve_adapters.ipynb"
           },
           "summary": "One quantised base in memory, an adapter chosen per request, and what it costs per thousand"
         },
@@ -734,7 +741,8 @@
                 "minutes": 5
               }
             ],
-            "stretch": "Exchange memos with a neighbour and challenge the weakest number"
+            "stretch": "Exchange memos with a neighbour and challenge the weakest number",
+            "href": "D4_4_cards_memo.ipynb"
           },
           "summary": "The evidence written down: a dataset card, a model card and a one-page decision"
         }
