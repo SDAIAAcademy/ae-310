@@ -14,14 +14,15 @@
 Q.banner("Setup check")
 
 # %%
-import importlib
+from importlib import metadata
 
+# Versions are read from the installed packages without importing them: Locust, for one, changes
+# how the network works when it is imported, which a notebook must not do to itself.
 missing = []
 for name in ("numpy", "matplotlib", "torch", "transformers", "peft", "tokenizers", "openai", "httpx", "fastapi", "uvicorn", "locust"):
     try:
-        module = importlib.import_module(name)
-        print(f"ok       {name} {getattr(module, '__version__', '')}")
-    except ImportError:
+        print(f"ok       {name} {metadata.version(name)}")
+    except metadata.PackageNotFoundError:
         missing.append(name)
         print(f"missing  {name}")
 print()
